@@ -35,9 +35,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+    Route::get('/student/home', [StudentController::class, 'home'])->name('student.home');
+    Route::get('/student/katalog', [StudentController::class, 'katalog'])->name('student.katalog');
 
     Route::get('my-books', [TransactionController::class, 'history'])->name('student.history');
+    Route::get('book/{book:slug}', [BookController::class, 'show'])->name('book.show');
 
     Route::post('/pinjam/{bookId}', [TransactionController::class, 'pinjam'])->name('pinjam.buku');
     Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');

@@ -49,6 +49,7 @@ class TransactionController extends Controller
 
         // 4. Kurangi Stok Buku
         $book->decrement('stok');
+        $book->increment('read_count');
 
         return back()->with('success', 'Asik! Buku berhasil dipinjam. Jangan lupa dibaca ya! 📖');
     }

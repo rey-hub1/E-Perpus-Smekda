@@ -10,13 +10,15 @@ class Book extends Model
 
     protected $fillable = [
         'judul',
+        'slug',
         'penulis',
         'penerbit',
         'tahun_terbit',
         'stok',
         'deskripsi',
         'gambar',
-        'favorite'
+        'favorite',
+        'read_count'
     ];
 
     public function transactions(): HasMany

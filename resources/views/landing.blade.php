@@ -26,7 +26,7 @@
                             class="bg-accent text-white px-6 py-2 rounded-full font-semibold hover:bg-accent/90 transition shadow-md">Dashboard
                             Admin</a>
                     @else
-                        <a href="{{ route('student.dashboard') }}"
+                        <a href="{{ route('student.home') }}"
                             class="bg-accent text-white px-6 py-2 rounded-full font-semibold hover:bg-accent/90 transition shadow-md">Dashboard
                             Siswa</a>
                     @endif

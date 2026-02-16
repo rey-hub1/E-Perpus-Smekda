@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
@@ -54,6 +55,8 @@ class BookController extends Controller
             $request->gambar->move(public_path('images'), $imageName);
             $input['gambar'] = $imageName;
         }
+
+        $input['slug'] = Str::slug($request->title);
 
         Book::create($input);
 
@@ -131,5 +134,10 @@ class BookController extends Controller
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus di favorite kan.');
+    }
+
+    public function show(Book $book)
+    {
+        return view('books.show', compact('book'));
     }
 }

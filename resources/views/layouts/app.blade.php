@@ -31,14 +31,27 @@
         <div class="flex-1 overflow-y-auto">
             <main class="flex flex-col gap-2 p-4">
 
-                <!-- Katalog Buku -->
-                <a href="{{ route('student.dashboard') }}"
+                <!-- Home -->
+                <a href="{{ route('student.home') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
-                    {{ request()->routeIs('student.dashboard') ? 'bg-primary text-text shadow-md' : 'text-text hover:shadow-sm' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="group-hover:scale-110 transition-transform">
-                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                    {{ request()->routeIs('student.home') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+                        <path
+                            d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20" />
+                    </svg>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <!-- Katalog Buku -->
+                <a href="{{ route('student.katalog') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
+                    {{ request()->routeIs('student.katalog') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+                        <path
+                            d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20" />
                     </svg>
                     <span class="font-semibold">Katalog Buku</span>
                 </a>
@@ -46,13 +59,13 @@
                 <!-- Riwayat Pinjam -->
                 <a href="{{ route('student.history') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
-                    {{ request()->routeIs('student.history') ? 'bg-primary text-text shadow-md' : 'text-text hover:shadow-sm' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="group-hover:scale-110 transition-transform">
-                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                        <path d="M3 3v5h5"/>
-                        <path d="M12 7v5l4 2"/>
+                    {{ request()->routeIs('student.history') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                        <path d="M12 7v5l4 2" />
                     </svg>
                     <span class="font-semibold">Riwayat Pinjam</span>
                 </a>

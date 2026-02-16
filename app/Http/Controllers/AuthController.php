@@ -31,7 +31,7 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } else {
-                return redirect()->route('student.dashboard');
+                return redirect()->route('student.home');
             }
         }
 
@@ -76,6 +76,6 @@ class AuthController extends Controller
         Auth::login($user);
 
         // Arahkan ke dashboard siswa
-        return redirect()->route('student.dashboard')->with('success', 'Selamat bergabung! Akun berhasil dibuat.');
+        return redirect()->route('student.home')->with('success', 'Selamat bergabung! Akun berhasil dibuat.');
     }
 }

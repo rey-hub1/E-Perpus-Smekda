@@ -12,7 +12,7 @@
             </div>
 
             <div class="relative z-10 w-full md:w-1/2">
-                <form action="{{ route('student.dashboard') }}" method="GET" class="flex gap-2">
+                <form action="{{ route('student.katalog') }}" method="GET" class="flex gap-2">
                     <input type="text" name="search"
                         class="w-full text-gray-800 p-3 bg-background rounded-lg focus:outline-none focus:ring-4 focus:ring-accent/50 shadow-inner"
                         placeholder="Cari judul buku atau penulis..." value="{{ request('search') }}">
@@ -43,7 +43,7 @@
             <div class="flex justify-between items-center px-2">
                 <p class="text-gray-500">Hasil pencarian: <span
                         class="font-bold text-primary">"{{ request('search') }}"</span></p>
-                <a href="{{ route('student.dashboard') }}" class="text-red-500 text-sm hover:underline font-semibold">Reset
+                <a href="{{ route('student.home') }}" class="text-red-500 text-sm hover:underline font-semibold">Reset
                     / Tampilkan Semua</a>
             </div>
         @endif
