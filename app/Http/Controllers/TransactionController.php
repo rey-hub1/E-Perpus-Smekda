@@ -29,6 +29,14 @@ class TransactionController extends Controller
 
         if ($sedangPinjam) {
             return back()->with('error', 'Kamu masih meminjam buku ini, balikin dulu ya sebelum pinjam lagi! 😅');
+            }
+
+            // Mencek apakah user minjam buku lebih dari 3
+            $pinjamBerapa = Transaction::where('user_id', Auth::id())->where('status', 'dipinjam')->count();
+
+            if ($pinjamBerapa > 3) {
+            return back()->with('error', 'Kamu sudah meminjam 3 buku, balikan dulu baru nanti pinjem lagi ya! 😅');
+
         }
 
         // 3. Catat Transaksi
@@ -96,6 +104,24 @@ class TransactionController extends Controller
         ]);
 
         $transaction->book->increment('stok');
+
+        return back()->with('success', 'Buku sudah di kembalikan sama admin');
+    }
+    public function adminPinjam($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+
+        if ($transaction->status == 'pinjam') {
+            return back()->with('error', 'Buku Ini udah di kembaliin');
+        }
+
+        $transaction->update([
+            'status' => 'dipinjam',
+            'tanggal_kembali' => null
+        ]);
+
+        $transaction->book->decrement('stok');
 
         return back()->with('success', 'Buku sudah di kembalikan sama admin');
     }

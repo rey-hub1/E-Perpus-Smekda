@@ -14,11 +14,11 @@
             <div class="relative z-10 w-full md:w-1/2">
                 <form action="{{ route('student.dashboard') }}" method="GET" class="flex gap-2">
                     <input type="text" name="search"
-                        class="w-full text-gray-800 p-3 rounded-lg focus:outline-none focus:ring-4 focus:ring-accent/50 shadow-inner"
+                        class="w-full text-gray-800 p-3 bg-background rounded-lg focus:outline-none focus:ring-4 focus:ring-accent/50 shadow-inner"
                         placeholder="Cari judul buku atau penulis..." value="{{ request('search') }}">
 
                     <button type="submit"
-                        class="bg-cta text-primary font-bold px-6 py-3 rounded-lg hover:bg-yellow-400 transition shadow-lg">
+                        class="bg-cta text-primary font-bold px-6 py-3 rounded-lg bg-background hover:bg-yellow-400 transition shadow-lg">
                         Cari
                     </button>
                 </form>
@@ -44,16 +44,16 @@
                 <p class="text-gray-500">Hasil pencarian: <span
                         class="font-bold text-primary">"{{ request('search') }}"</span></p>
                 <a href="{{ route('student.dashboard') }}" class="text-red-500 text-sm hover:underline font-semibold">Reset
-                    / Tampilkan Semua ✖</a>
+                    / Tampilkan Semua</a>
             </div>
         @endif
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-20">
             @forelse ($books as $book)
                 <div
                     class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border border-gray-100 flex flex-col h-full">
 
-                    <div class="h-48 overflow-hidden bg-gray-200 relative group">
+                    <div class="h-88 overflow-hidden bg-gray-200 relative group">
                         @if ($book->gambar)
                             <img src="/images/{{ $book->gambar }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -63,12 +63,13 @@
                             </div>
                         @endif
 
-                        <span class="absolute top-2 right-2 bg-cta text-primary text-xs font-bold px-2 py-1 rounded shadow">
+                        <span
+                            class="absolute top-2 right-0 bg-background text-primary text-xs font-bold px-2 py-1 rounded rounded-r-none shadow">
                             Stok: {{ $book->stok }}
                         </span>
                     </div>
 
-                    <div class="p-4 flex flex-col flex-grow">
+                    <div class="p-4 flex flex-col grow">
                         <h3 class="font-bold text-primary text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
                         <p class="text-sm text-gray-500 mb-4">{{ $book->penulis }}</p>
 
@@ -136,9 +137,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-8">
-                    {{ $books->withQueryString()->links() }}
-                </div>
+
             @empty
                 <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                     <div class="text-6xl mb-4">🔍</div>
@@ -146,6 +145,9 @@
                     <p class="text-gray-400">Coba cari dengan kata kunci lain.</p>
                 </div>
             @endforelse
+            <div class="mt-8">
+                {{ $books->withQueryString()->links() }}
+            </div>
         </div>
     </div>
 

@@ -24,7 +24,7 @@
             </div>
 
             <div>
-                <label class="block text-primary font-bold mb-2">Email Sekolah</label>
+                <label class="block text-primary font-bold mb-2">Email</label>
                 <input type="email" name="email" value="{{ old('email') }}" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" placeholder="nama@sekolah.sch.id" required>
                 @error('email')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -44,7 +44,7 @@
                 <input type="password" name="password_confirmation" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" placeholder="Ketik ulang password tadi" required>
             </div>
 
-            <button type="submit" class="w-full bg-cta text-primary font-bold py-3 rounded-lg hover:bg-yellow-400 transition shadow-lg mt-4">
+            <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-secondary transition shadow-lg">
                 Daftar Sekarang
             </button>
         </form>

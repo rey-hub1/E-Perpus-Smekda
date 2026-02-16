@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg border-t-4 border-cta">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="flex justify-end pt-4">
-            <a href="{{ route('books.index') }}" class="mr-4 px-6 py-3 text-gray-500 hover:text-gray-700 font-medium">Batal</a>
+            <a href="{{ route('admin.books.index') }}" class="mr-4 px-6 py-3 text-gray-500 hover:text-gray-700 font-medium">Batal</a>
             <button type="submit" class="bg-cta text-primary font-bold px-8 py-3 rounded-lg hover:bg-yellow-400 transition shadow-lg transform hover:-translate-y-1">
                 Update Buku
             </button>

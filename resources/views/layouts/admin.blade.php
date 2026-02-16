@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoRead - Perpustakaan Digital</title>
+    <title>GoRead - Perpustakaan</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="flex h-screen overflow-hidden bg-background">
 
     <!-- Sidebar Navigation -->
-    <nav class="w-64 flex flex-col shadow-xl border-r border-primary/20 bg-white">
+    <nav class="w-54 flex flex-col shadow-xl border-r border-primary/20 bg-white">
 
         <!-- Logo Section - Sticky di atas -->
         <div class="sticky top-0 z-10 p-6 shadow-md bg-gradient-to-br from-secondary to-primary">
@@ -21,8 +21,7 @@
 
                 <!-- App Name -->
                 <div class="text-center">
-                    <h1 class="text-xl font-bold text-background">GoRead</h1>
-                    <p class="text-xs text-background/80">Perpustakaan Digital</p>
+                    <h1 class="text-xl font-bold text-text">Admin Panel</h1>
                 </div>
             </div>
         </div>
@@ -31,30 +30,60 @@
         <div class="flex-1 overflow-y-auto">
             <main class="flex flex-col gap-2 p-4">
 
-                <!-- Katalog Buku -->
-                <a href="{{ route('student.dashboard') }}"
+                <!-- Dashboard -->
+                <a href="{{ route('admin.dashboard') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
-                    {{ request()->routeIs('student.dashboard') ? 'bg-primary text-text shadow-md' : 'text-text hover:shadow-sm' }}">
+                    {{ request()->routeIs('admin.dashboard') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="group-hover:scale-110 transition-transform">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    </svg>
+                    <span class="font-semibold">Dashboard</span>
+                </a>
+
+                <!-- Buku -->
+                <a href="{{ route('admin.books.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
+                    {{ request()->routeIs('admin.books.*') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="group-hover:scale-110 transition-transform">
                         <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"/>
                     </svg>
-                    <span class="font-semibold">Katalog Buku</span>
+                    <span class="font-semibold">Koleksi Buku</span>
                 </a>
 
-                <!-- Riwayat Pinjam -->
-                <a href="{{ route('student.history') }}"
+                <!-- Transaksi -->
+                <a href="{{ route('admin.transactions') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
-                    {{ request()->routeIs('student.history') ? 'bg-primary text-text shadow-md' : 'text-text hover:shadow-sm' }}">
+                    {{ request()->routeIs('admin.transactions') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="group-hover:scale-110 transition-transform">
-                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                        <path d="M3 3v5h5"/>
-                        <path d="M12 7v5l4 2"/>
+                        <path d="M12 7v14" />
+                        <path d="M16 12h2" />
+                        <path d="M16 8h2" />
+                        <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                        <path d="M6 12h2" />
+                        <path d="M6 8h2" />
                     </svg>
-                    <span class="font-semibold">Riwayat Pinjam</span>
+                    <span class="font-semibold">Transaksi</span>
+                </a>
+
+                <!-- Anggota -->
+                <a href="{{ route('admin.users.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
+                    {{ request()->routeIs('admin.users.*') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="group-hover:scale-110 transition-transform">
+                        <path d="M18 20a6 6 0 0 0-12 0" />
+                        <circle cx="12" cy="10" r="4" />
+                        <circle cx="12" cy="12" r="10" />
+                    </svg>
+                    <span class="font-semibold">Anggota</span>
                 </a>
 
                 <!-- Divider -->

@@ -10,6 +10,7 @@ class BookController extends Controller
     // 1. Menampilkan semua buku
     public function index()
     {
+
         $books = Book::latest()->paginate(10); // Ambil semua data buku
         return view('books.index', compact('books'));
     }
@@ -56,7 +57,7 @@ class BookController extends Controller
 
         Book::create($input);
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan!');
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil ditambahkan!');
     }
 
     public function edit(Book $book)
@@ -66,9 +67,8 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
-        // Validasi (mirip create, tapi gambar jadi nullable/opsional)
 
-         $rules = [
+        $rules = [
             'judul' => 'required',
             'penulis' => 'required',
             'penerbit' => 'required',
@@ -77,7 +77,6 @@ class BookController extends Controller
             'gambar' => 'image|mimes:jpeg,png,jpg|max:4096',
         ];
 
-        // 2. Definisikan Pesan Bahasa Indonesia (Messages)
         $messages = [
             'required' => ':attribute wajib diisi, jangan dikosongin ya!',
             'integer' => ':attribute harus berupa angka.',
@@ -109,7 +108,7 @@ class BookController extends Controller
 
         $book->update($input);
 
-        return redirect()->route('books.index')->with('success', 'Data buku berhasil diperbarui!');
+        return redirect()->route('admin.books.index')->with('success', 'Data buku berhasil diperbarui!');
     }
 
     // 6. Hapus Buku
@@ -122,6 +121,15 @@ class BookController extends Controller
 
         $book->delete();
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus dari perpustakaan.');
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus dari perpustakaan.');
+    }
+
+    public function favorite(Book $book)
+    {
+        $book->update([
+            'favorite' => !$book->favorite
+        ]);
+
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus di favorite kan.');
     }
 }

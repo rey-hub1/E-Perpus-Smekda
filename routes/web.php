@@ -6,11 +6,14 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use App\Models\Book;
 
 // 1. Halaman Depan (Landing Page)
 Route::get('/', function () {
-    return view('landing');
+    $favBook = Book::where('favorite', 1)->get();
+    // dd($favBook);
+    return view('landing', compact('favBook'));
 })->name('home');
 
 Route::get('/welkom', function () {
@@ -26,32 +29,39 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register.process');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // 3. Route Khusus Admin (Wajib Login & Wajib Admin)
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard Admin
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/transactions', [TransactionController::class, 'indexAdmin'])->name('admin.transactions');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::post('/admin/return/{id}', [TransactionController::class, 'adminReturn'])->name('admin.return');
-
-
-    Route::get('/my-books', [TransactionController::class, 'history'])->name('student.history');
-    Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');
-
-    // CRUD Buku
-    Route::get('/books', [BookController::class, 'index'])->name('books.index');
-    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
-    Route::post('/books', [BookController::class, 'store'])->name('books.store');
-
-    Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
-    Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
-    Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
-
-    // Dashboard Siswa
     Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
 
+    Route::get('my-books', [TransactionController::class, 'history'])->name('student.history');
+
     Route::post('/pinjam/{bookId}', [TransactionController::class, 'pinjam'])->name('pinjam.buku');
+    Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    // Dashboard Admin
+    Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('transactions', [TransactionController::class, 'indexAdmin'])->name('transactions');
+
+    Route::post('return/{id}', [TransactionController::class, 'adminReturn'])->name('return');
+    Route::post('pinjam/{id}', [TransactionController::class, 'adminPinjam'])->name('pinjam');
+
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // CRUD Buku
+    Route::get('books', [BookController::class, 'index'])->name('books.index');
+    Route::get('books/create', [BookController::class, 'create'])->name('books.create');
+    Route::post('/books', [BookController::class, 'store'])->name('books.store');
+
+    Route::get('books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
+    Route::put('books/{book}', [BookController::class, 'update'])->name('books.update');
+    Route::delete('books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+    Route::post('books/{book}/favorite', [BookController::class, 'favorite'])->name('books.favorite');
 });

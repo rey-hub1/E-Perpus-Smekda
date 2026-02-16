@@ -122,19 +122,19 @@
                 <p class=" text-lg">Buku Terpopuler Yang Banyak Orang Cari di Sini</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                @for ($i = 0; $i < 4; $i++)
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach ($favBook as $book)
                     <div class="flex flex-col gap-5 pt-3 overflow-hidden items-center group">
-                        <img src="images/global/coverbuku.png" width="65%"
-                            class="rounded-lg transition-transform duration-300 group-hover:scale-101 group-hover:-translate-y-1"
+                        <img src="/images/{{ $book->gambar }}"
+                            class="rounded-lg h-52 transition-transform duration-300 group-hover:scale-101 group-hover:-translate-y-1"
                             alt="">
 
                         <div
-                            class="p-6 bg-background flex flex-col w-full h-fit rounded-lg transition-all duration-300
-                group-hover:-translate-y-1">
+                            class="p-6 px-4 bg-background flex flex-col w-full h-fit rounded-lg transition-all duration-300
+                            group-hover:-translate-y-1">
                             <div class="flex flex-col mb-3 ">
-                                <h4 class="font-bold text-text">Seporsi Mie Ayam Sebelum Mati</h4>
-                                <p class="text-secondary">Self Devolopment</p>
+                                <h4 class="font-bold text-text ">{{ str($book->judul)->limit(40) }}</h4>
+                                <p class="text-secondary text-xs">{{ $book->penulis }}</p>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -175,20 +175,21 @@
                                     </span>
                                     <span class="text-sm text-text/80 font-medium ml-2">10/10</span>
                                 </div>
-                                <button class="text-accent font-semibold hover:text-accent/80 transition">
+                                <button
+                                    class="bg-accent p-1 px-2 rounded-xl font-semibold text-background/90 hover:text-background transition">
                                     Pinjam →
                                 </button>
                             </div>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
         </div>
     </section>
 
     <!-- Maps Section -->
-    <section id="maps" class="py-20 bg-primary">
-        <div class="container mx-auto px-4">
+    <section id="maps" class="py-20 bg-primar cont">
+        <div class="container mx-auto ">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-bold text-background mb-4">MAPS</h2>
             </div>

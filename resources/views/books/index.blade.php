@@ -1,81 +1,165 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
-    <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-3xl font-bold text-primary">Koleksi Buku 📖</h2>
-
-            <a href="{{ route('books.create') }}"
-                class="bg-cta text-primary font-bold px-6 py-2 rounded-full hover:bg-yellow-400 transition shadow flex items-center gap-2">
-                + Tambah Buku
+    <!-- Hero Section -->
+    <div class="rounded-2xl p-8 mb-6 shadow-xl bg-gradient-to-br from-secondary to-primary">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-2 drop-shadow-lg text-background">
+                    📚 Koleksi Buku
+                </h1>
+                <p class="text-lg text-background/90">
+                    Kelola dan organisir perpustakaan digital Anda
+                </p>
+            </div>
+            <a href="{{ route('admin.books.create') }}"
+                class="font-bold px-8 py-3 rounded-full bg-primary text-text hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 whitespace-nowrap">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4v16m8-8H4"></path>
+                </svg>
+                Tambah Buku Baru
             </a>
         </div>
+    </div>
 
-        @if ($message = Session::get('success'))
-            <div class="bg-accent/20 border border-accent text-primary p-4 rounded-lg mb-6">
-                ✅ {{ $message }}
+    @if(session('success'))
+        <div class="border-l-4 border-accent bg-accent/10 text-text p-5 rounded-lg mb-6 shadow-md">
+            <div class="flex items-center gap-3">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="font-semibold">{{ session('success') }}</span>
             </div>
-        @endif
+        </div>
+    @endif
 
-        <div class="overflow-x-auto rounded-lg border border-gray-200">
-            <table class="w-full text-left">
-                <thead class="bg-secondary text-white">
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+
+        <div class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-primary to-secondary text-background">
+            <p class="text-sm font-medium mb-1 opacity-90">Total Buku</p>
+            <p class="text-3xl font-bold">{{ $books->total() }}</p>
+        </div>
+
+        <div class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-secondary text-background">
+            <p class="text-sm font-medium mb-1 opacity-90">Total Stok</p>
+            <p class="text-3xl font-bold">{{ $books->sum('stok') }}</p>
+        </div>
+
+        <div class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-accent text-background">
+            <p class="text-sm font-medium mb-1 opacity-90">Favorit</p>
+            <p class="text-3xl font-bold">{{ $books->where('favorite', true)->count() }}</p>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+
+        <div class="p-6 bg-gradient-to-r from-secondary to-primary text-background">
+            <h3 class="text-xl font-bold">Daftar Buku</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
-                        <th class="p-4">Cover</th>
-                        <th class="p-4">Judul & Penulis</th>
-                        <th class="p-4 text-center">Tahun</th>
-                        <th class="p-4 text-center">Stok</th>
-                        <th class="p-4 text-center">Aksi</th>
+                        <th class="p-5 text-left text-xs font-bold text-gray-600 uppercase">Cover</th>
+                        <th class="p-5 text-left text-xs font-bold text-gray-600 uppercase">Informasi</th>
+                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Tahun</th>
+                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Stok</th>
+                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Status</th>
+                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody class="divide-y divide-gray-100">
                     @foreach ($books as $book)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 w-24">
+                        <tr class="hover:bg-gray-50 transition-all duration-200">
+
+                            <td class="p-5 w-32">
                                 @if ($book->gambar)
-                                    <img src="/images/{{ $book->gambar }}" class="w-16 h-24 object-cover rounded shadow-sm">
-                                @else
-                                    <div
-                                        class="w-16 h-24 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
-                                        No Cover</div>
+                                    <img src="/images/{{ $book->gambar }}"
+                                        class="w-20 h-28 object-cover rounded-lg shadow-md"
+                                        alt="{{ $book->judul }}">
                                 @endif
                             </td>
-                            <td class="p-4">
-                                <div class="font-bold text-lg text-primary">{{ $book->judul }}</div>
-                                <div class="text-sm text-gray-500">{{ $book->penulis }}</div>
-                                <div class="text-xs text-gray-400 mt-1">{{ $book->penerbit }}</div>
+
+                            <td class="p-5">
+                                <h4 class="font-bold text-lg text-text">
+                                    {{ $book->judul }}
+                                </h4>
+                                <p class="text-sm text-gray-600">
+                                    {{ $book->penulis }}
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $book->penerbit }}
+                                </p>
                             </td>
-                            <td class="p-4 text-center font-medium">{{ $book->tahun_terbit }}</td>
-                            <td class="p-4 text-center">
-                                <span class="bg-accent/30 text-primary px-3 py-1 rounded-full text-sm font-bold">
-                                    {{ $book->stok }}
-                                </span>`
+
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center justify-center w-16 h-10 rounded-full font-bold shadow-sm bg-gradient-to-br from-primary to-secondary text-background">
+                                    {{ $book->tahun_terbit }}
+                                </span>
                             </td>
-                            <td class="p-4 text-center flex justify-center gap-2">
-                                <a href="{{ route('books.edit', $book->id) }}"
-                                    class="text-secondary hover:text-primary font-semibold text-sm transition">
-                                    ✏️ Edit
+
+                            <td class="p-5 text-center">
+                                @if ($book->stok > 10)
+                                    <span class="px-4 py-2 rounded-full text-sm font-bold bg-green-100 text-green-700">
+                                        {{ $book->stok }}
+                                    </span>
+                                @elseif ($book->stok > 5)
+                                    <span class="px-4 py-2 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700">
+                                        {{ $book->stok }}
+                                    </span>
+                                @else
+                                    <span class="px-4 py-2 rounded-full text-sm font-bold bg-red-100 text-red-700">
+                                        {{ $book->stok }}
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td class="p-5 text-center">
+                                @if ($book->favorite)
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-primary text-text">
+                                        Favorit
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-500">
+                                        Reguler
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td class="p-5 text-center flex justify-center gap-2">
+
+                                <a href="{{ route('admin.books.edit', $book->id) }}"
+                                    class="px-4 py-2 rounded-lg bg-accent text-text text-sm font-medium hover:opacity-90">
+                                    Edit
                                 </a>
 
-                                <span class="text-gray-300">|</span>
-
-                                <form action="{{ route('books.destroy', $book->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin mau menghapus buku {{ $book->judul }}?');">
+                                <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="text-red-500 hover:text-red-700 font-semibold text-sm transition">
-                                        🗑️ Hapus
+                                        class="px-4 py-2 rounded-lg bg-secondary text-white text-sm font-medium hover:opacity-90">
+                                        Hapus
                                     </button>
                                 </form>
+
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-4">
-                {{ $books->links() }}
-            </div>
         </div>
+
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+            {{ $books->links() }}
+        </div>
+
     </div>
 @endsection

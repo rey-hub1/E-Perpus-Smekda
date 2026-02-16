@@ -39,6 +39,10 @@
         <div class="mt-6 text-center text-sm">
             <a href="/" class="text-gray-400 hover:text-primary">Kembali ke Halaman Depan</a>
         </div>
+        <div class="mt-6 text-center text-sm">
+            <span class="text-gray-400">Belum punya akun?</span>
+            <a href="{{ route('register') }}" class="text-primary font-bold hover:underline ml-1">Register di sini</a>
+        </div>
     </div>
 
 </body>

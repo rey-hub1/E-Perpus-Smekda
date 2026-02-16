@@ -12,11 +12,12 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 
 --color-text: #202B13;
---color-background: #FFFCE6;
+--color-background: #f5f3eb;
     --color-primary: #DDA15E;
   --color-secondary: #BC6C25;
   --color-accent: #016B2D;
 }
+
 
 .cont{
     @apply  max-w-[1700px] mx-[4vw] sm:mx-[6vw] md:mx-[7vw] lg:mx-[8vh] 2xl:mx-[9vh] 3xl:mx-auto!

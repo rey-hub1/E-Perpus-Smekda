@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="space-y-8">
@@ -53,10 +53,10 @@
         <div class="bg-white p-6 rounded-xl shadow-lg h-fit">
             <h3 class="font-bold text-primary mb-4 text-lg">Aksi Cepat 🚀</h3>
             <div class="space-y-3">
-                <a href="{{ route('books.create') }}" class="block w-full text-center bg-primary text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow">
+                <a href="{{ route('admin.books.create') }}" class="block w-full text-center bg-primary text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow">
                     + Tambah Buku Baru
                 </a>
-                <a href="{{ route('books.index') }}" class="block w-full text-center border-2 border-primary text-primary py-3 rounded-lg font-bold hover:bg-primary hover:text-white transition">
+                <a href="{{ route('admin.books.index') }}" class="block w-full text-center border-2 border-primary text-primary py-3 rounded-lg font-bold hover:bg-primary hover:text-white transition">
                     Kelola Data Buku
                 </a>
                 <a href="{{ route('admin.transactions') }}" class="block w-full text-center border-2 border-cta text-yellow-700 py-3 rounded-lg font-bold hover:bg-cta transition">
