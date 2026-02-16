@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+    <form action="{{ route('admin.books.update', $book->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
         @csrf
         @method('PUT') <div>
             <label class="block text-primary font-semibold mb-2">Judul Buku</label>
