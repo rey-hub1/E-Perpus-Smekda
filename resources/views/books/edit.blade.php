@@ -23,6 +23,18 @@
             <label class="block text-primary font-semibold mb-2">Judul Buku</label>
             <input type="text" name="judul" value="{{ old('judul', $book->judul) }}" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition">
         </div>
+        
+        <div class="flex flex-col w-full">
+            <label for="category_id" class="block text-primary font-semibold mb-2">Kategori</label>
+            <select name="category_id" class="bg-gray-50 rounded-lg p-2 px-3 mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent transition">
+                <option value="">-- Pilih Kategori --</option>
+                @foreach ($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ old('category_id', $book->category_id) == $cat->id ? 'selected' : '' }}>
+                        {{ $cat->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>

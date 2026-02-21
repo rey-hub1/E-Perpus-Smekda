@@ -31,12 +31,12 @@
             <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-hide pt-6">
                 @foreach ($NewBook as $NB)
                     <a href="{{ route('book.show', $NB->slug) }}" class="group shrink-0 group">
-                        <div class="book-card relative w-[380px] h-[250px] rounded-2xl overflow-hidden shadow-lg hover:scale-101 transition-all duration-300 "
+                        <div class="book-card relative w-[380px] h-[240px] rounded-2xl overflow-hidden shadow-lg  transition-all duration-300 "
                             style="background: linear-gradient(135deg, #334155 0%, #1e293b 100%);">
 
                             <!-- Book Cover Card - Positioned on the left -->
                             <div
-                                class="absolute left-6 top-1/2 transition-all duration-300 group-hover:scale-103 -translate-y-1/2 w-[140px] h-[200px] bg-gradient-to-br from-blue-900 to-blue-700 rounded-xl shadow-2xl overflow-hidden z-10">
+                                class="absolute left-6 top-1/2 transition-all duration-300 group-hover:scale-103 -translate-y-1/2 w-[140px] h-[200px] bg-gradient-to-br from-blue-900 to-blue-700 rounded-r-lg shadow-2xl overflow-hidden z-10">
                                 <!-- Book cover image -->
                                 @if ($NB->gambar)
                                     <img src="/images/{{ $NB->gambar }}" alt="{{ $NB->judul }}"
@@ -52,7 +52,8 @@
                             </div>
 
                             <!-- Content Section -->
-                            <div class="absolute right-0 top-0 w-[220px] h-full flex flex-col justify-center p-6 pl-8">
+                            <div
+                                class="absolute group-hover:translate-x-0.5 transition-all duration-200 right-0 top-0 w-[220px] h-full flex flex-col justify-center p-6 pl-8">
                                 <h3 class="text-white text-2xl font-bold mb-4 leading-tight line-clamp-3">
                                     {{ $NB->judul }}
                                 </h3>
@@ -60,7 +61,7 @@
                                 <div class="space-y-2 text-slate-300 text-sm">
                                     <!-- Author/Category -->
                                     @if (isset($NB->penulis))
-                                        <p class="flex items-center gap-2">
+                                        <p class="flex items-center gap-2 ">
                                             <span class="font-semibold">{{ $NB->penulis }}</span>
                                         </p>
                                     @endif
@@ -118,7 +119,7 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 gap-x-20">
             @forelse ($books as $book)
                 <a href="{{ route('book.show', $book->slug) }}"
                     class="group  overflow-hidden transition duration-300 transform border border-gray-100 flex flex-col h-full ">
@@ -134,73 +135,19 @@
                         @endif
 
                         <span
-                            class="absolute top-2 right-0 bg-background text-primary text-xs font-bold px-2 py-1 rounded rounded-r-none shadow">
+                            class="absolute top-2 right-0 bg-background text-primary text-xs font-bold px-2 py-1 rounded rounded-r-none shadow group-hover:pr-3 transition-all duration-300">
                             Stok: {{ $book->stok }}
                         </span>
                     </div>
 
-                    <div class="p-4 flex flex-col grow">
+                    <div class="mt-4 flex flex-col grow group-hover:-translate-y-0.5 transition duration-200">
                         <h3 class="font-bold text-text text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
                         <p class="text-sm text-text/80 ">{{ $book->penulis }}</p>
                         <p class="text-md text-primary mb-4">{{ $book->category->name }}</p>
                     </div>
                 </a>
 
-                <div id="modal-{{ $book->id }}" class="fixed inset-0 z-50 hidden">
-                    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-                        onclick="closeModal('{{ $book->id }}')"></div>
 
-                    <div
-                        class="relative bg-white w-full max-w-2xl mx-auto mt-20 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up m-4">
-                        <div class="flex flex-col md:flex-row">
-                            <div class="w-full md:w-1/3 bg-gray-100 h-64 md:h-auto">
-                                @if ($book->gambar)
-                                    <img src="/images/{{ $book->gambar }}" class="w-full h-full object-cover">
-                                @endif
-                            </div>
-
-                            <div class="w-full md:w-2/3 p-8 relative">
-                                <button onclick="closeModal('{{ $book->id }}')"
-                                    class="absolute top-4 right-4 text-gray-400 hover:text-red-500">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-
-                                <h2 class="text-2xl font-bold text-primary mb-1">{{ $book->judul }}</h2>
-                                <p class="text-secondary font-medium text-sm mb-4">Karya: {{ $book->penulis }} |
-                                    {{ $book->penerbit }} ({{ $book->tahun_terbit }})</p>
-
-                                <div class="border-t border-gray-100 py-4">
-                                    <h4 class="font-bold text-gray-700 mb-2">Sinopsis:</h4>
-                                    <p class="text-gray-600 text-sm leading-relaxed h-40 overflow-y-auto pr-2">
-                                        {{ $book->deskripsi ?? 'Belum ada sinopsis untuk buku ini.' }}
-                                    </p>
-                                </div>
-
-                                <div class="mt-6 flex justify-end items-center gap-4">
-                                    <span class="text-xs text-gray-500 font-medium">Sisa Stok: {{ $book->stok }}</span>
-
-                                    @if ($book->stok > 0)
-                                        <form action="{{ route('pinjam.buku', $book->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit"
-                                                class="bg-cta text-primary font-bold px-6 py-2 rounded-lg hover:bg-yellow-400 transition shadow-lg flex items-center gap-2">
-                                                <span>📚</span> Pinjam Sekarang
-                                            </button>
-                                        </form>
-                                    @else
-                                        <button disabled
-                                            class="bg-gray-300 text-gray-500 font-bold px-6 py-2 rounded-lg cursor-not-allowed">
-                                            Stok Habis
-                                        </button>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             @empty
                 <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">

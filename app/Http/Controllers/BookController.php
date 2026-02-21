@@ -67,13 +67,15 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Category::all();
+        return view('books.edit', compact('book', 'categories'));
     }
 
     public function update(Request $request, Book $book)
     {
 
         $rules = [
+            'category_id' => 'required',
             'judul' => 'required',
             'penulis' => 'required',
             'penerbit' => 'required',
@@ -111,6 +113,11 @@ class BookController extends Controller
             unset($input['gambar']);
         }
 
+        // Cek apakah judul berubah, jika ya, update slug
+        if ($request->judul !== $book->judul) {
+            $input['slug'] = Str::slug($request->judul);
+        }
+
         $book->update($input);
 
         return redirect()->route('admin.books.index')->with('success', 'Data buku berhasil diperbarui!');
@@ -135,7 +142,7 @@ class BookController extends Controller
             'favorite' => !$book->favorite
         ]);
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus di favorite kan.');
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus dari daftar favorit.');
     }
 
     // ADMIN
@@ -145,7 +152,7 @@ class BookController extends Controller
             'featured' => !$book->featured
         ]);
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus di featured kan.');
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus dari daftar unggulan.');
     }
 
     public function show(Book $book)

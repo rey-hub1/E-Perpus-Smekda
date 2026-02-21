@@ -48,15 +48,15 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 gap-x-20">
             @forelse ($books as $book)
-                <div
-                    class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border border-gray-100 flex flex-col h-full">
+                <a href="{{ route('book.show', $book->slug) }}"
+                    class="group  overflow-hidden transition duration-300 transform border border-gray-100 flex flex-col h-full ">
 
-                    <div class=" overflow-hidden bg-gray-200 relative group">
+                    <div class="h-88 overflow-hidden bg-black/5 relative rounded-md flex justify-center p-4">
                         @if ($book->gambar)
                             <img src="/images/{{ $book->gambar }}"
-                                class="w-full  object-cover group-hover:scale-105 transition duration-500">
+                                class="h-full object-cover group-hover:scale-104 transition duration-500 rounded-r-2xl">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-400">
                                 No Cover
@@ -64,24 +64,17 @@
                         @endif
 
                         <span
-                            class="absolute top-2 right-0 bg-background text-primary text-xs font-bold px-2 py-1 rounded rounded-r-none shadow">
+                            class="absolute top-2 right-0 bg-background text-primary text-xs font-bold px-2 py-1 rounded rounded-r-none shadow group-hover:pr-3 transition-all duration-300">
                             Stok: {{ $book->stok }}
                         </span>
                     </div>
 
-                    <div class="p-4 flex flex-col grow">
-                        <h3 class="font-bold text-primary text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
-                        <p class="text-sm text-gray-500 mb-4">{{ $book->penulis }}</p>
-
-                        <div class="mt-auto">
-                            <a href="{{ route('book.show', $book->slug) }}"
-                                class="w-full block text-center border-2 border-primary text-primary font-bold py-2 rounded-lg hover:bg-primary hover:text-white transition">
-                                📖 Lihat Detail
-                            </a>
-                        </div>
+                    <div class="mt-4 flex flex-col grow group-hover:-translate-y-0.5 transition duration-200">
+                        <h3 class="font-bold text-text text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
+                        <p class="text-sm text-text/80 ">{{ $book->penulis }}</p>
+                        <p class="text-md text-primary mb-4">{{ $book->category->name }}</p>
                     </div>
-                </div>
-
+                </a>
             @empty
                 <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                     <div class="text-6xl mb-4">🔍</div>

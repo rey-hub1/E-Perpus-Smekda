@@ -14,7 +14,7 @@ Route::get('/', function () {
     $favBook = Book::where('featured', 1)->take(4)->get();
     // dd($favBook);
     return view('landing', compact('favBook'));
-})->name('home');
+})->name('landing');
 
 
 

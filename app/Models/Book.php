@@ -10,6 +10,7 @@ class Book extends Model
 {
 
     protected $fillable = [
+        'category_id',
         'judul',
         'slug',
         'penulis',

@@ -1,38 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="space-y-6">
+    <div class="space-y-8">
 
-        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-cta flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-primary">Riwayat Peminjaman 📚</h1>
-                <p class="text-gray-500 text-sm">Daftar buku yang sedang kamu pinjam dan yang sudah dikembalikan.</p>
+        {{-- Hero Header sama seperti home page --}}
+        <div
+            class="bg-primary text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden">
+
+            <div class="relative z-10 text-center md:text-left">
+                <h1 class="text-3xl font-bold mb-2">Riwayat Peminjaman 📚</h1>
+                <p class="opacity-90">Daftar buku yang sedang kamu pinjam dan yang sudah dikembalikan.</p>
             </div>
 
-            <div class="text-right hidden md:block">
-                <span class="block text-xs text-gray-400 uppercase font-bold tracking-wider">Sedang Dipinjam</span>
-                <span class="text-2xl font-bold text-cta">{{ $transactions->where('status', 'dipinjam')->count() }}
-                    Buku</span>
+            <div class="relative z-10 text-right hidden md:block">
+                <span class="block text-xs text-white/60 uppercase font-bold tracking-wider mb-1">Sedang Dipinjam</span>
+                <span class="text-4xl font-bold text-cta">{{ $transactions->where('status', 'dipinjam')->count() }}</span>
+                <span class="text-white/80 ml-1 text-lg">Buku</span>
             </div>
         </div>
 
         @if (session('success'))
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow animate-fade-in-up">
-                ✅ {{ session('success') }}
+                <p class="font-bold">Berhasil!</p>
+                <p>{{ session('success') }}</p>
             </div>
         @endif
 
         @if (session('error'))
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow animate-fade-in-up">
-                ❌ {{ session('error') }}
+                <p class="font-bold">Gagal!</p>
+                <p>{{ session('error') }}</p>
             </div>
         @endif
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+        <div class="rounded-xl shadow-lg overflow-hidden border border-gray-100 bg-white">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
-                    <thead
-                        class="bg-gray-50 text-gray-600 font-bold text-sm uppercase tracking-wider border-b border-gray-200">
+                    <thead class="text-white text-sm uppercase tracking-wider bg-primary">
                         <tr>
                             <th class="p-4">Buku</th>
                             <th class="p-4">Tanggal Pinjam</th>
@@ -43,20 +47,22 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-sm">
                         @forelse ($transactions as $trx)
-                            <tr class="hover:bg-gray-50 transition">
+                            <tr class="hover:bg-gray-50 transition duration-200">
                                 <td class="p-4">
                                     <div class="flex items-center gap-3">
                                         @if ($trx->book->gambar)
                                             <img src="/images/{{ $trx->book->gambar }}"
-                                                class="w-10 h-14 object-cover rounded shadow-sm border border-gray-200">
+                                                class="h-24 object-cover rounded-r-lg shadow-md border border-gray-200 transition duration-300 hover:scale-105">
                                         @else
                                             <div
-                                                class="w-10 h-14 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-400">
-                                                No Cover</div>
+                                                class="w-10 h-14 rounded flex items-center justify-center text-xs text-white font-bold bg-gradient-to-br from-blue-900 to-blue-700">
+                                                N/A
+                                            </div>
                                         @endif
                                         <div>
-                                            <div class="font-bold text-primary text-base">{{ $trx->book->judul }}</div>
-                                            <div class="text-xs text-gray-400">{{ $trx->book->penulis }}</div>
+                                            <div class="font-bold text-primary text-lg leading-tight">
+                                                {{ $trx->book->judul }}</div>
+                                            <div class="text-sm text-gray-400 mt-0.5">{{ $trx->book->penulis }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -64,6 +70,7 @@
                                 <td class="p-4 text-gray-600">
                                     {{ \Carbon\Carbon::parse($trx->tanggal_pinjam)->translatedFormat('d F Y') }}
                                 </td>
+
                                 <td class="p-4 text-gray-600">
                                     @if ($trx->tanggal_kembali)
                                         {{ \Carbon\Carbon::parse($trx->tanggal_kembali)->translatedFormat('d F Y') }}
@@ -92,8 +99,14 @@
                                             onsubmit="return confirm('Sudah selesai baca buku ini? Yakin mau dikembalikan?');">
                                             @csrf
                                             <button type="submit"
-                                                class="bg-red-500 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-600 transition shadow hover:shadow-md transform hover:-translate-y-0.5">
-                                                ⬅️ Kembalikan
+                                                class="bg-red-500 text-white px-4 py-2 flex items-center gap-2 justify-center mx-auto rounded-lg text-xs font-bold hover:bg-red-600 transition shadow hover:shadow-md transform hover:-translate-y-0.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-arrow-left-icon lucide-arrow-left">
+                                                    <path d="m12 19-7-7 7-7" />
+                                                    <path d="M19 12H5" />
+                                                </svg> Kembalikan
                                             </button>
                                         </form>
                                     @else
@@ -103,12 +116,16 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="p-10 text-center text-gray-500">
-                                    <div class="text-4xl mb-2">📭</div>
-                                    <p>Kamu belum meminjam buku apapun.</p>
-                                    <a href="{{ route('student.home') }}"
-                                        class="text-primary font-bold hover:underline mt-2 inline-block">Mulai Jelajah Buku
-                                        &rarr;</a>
+                                <td colspan="5">
+                                    <div class="text-center py-20">
+                                        <div class="text-6xl mb-4">📭</div>
+                                        <h3 class="text-xl font-bold text-gray-600">Belum ada riwayat peminjaman</h3>
+                                        <p class="text-gray-400 mt-1">Kamu belum meminjam buku apapun.</p>
+                                        <a href="{{ route('student.home') }}"
+                                            class="mt-4 inline-block bg-primary text-white font-bold px-6 py-2 rounded-lg hover:opacity-90 transition shadow">
+                                            Mulai Jelajah Buku &rarr;
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -116,5 +133,24 @@
                 </table>
             </div>
         </div>
+
     </div>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+    </style>
 @endsection

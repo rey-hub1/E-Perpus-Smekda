@@ -14,7 +14,7 @@
     <nav class="w-64 flex flex-col shadow-xl border-r border-primary/20 bg-background">
 
         <!-- Logo Section - Sticky di atas -->
-        <div class="sticky top-0 z-10 p-6 shadow-md bg-primary">
+        <a href="{{ route('landing') }}" class="sticky top-0 z-10 p-6 shadow-md bg-primary">
             <div class="flex flex-col items-center gap-3">
                 <!-- Logo Image -->
                 <img src="/images/global/perpus_smekda.png" class="w-32 drop-shadow-lg" alt="Perpus SMEKDA">
@@ -25,7 +25,7 @@
                     <p class="text-xs text-background/80">Perpustakaan Digital</p>
                 </div>
             </div>
-        </div>
+        </a>
 
         <!-- Navigation Links - Scrollable -->
         <div class="flex-1 overflow-y-auto">
