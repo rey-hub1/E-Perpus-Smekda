@@ -11,14 +11,12 @@ use App\Models\Book;
 
 // 1. Halaman Depan (Landing Page)
 Route::get('/', function () {
-    $favBook = Book::where('favorite', 1)->get();
+    $favBook = Book::where('featured', 1)->take(4)->get();
     // dd($favBook);
     return view('landing', compact('favBook'));
 })->name('home');
 
-Route::get('/welkom', function () {
-    return view('welcome');
-});
+
 
 // 2. Route Login & Logout (Hanya bisa diakses tamu)
 Route::middleware('guest')->group(function () {
@@ -43,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/pinjam/{bookId}', [TransactionController::class, 'pinjam'])->name('pinjam.buku');
     Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');
+    Route::post('books/{book}/favorite', [BookController::class, 'favorite'])->name('books.favorite');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -65,5 +64,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
-    Route::post('books/{book}/favorite', [BookController::class, 'favorite'])->name('books.favorite');
+    Route::post('books/{book}/featured', [BookController::class, 'featured'])->name('books.featured');
 });

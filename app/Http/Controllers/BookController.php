@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,8 @@ class BookController extends Controller
     // 2. Menampilkan Form Tambah Buku
     public function create()
     {
-        return view('books.create');
+        $categories = Category::all();
+        return view('books.create', compact('categories'));
     }
 
     // 3. Proses Simpan Buku ke Database
@@ -27,6 +29,7 @@ class BookController extends Controller
     {
         // 1. Definisikan Aturan (Rules)
         $rules = [
+            'category_id' => 'required',
             'judul' => 'required',
             'penulis' => 'required',
             'penerbit' => 'required',
@@ -56,8 +59,7 @@ class BookController extends Controller
             $input['gambar'] = $imageName;
         }
 
-        $input['slug'] = Str::slug($request->title);
-
+        $input['slug'] = Str::slug($request->judul);
         Book::create($input);
 
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil ditambahkan!');
@@ -134,6 +136,16 @@ class BookController extends Controller
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus di favorite kan.');
+    }
+
+    // ADMIN
+    public function featured(Book $book)
+    {
+        $book->update([
+            'featured' => !$book->featured
+        ]);
+
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus di featured kan.');
     }
 
     public function show(Book $book)

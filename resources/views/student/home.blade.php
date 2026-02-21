@@ -30,7 +30,7 @@
 
             <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-hide pt-6">
                 @foreach ($NewBook as $NB)
-                    <a href="" class="group shrink-0 group">
+                    <a href="{{ route('book.show', $NB->slug) }}" class="group shrink-0 group">
                         <div class="book-card relative w-[380px] h-[250px] rounded-2xl overflow-hidden shadow-lg hover:scale-101 transition-all duration-300 "
                             style="background: linear-gradient(135deg, #334155 0%, #1e293b 100%);">
 
@@ -120,13 +120,13 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-20">
             @forelse ($books as $book)
-                <div
-                    class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border border-gray-100 flex flex-col h-full">
+                <a href="{{ route('book.show', $book->slug) }}"
+                    class="group  overflow-hidden transition duration-300 transform border border-gray-100 flex flex-col h-full ">
 
-                    <div class="h-88 overflow-hidden bg-gray-200 relative group">
+                    <div class="h-88 overflow-hidden bg-black/5 relative rounded-md flex justify-center p-4">
                         @if ($book->gambar)
                             <img src="/images/{{ $book->gambar }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                class="h-full object-cover group-hover:scale-104 transition duration-500 rounded-r-2xl">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-400">
                                 No Cover
@@ -140,17 +140,11 @@
                     </div>
 
                     <div class="p-4 flex flex-col grow">
-                        <h3 class="font-bold text-primary text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
-                        <p class="text-sm text-gray-500 mb-4">{{ $book->penulis }}</p>
-
-                        <div class="mt-auto">
-                            <button onclick="openModal('{{ $book->id }}')"
-                                class="w-full block text-center border-2 border-primary text-primary font-bold py-2 rounded-lg hover:bg-primary hover:text-white transition">
-                                📖 Lihat Detail
-                            </button>
-                        </div>
+                        <h3 class="font-bold text-text text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
+                        <p class="text-sm text-text/80 ">{{ $book->penulis }}</p>
+                        <p class="text-md text-primary mb-4">{{ $book->category->name }}</p>
                     </div>
-                </div>
+                </a>
 
                 <div id="modal-{{ $book->id }}" class="fixed inset-0 z-50 hidden">
                     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"

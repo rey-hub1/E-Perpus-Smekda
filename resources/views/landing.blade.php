@@ -124,9 +124,9 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ($favBook as $book)
-                    <div class="flex flex-col gap-5 pt-3 overflow-hidden items-center group">
+                    <a href="{{ route('book.show', $book->slug) }}" class="flex flex-col gap-5 pt-3 overflow-hidden items-center group">
                         <img src="/images/{{ $book->gambar }}"
-                            class="rounded-lg h-52 transition-transform duration-300 group-hover:scale-101 group-hover:-translate-y-1"
+                            class="rounded-lg h-82 transition-transform duration-300 group-hover:scale-101 group-hover:-translate-y-1"
                             alt="">
 
                         <div
@@ -181,7 +181,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </div>

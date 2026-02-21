@@ -15,15 +15,14 @@
             <a href="{{ route('admin.books.create') }}"
                 class="font-bold px-8 py-3 rounded-full bg-primary text-text hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 whitespace-nowrap">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4v16m8-8H4"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
                 Tambah Buku Baru
             </a>
         </div>
     </div>
 
-    @if(session('success'))
+    @if (session('success'))
         <div class="border-l-4 border-accent bg-accent/10 text-text p-5 rounded-lg mb-6 shadow-md">
             <div class="flex items-center gap-3">
                 <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,7 +37,8 @@
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 
-        <div class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-primary to-secondary text-background">
+        <div
+            class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-primary to-secondary text-background">
             <p class="text-sm font-medium mb-1 opacity-90">Total Buku</p>
             <p class="text-3xl font-bold">{{ $books->total() }}</p>
         </div>
@@ -82,8 +82,7 @@
                             <td class="p-5 w-32">
                                 @if ($book->gambar)
                                     <img src="/images/{{ $book->gambar }}"
-                                        class="w-20 h-28 object-cover rounded-lg shadow-md"
-                                        alt="{{ $book->judul }}">
+                                        class="w-20 h-28 object-cover rounded-lg shadow-md" alt="{{ $book->judul }}">
                                 @endif
                             </td>
 
@@ -100,7 +99,8 @@
                             </td>
 
                             <td class="p-5 text-center">
-                                <span class="inline-flex items-center justify-center w-16 h-10 rounded-full font-bold shadow-sm bg-gradient-to-br from-primary to-secondary text-background">
+                                <span
+                                    class="inline-flex items-center justify-center w-16 h-10 rounded-full font-bold shadow-sm bg-gradient-to-br from-primary to-secondary text-background">
                                     {{ $book->tahun_terbit }}
                                 </span>
                             </td>
@@ -133,21 +133,47 @@
                                 @endif
                             </td>
 
-                            <td class="p-5 text-center flex justify-center gap-2">
+                            <td class="p-5 text-center  justify-center gap-2 h-full my-auto">
+                                <div class="flex gap-2">
+                                    <form action="{{ route('admin.books.featured', $book->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-4 py-2 rounded-lg  text-white text-sm font-medium hover:opacity-90">
+                                            @if ($book->featured)
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-star-icon lucide-star fill-yellow-500 stroke-yellow-500">
+                                                    <path
+                                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+                                                </svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-star-icon lucide-star  stroke-text">
+                                                    <path
+                                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+                                                </svg>
+                                            @endif
+                                        </button>
 
-                                <a href="{{ route('admin.books.edit', $book->id) }}"
-                                    class="px-4 py-2 rounded-lg bg-accent text-text text-sm font-medium hover:opacity-90">
-                                    Edit
-                                </a>
+                                    </form>
+                                    <a href="{{ route('admin.books.edit', $book->id) }}"
+                                        class="px-4 py-2 rounded-lg bg-accent text-background text-sm font-medium hover:opacity-90">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST"
+                                        onsubmit="return confirm('Anda yakin mau menghapus buku ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="px-4 py-2 rounded-lg bg-secondary text-white text-sm font-medium hover:opacity-90">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
 
-                                <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="px-4 py-2 rounded-lg bg-secondary text-white text-sm font-medium hover:opacity-90">
-                                        Hapus
-                                    </button>
-                                </form>
 
                             </td>
 

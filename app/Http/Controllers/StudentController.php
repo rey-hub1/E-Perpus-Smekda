@@ -14,6 +14,8 @@ class StudentController extends Controller
         $query = Book::query();
         $NewBook = Book::latest()->take(4)->get();
 
+        $query->with('category');
+
         // 2. Cek apakah ada pencarian?
         if ($request->has('search')) {
             $keyword = $request->search;

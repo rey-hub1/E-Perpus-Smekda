@@ -11,10 +11,10 @@
 <body class="flex h-screen overflow-hidden bg-background">
 
     <!-- Sidebar Navigation -->
-    <nav class="w-64 flex flex-col shadow-xl border-r border-primary/20 bg-white">
+    <nav class="w-64 flex flex-col shadow-xl border-r border-primary/20 bg-background">
 
         <!-- Logo Section - Sticky di atas -->
-        <div class="sticky top-0 z-10 p-6 shadow-md bg-gradient-to-br from-secondary to-primary">
+        <div class="sticky top-0 z-10 p-6 shadow-md bg-primary">
             <div class="flex flex-col items-center gap-3">
                 <!-- Logo Image -->
                 <img src="/images/global/perpus_smekda.png" class="w-32 drop-shadow-lg" alt="Perpus SMEKDA">
@@ -92,7 +92,7 @@
         </div>
 
         <!-- Footer Copyright - Sticky di bawah -->
-        <div class="sticky bottom-0 p-4 border-t border-primary/20 bg-white text-center">
+        <div class="sticky bottom-0 p-4 border-t border-primary/20  text-center">
             <p class="text-xs font-medium text-text/60">© 2024 SMEKDA Library</p>
             <p class="text-xs mt-1 text-text/40">All Rights Reserved</p>
         </div>
