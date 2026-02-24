@@ -39,7 +39,7 @@
                                 class="absolute left-6 top-1/2 transition-all duration-300 group-hover:scale-103 -translate-y-1/2 w-[140px] h-[200px] bg-gradient-to-br from-blue-900 to-blue-700 rounded-r-lg shadow-2xl overflow-hidden z-10">
                                 <!-- Book cover image -->
                                 @if ($NB->gambar)
-                                    <img src="/images/{{ $NB->gambar }}" alt="{{ $NB->judul }}"
+                                    <img src="{{ $NB->cover_url }}" alt="{{ $NB->judul }}"
                                         class="book-cover w-full h-full object-cover" crossorigin="anonymous">
                                 @else
                                     <div
@@ -126,7 +126,7 @@
 
                     <div class="h-88 overflow-hidden bg-black/5 relative rounded-md flex justify-center p-4">
                         @if ($book->gambar)
-                            <img src="/images/{{ $book->gambar }}"
+                            <img src="{{ $book->cover_url }}"
                                 class="h-full object-cover group-hover:scale-104 transition duration-500 rounded-r-2xl">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-400">

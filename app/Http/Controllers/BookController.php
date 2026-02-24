@@ -54,9 +54,7 @@ class BookController extends Controller
 
         // Cek kalau ada upload gambar
         if ($request->hasFile('gambar')) {
-            $imageName = time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('images'), $imageName);
-            $input['gambar'] = $imageName;
+            $input['gambar'] = $request->file('gambar')->store('images', 'public');
         }
 
         $input['slug'] = Str::slug($request->judul);
@@ -100,14 +98,16 @@ class BookController extends Controller
         // Cek kalau user upload gambar baru
         if ($request->hasFile('gambar')) {
             // Hapus gambar lama biar server gak penuh (Opsional)
-            if ($book->gambar && file_exists(public_path('images/' . $book->gambar))) {
-                unlink(public_path('images/' . $book->gambar));
+            if ($book->gambar) {
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($book->gambar)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($book->gambar);
+                } elseif (file_exists(public_path('images/' . $book->gambar))) {
+                    @unlink(public_path('images/' . $book->gambar));
+                }
             }
 
             // Upload gambar baru
-            $imageName = time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('images'), $imageName);
-            $input['gambar'] = $imageName;
+            $input['gambar'] = $request->file('gambar')->store('images', 'public');
         } else {
             // Kalau gak upload gambar baru, pake gambar lama
             unset($input['gambar']);
@@ -127,8 +127,12 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         // Hapus file gambarnya juga
-        if ($book->gambar && file_exists(public_path('images/' . $book->gambar))) {
-            unlink(public_path('images/' . $book->gambar));
+        if ($book->gambar) {
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($book->gambar)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($book->gambar);
+            } elseif (file_exists(public_path('images/' . $book->gambar))) {
+                @unlink(public_path('images/' . $book->gambar));
+            }
         }
 
         $book->delete();

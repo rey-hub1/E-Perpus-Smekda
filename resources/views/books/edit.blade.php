@@ -73,7 +73,7 @@
             @if($book->gambar)
                 <div class="w-24 text-center">
                     <p class="text-xs text-gray-500 mb-1">Cover Saat Ini:</p>
-                    <img src="/images/{{ $book->gambar }}" class="w-full h-auto rounded shadow">
+                    <img src="{{ $book->cover_url }}" class="w-full h-auto rounded shadow">
                 </div>
             @endif
         </div>

@@ -81,7 +81,7 @@
 
                             <td class="p-5 w-32">
                                 @if ($book->gambar)
-                                    <img src="/images/{{ $book->gambar }}"
+                                    <img src="{{ $book->cover_url }}"
                                         class="w-20 h-28 object-cover rounded-lg shadow-md" alt="{{ $book->judul }}">
                                 @endif
                             </td>

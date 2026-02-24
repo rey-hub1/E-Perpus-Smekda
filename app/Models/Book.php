@@ -32,4 +32,17 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getCoverUrlAttribute()
+    {
+        if ($this->gambar) {
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($this->gambar)) {
+                return asset('storage/' . $this->gambar);
+            }
+            if (file_exists(public_path('images/' . $this->gambar))) {
+                return asset('images/' . $this->gambar);
+            }
+        }
+        return null;
+    }
 }

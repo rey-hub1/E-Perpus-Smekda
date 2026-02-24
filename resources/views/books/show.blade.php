@@ -17,7 +17,7 @@
                         class="md:col-span-2 p-8 book-card transition-all duration-500 bg-gradient-to-br from-primary to-secondary">
                         <div class="relative group">
                             @if ($book->gambar)
-                                <img src="/images/{{ $book->gambar }}" alt="{{ $book->judul }}"
+                                <img src="{{ $book->cover_url }}" alt="{{ $book->judul }}"
                                     class="book-cover w-full h-auto rounded-lg shadow-2xl object-cover  transition-transform group-hover:scale-103"
                                     crossorigin="anonymous">
                             @else

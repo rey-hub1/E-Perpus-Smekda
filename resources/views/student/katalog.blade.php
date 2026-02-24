@@ -55,7 +55,7 @@
 
                     <div class="h-88 overflow-hidden bg-black/5 relative rounded-md flex justify-center p-4">
                         @if ($book->gambar)
-                            <img src="/images/{{ $book->gambar }}"
+                            <img src="{{ $book->cover_url }}"
                                 class="h-full object-cover group-hover:scale-104 transition duration-500 rounded-r-2xl">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-400">

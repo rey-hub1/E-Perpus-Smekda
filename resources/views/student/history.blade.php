@@ -51,7 +51,7 @@
                                 <td class="p-4">
                                     <div class="flex items-center gap-3">
                                         @if ($trx->book->gambar)
-                                            <img src="/images/{{ $trx->book->gambar }}"
+                                            <img src="{{ $trx->book->cover_url }}"
                                                 class="h-24 object-cover rounded-r-lg shadow-md border border-gray-200 transition duration-300 hover:scale-105">
                                         @else
                                             <div
