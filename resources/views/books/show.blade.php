@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', $book->judul)
+
 @section('content')
     <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 bg-background">
         <div class="mx-auto">

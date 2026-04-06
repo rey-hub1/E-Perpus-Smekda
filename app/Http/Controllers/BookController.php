@@ -6,14 +6,23 @@ use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class BookController extends Controller
 {
     // 1. Menampilkan semua buku
-    public function index()
+    public function index(Request $request)
     {
+        $query = Book::query();
 
-        $books = Book::latest()->paginate(10); // Ambil semua data buku
+        if ($request->has('search')) {
+            $keyword = $request->search;
+            $query->where('judul', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('penulis', 'LIKE', '%' . $keyword . '%');
+        }
+
+        $books = $query->latest()->paginate(10);
         return view('books.index', compact('books'));
     }
 
@@ -52,12 +61,43 @@ class BookController extends Controller
 
         $input = $request->all();
 
-        // Cek kalau ada upload gambar
-        if ($request->hasFile('gambar')) {
-            $input['gambar'] = $request->file('gambar')->store('images', 'public');
+        // 3. Generate Unique Slug (Issue 7)
+        $slug = Str::slug($request->judul);
+        $originalSlug = $slug;
+        $count = 1;
+        while (Book::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+        $input['slug'] = $slug;
+
+        // Cek jika ada gambar hasil crop (Base64)
+        if ($request->filled('cropped_image')) {
+            $imageData = $request->input('cropped_image');
+            $filename = time() . '_cropped.jpg';
+            $path = 'images/' . $filename;
+            
+            // Inisialisasi ImageManager untuk memproses base64
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($imageData);
+            
+            // Simpan ke storage
+            $image->save(storage_path('app/public/' . $path));
+            $input['gambar'] = $path;
+        } 
+        // Fallback: Cek kalau ada upload gambar standar (non-JS)
+        else if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->cover(640, 853);
+            
+            $path = 'images/' . $filename;
+            $image->save(storage_path('app/public/' . $path));
+            $input['gambar'] = $path;
         }
 
-        $input['slug'] = Str::slug($request->judul);
         Book::create($input);
 
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil ditambahkan!');
@@ -95,27 +135,59 @@ class BookController extends Controller
 
         $input = $request->all();
 
-        // Cek kalau user upload gambar baru
-        if ($request->hasFile('gambar')) {
-            // Hapus gambar lama biar server gak penuh (Opsional)
+        // Cek jika ada gambar hasil crop baru (Base64)
+        if ($request->filled('cropped_image')) {
+            // Hapus gambar lama
             if ($book->gambar) {
                 if (\Illuminate\Support\Facades\Storage::disk('public')->exists($book->gambar)) {
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($book->gambar);
-                } elseif (file_exists(public_path('images/' . $book->gambar))) {
-                    @unlink(public_path('images/' . $book->gambar));
                 }
             }
 
-            // Upload gambar baru
-            $input['gambar'] = $request->file('gambar')->store('images', 'public');
+            $imageData = $request->input('cropped_image');
+            $filename = time() . '_cropped.jpg';
+            $path = 'images/' . $filename;
+            
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($imageData);
+            $image->save(storage_path('app/public/' . $path));
+            
+            $input['gambar'] = $path;
+        } 
+        // Fallback: Upload & Resize gambar baru via file input
+        else if ($request->hasFile('gambar')) {
+            // Hapus gambar lama
+            if ($book->gambar) {
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($book->gambar)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($book->gambar);
+                }
+            }
+
+            $file = $request->file('gambar');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->cover(640, 853);
+            
+            $path = 'images/' . $filename;
+            $image->save(storage_path('app/public/' . $path));
+            
+            $input['gambar'] = $path;
         } else {
             // Kalau gak upload gambar baru, pake gambar lama
             unset($input['gambar']);
         }
 
-        // Cek apakah judul berubah, jika ya, update slug
+        // Cek apakah judul berubah, jika ya, update slug secara unik
         if ($request->judul !== $book->judul) {
-            $input['slug'] = Str::slug($request->judul);
+            $slug = Str::slug($request->judul);
+            $originalSlug = $slug;
+            $count = 1;
+            while (Book::where('slug', $slug)->where('id', '!=', $book->id)->exists()) {
+                $slug = $originalSlug . '-' . $count++;
+            }
+            $input['slug'] = $slug;
         }
 
         $book->update($input);
@@ -142,11 +214,9 @@ class BookController extends Controller
 
     public function favorite(Book $book)
     {
-        $book->update([
-            'favorite' => !$book->favorite
-        ]);
+        auth()->user()->favoriteBooks()->toggle($book->id);
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus dari daftar favorit.');
+        return redirect()->back()->with('success', 'Daftar favorit berhasil diperbarui!');
     }
 
     // ADMIN

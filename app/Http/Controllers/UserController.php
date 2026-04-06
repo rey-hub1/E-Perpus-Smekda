@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -22,7 +21,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $sedangPinjam = Transaction::where('user_id', $id)->where('status', 'dipunjam')->exists();
+        $sedangPinjam = Transaction::where('user_id', $id)->where('status', 'dipinjam')->exists();
 
         if($sedangPinjam){
             return back()->with('error', 'Maaf tidak bisa menghapus karena siswa ini masih meminjam');

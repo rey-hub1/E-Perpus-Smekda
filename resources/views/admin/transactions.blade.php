@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', 'Transaksi')
+
 @section('content')
     <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-primary">
         <div class="flex justify-between items-center mb-6">
@@ -26,7 +28,8 @@
                         <th class="p-4">No</th>
                         <th class="p-4">Peminjam</th>
                         <th class="p-4">Buku</th>
-                        <th class="p-4">Tgl Pinjam</th>
+                        <th class="p-4">Pinjam & Jatuh Tempo</th>
+                        <th class="p-4 text-center">Denda</th>
                         <th class="p-4 text-center">Status</th>
                         <th class="p-4 text-center">Aksi</th>
                     </tr>
@@ -43,11 +46,24 @@
                                 {{ $trx->book->judul }}
                             </td>
                             <td class="p-4 text-sm">
-                                {{ \Carbon\Carbon::parse($trx->tanggal_pinjam)->format('d M Y') }}
-                                <br>
-                                <span class="text-xs text-gray-400">
-                                    {{ $trx->tanggal_kembali ? 'Kembali: ' . \Carbon\Carbon::parse($trx->tanggal_kembali)->format('d M Y') : 'Belum kembali' }}
-                                </span>
+                                <div class="font-semibold text-gray-700">
+                                    {{ \Carbon\Carbon::parse($trx->tanggal_pinjam)->format('d M Y') }}
+                                </div>
+                                <div class="text-xs text-red-500 font-bold mt-1">
+                                    Jatuh Tempo: {{ $trx->due_date ? \Carbon\Carbon::parse($trx->due_date)->format('d M Y') : '-' }}
+                                </div>
+                                @if($trx->tanggal_kembali)
+                                    <div class="text-xs text-green-600 mt-1">
+                                        Kembali: {{ \Carbon\Carbon::parse($trx->tanggal_kembali)->format('d M Y') }}
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="p-4 text-center">
+                                @if($trx->fine > 0)
+                                    <span class="text-red-600 font-bold text-sm">Rp{{ number_format($trx->fine, 0, ',', '.') }}</span>
+                                @else
+                                    <span class="text-gray-400 text-sm">-</span>
+                                @endif
                             </td>
                             <td class="p-4 text-center">
                                 @if ($trx->status == 'dipinjam')

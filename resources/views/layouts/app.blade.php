@@ -1,28 +1,26 @@
 <!DOCTYPE html>
+@php use Illuminate\Support\Facades\Storage; @endphp
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoRead - Perpustakaan Digital</title>
+    <title>@yield('title', 'GoRead') | GoRead</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="flex h-screen overflow-hidden bg-background">
 
     <!-- Sidebar Navigation -->
-    <nav class="w-64 flex flex-col shadow-xl border-r border-primary/20 bg-background">
+    <nav class="w-64 flex flex-col shadow-sm border-r border-gray-200 bg-white">
 
         <!-- Logo Section - Sticky di atas -->
-        <a href="{{ route('landing') }}" class="sticky top-0 z-10 p-6 shadow-md bg-primary">
-            <div class="flex flex-col items-center gap-3">
-                <!-- Logo Image -->
-                <img src="/images/global/perpus_smekda.png" class="w-32 drop-shadow-lg" alt="Perpus SMEKDA">
-
-                <!-- App Name -->
+        <a href="{{ route('landing') }}" class="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 bg-white">
+            <div class="flex flex-col items-center gap-2">
+                <img src="/images/global/perpus_smekda.png" class="w-24" alt="Perpus SMEKDA">
                 <div class="text-center">
-                    <h1 class="text-xl font-bold text-background">GoRead</h1>
-                    <p class="text-xs text-background/80">Perpustakaan Digital</p>
+                    <h1 class="text-sm font-bold text-gray-800">GoRead</h1>
+                    <p class="text-xs text-gray-400">Perpustakaan Digital</p>
                 </div>
             </div>
         </a>
@@ -70,6 +68,21 @@
                     <span class="font-semibold">Riwayat Pinjam</span>
                 </a>
 
+                <!-- Profil -->
+                <a href="{{ route('profile') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
+                    {{ request()->routeIs('profile') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    @if (auth()->user()->avatar)
+                        <img src="{{ Storage::url(auth()->user()->avatar) }}"
+                             class="w-5 h-5 rounded-full object-cover shrink-0" alt="avatar">
+                    @else
+                        <div class="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                            <span class="text-[10px] font-black text-primary leading-none">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                        </div>
+                    @endif
+                    <span class="font-semibold">Profil</span>
+                </a>
+
                 <!-- Divider -->
                 <div class="my-2 border-t border-primary/20"></div>
 
@@ -92,7 +105,7 @@
         </div>
 
         <!-- Footer Copyright - Sticky di bawah -->
-        <div class="sticky bottom-0 p-4 border-t border-primary/20  text-center">
+        <div class="sticky bottom-0 p-4 border-t border-gray-200 bg-white text-center">
             <p class="text-xs font-medium text-text/60">© 2024 SMEKDA Library</p>
             <p class="text-xs mt-1 text-text/40">All Rights Reserved</p>
         </div>

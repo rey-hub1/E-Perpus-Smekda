@@ -13,45 +13,50 @@ class TransactionController extends Controller
     // Fungsi untuk memproses peminjaman
     public function pinjam(Request $request, $bookId)
     {
-        $user = Auth::user();
-        $book = Book::findOrFail($bookId);
+        return \Illuminate\Support\Facades\DB::transaction(function () use ($bookId) {
+            $user = Auth::user();
+            // Lock the book record for update to prevent race conditions
+            $book = Book::where('id', $bookId)->lockForUpdate()->firstOrFail();
 
-        // 1. Cek Stok Dulu
-        if ($book->stok < 1) {
-            return back()->with('error', 'Yah, stok bukunya habis dipinjam orang lain! 😭');
-        }
+            // 1. Cek Stok Dulu
+            if ($book->stok < 1) {
+                return back()->with('error', 'Yah, stok bukunya habis dipinjam orang lain! 😭');
+            }
 
-        // 2. Cek apakah siswa ini SEDANG meminjam buku yang SAMA (biar gak double)
-        $sedangPinjam = Transaction::where('user_id', $user->id)
-            ->where('book_id', $book->id)
-            ->where('status', 'dipinjam')
-            ->exists();
+            // 2. Cek apakah siswa ini SEDANG meminjam buku yang SAMA (biar gak double)
+            $sedangPinjam = Transaction::where('user_id', $user->id)
+                ->where('book_id', $book->id)
+                ->where('status', 'dipinjam')
+                ->exists();
 
-        if ($sedangPinjam) {
-            return back()->with('error', 'Kamu masih meminjam buku ini, balikin dulu ya sebelum pinjam lagi! 😅');
+            if ($sedangPinjam) {
+                return back()->with('error', 'Kamu masih meminjam buku ini, balikin dulu ya sebelum pinjam lagi! 😅');
             }
 
             // Mencek apakah user minjam buku lebih dari 3
-            $pinjamBerapa = Transaction::where('user_id', Auth::id())->where('status', 'dipinjam')->count();
+            $pinjamBerapa = Transaction::where('user_id', $user->id)
+                ->where('status', 'dipinjam')
+                ->count();
 
-            if ($pinjamBerapa > 3) {
-            return back()->with('error', 'Kamu sudah meminjam 3 buku, balikan dulu baru nanti pinjem lagi ya! 😅');
+            if ($pinjamBerapa >= 3) {
+                return back()->with('error', 'Kamu sudah meminjam 3 buku, balikan dulu baru nanti pinjem lagi ya! 😅');
+            }
 
-        }
+            // 3. Catat Transaksi
+            Transaction::create([
+                'user_id' => $user->id,
+                'book_id' => $book->id,
+                'tanggal_pinjam' => Carbon::now(),
+                'due_date' => Carbon::now()->addDays(7), // Jatuh tempo 7 hari lagi
+                'status' => 'dipinjam',
+            ]);
 
-        // 3. Catat Transaksi
-        Transaction::create([
-            'user_id' => $user->id,
-            'book_id' => $book->id,
-            'tanggal_pinjam' => Carbon::now(), // Tanggal hari ini
-            'status' => 'dipinjam',
-        ]);
+            // 4. Kurangi Stok Buku
+            $book->decrement('stok');
+            $book->increment('read_count');
 
-        // 4. Kurangi Stok Buku
-        $book->decrement('stok');
-        $book->increment('read_count');
-
-        return back()->with('success', 'Asik! Buku berhasil dipinjam. Jangan lupa dibaca ya! 📖');
+            return back()->with('success', 'Asik! Buku berhasil dipinjam. Jangan lupa dibaca ya! 📖');
+        });
     }
     public function history()
     {
@@ -71,14 +76,30 @@ class TransactionController extends Controller
             abort(403);
         };
 
+        $tanggal_kembali = Carbon::now();
+        $denda = 0;
+        $hari_telat = 0;
+
+        if ($transaction->due_date && $tanggal_kembali->gt($transaction->due_date)) {
+            $hari_telat = (int) $tanggal_kembali->diffInDays($transaction->due_date);
+            $denda = $hari_telat * 1000;
+        }
+
         $transaction->update([
             'status' => 'kembali',
-            'tanggal_kembali' => Carbon::now()
+            'tanggal_kembali' => $tanggal_kembali,
+            'fine' => $denda
         ]);
 
         $transaction->book->increment('stok');
 
-        return back()->with('success', 'Terima kasih sudah mengembalikan buku tepat waktu! 👍');
+        if ($denda > 0) {
+            $message = 'Buku dikembalikan terlambat ' . $hari_telat . ' hari. Denda: Rp' . number_format($denda, 0, ',', '.') . ' 💸';
+        } else {
+            $message = 'Terima kasih sudah mengembalikan buku tepat waktu! 👍';
+        }
+
+        return back()->with('success', $message);
     }
     public function indexAdmin()
     {
@@ -99,9 +120,18 @@ class TransactionController extends Controller
             return back()->with('error', 'Buku Ini udah di kembaliin');
         }
 
+        $tanggal_kembali = Carbon::now();
+        $denda = 0;
+
+        if ($transaction->due_date && $tanggal_kembali->gt($transaction->due_date)) {
+            $hari_telat = (int) $tanggal_kembali->diffInDays($transaction->due_date);
+            $denda = $hari_telat * 1000;
+        }
+
         $transaction->update([
             'status' => 'kembali',
-            'tanggal_kembali' => Carbon::now()
+            'tanggal_kembali' => $tanggal_kembali,
+            'fine' => $denda
         ]);
 
         $transaction->book->increment('stok');
@@ -112,18 +142,19 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::findOrFail($id);
 
-
-        if ($transaction->status == 'pinjam') {
-            return back()->with('error', 'Buku Ini udah di kembaliin');
+        if ($transaction->status == 'dipinjam') {
+            return back()->with('error', 'Buku ini masih dipinjam, belum bisa dipinjamkan ulang');
         }
 
         $transaction->update([
             'status' => 'dipinjam',
-            'tanggal_kembali' => null
+            'tanggal_kembali' => null,
+            'fine' => 0,
+            'due_date' => Carbon::now()->addDays(7),
         ]);
 
         $transaction->book->decrement('stok');
 
-        return back()->with('success', 'Buku sudah di kembalikan sama admin');
+        return back()->with('success', 'Buku berhasil dipinjamkan kembali oleh admin');
     }
 }

@@ -1,30 +1,11 @@
 @extends('layouts.app')
 
+@section('title', 'Katalog Buku')
+
 @section('content')
-    <div class="space-y-8">
+    <div class="space-y-6">
 
-        <div
-            class="bg-primary text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden">
-
-            <div class="relative z-10 text-center md:text-left w-full md:w-1/2">
-                <h1 class="text-3xl font-bold mb-2">Halo, {{ Auth::user()->name }}! 👋</h1>
-                <p class="opacity-90">Mau baca buku apa hari ini?</p>
-            </div>
-
-            <div class="relative z-10 w-full md:w-1/2">
-                <form action="{{ route('student.katalog') }}" method="GET" class="flex gap-2">
-                    <input type="text" name="search"
-                        class="w-full text-gray-800 p-3 bg-background rounded-lg focus:outline-none focus:ring-4 focus:ring-accent/50 shadow-inner"
-                        placeholder="Cari judul buku atau penulis..." value="{{ request('search') }}">
-
-                    <button type="submit"
-                        class="bg-cta text-primary font-bold px-6 py-3 rounded-lg bg-background hover:bg-yellow-400 transition shadow-lg">
-                        Cari
-                    </button>
-                </form>
-            </div>
-        </div>
-
+        {{-- Flash Messages --}}
         @if (session('success'))
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow animate-fade-in-up">
                 <p class="font-bold">Berhasil!</p>
@@ -39,52 +20,98 @@
             </div>
         @endif
 
-        @if (request('search'))
-            <div class="flex justify-between items-center px-2">
-                <p class="text-gray-500">Hasil pencarian: <span
-                        class="font-bold text-primary">"{{ request('search') }}"</span></p>
-                <a href="{{ route('student.home') }}" class="text-red-500 text-sm hover:underline font-semibold">Reset
-                    / Tampilkan Semua</a>
+        {{-- Search + Filter --}}
+        <div class="flex items-center gap-3">
+            {{-- Filter Kategori (overflow scroll) --}}
+            <div class="flex gap-2 overflow-x-auto scrollbar-hide flex-nowrap py-1 flex-1">
+                <a href="{{ route('student.katalog', array_filter(['search' => request('search')])) }}"
+                    class="shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition whitespace-nowrap
+                        {{ !request('category') ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary' }}">
+                    Semua
+                </a>
+                @foreach ($categories as $cat)
+                    <a href="{{ route('student.katalog', array_filter(['search' => request('search'), 'category' => $cat->id])) }}"
+                        class="shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition whitespace-nowrap
+                            {{ request('category') == $cat->id ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary' }}">
+                        {{ $cat->name }}
+                    </a>
+                @endforeach
+            </div>
+
+            {{-- Search --}}
+            <form action="{{ route('student.katalog') }}" method="GET" class="shrink-0">
+                @if (request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                <div class="flex rounded-lg overflow-hidden border border-gray-300 shadow-sm focus-within:ring-2 focus-within:ring-primary/40">
+                    <input type="text" name="search"
+                        class="w-52 md:w-64 text-gray-800 px-4 py-2 text-sm focus:outline-none bg-white"
+                        placeholder="Cari judul atau penulis..." value="{{ request('search') }}">
+                    <button type="submit"
+                        class="bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition">
+                        Cari
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {{-- Info pencarian/filter aktif --}}
+        @if (request('search') || request('category'))
+            <div class="flex justify-between items-center px-1">
+                <p class="text-gray-500 text-sm">
+                    Menampilkan
+                    <span class="font-bold text-primary">{{ $books->total() }}</span> buku
+                    @if (request('search'))
+                        untuk pencarian <span class="font-bold text-primary">"{{ request('search') }}"</span>
+                    @endif
+                    @if (request('category'))
+                        @php $activeCat = $categories->firstWhere('id', request('category')); @endphp
+                        @if ($activeCat)
+                            dalam kategori <span class="font-bold text-primary">{{ $activeCat->name }}</span>
+                        @endif
+                    @endif
+                </p>
+                <a href="{{ route('student.katalog') }}" class="text-red-500 text-sm hover:underline font-semibold">
+                    Reset Filter
+                </a>
             </div>
         @endif
 
+        {{-- Grid Buku --}}
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 gap-x-20">
             @forelse ($books as $book)
-                <a href="{{ route('book.show', $book->slug) }}"
-                    class="group  overflow-hidden transition duration-300 transform border border-gray-100 flex flex-col h-full ">
-
-                    <div class="h-88 overflow-hidden bg-black/5 relative rounded-md flex justify-center p-4">
-                        @if ($book->gambar)
-                            <img src="{{ $book->cover_url }}"
-                                class="h-full object-cover group-hover:scale-104 transition duration-500 rounded-r-2xl">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center text-gray-400">
-                                No Cover
-                            </div>
-                        @endif
-
-                        <span
-                            class="absolute top-2 right-0 bg-background text-primary text-xs font-bold px-2 py-1 rounded rounded-r-none shadow group-hover:pr-3 transition-all duration-300">
-                            Stok: {{ $book->stok }}
-                        </span>
-                    </div>
-
-                    <div class="mt-4 flex flex-col grow group-hover:-translate-y-0.5 transition duration-200">
-                        <h3 class="font-bold text-text text-lg leading-tight mb-1 line-clamp-2">{{ $book->judul }}</h3>
-                        <p class="text-sm text-text/80 ">{{ $book->penulis }}</p>
-                        <p class="text-md text-primary mb-4">{{ $book->category->name }}</p>
-                    </div>
-                </a>
+                <x-book-card :book="$book" />
             @empty
                 <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                     <div class="text-6xl mb-4">🔍</div>
                     <h3 class="text-xl font-bold text-gray-600">Buku tidak ditemukan</h3>
-                    <p class="text-gray-400">Coba cari dengan kata kunci lain.</p>
+                    <p class="text-gray-400">Coba kata kunci lain atau pilih kategori berbeda.</p>
+                    <a href="{{ route('student.katalog') }}"
+                        class="mt-4 inline-block text-primary font-semibold hover:underline text-sm">
+                        Tampilkan semua buku &rarr;
+                    </a>
                 </div>
             @endforelse
-            <div class="mt-8">
-                {{ $books->withQueryString()->links() }}
-            </div>
         </div>
+
+        {{-- Pagination --}}
+        @if ($books->hasPages())
+            <div class="mt-4">
+                {{ $books->links() }}
+            </div>
+        @endif
+
     </div>
+
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 @endsection

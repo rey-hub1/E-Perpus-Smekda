@@ -22,6 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'avatar',
+        'kelas',
+        'phone',
     ];
 
     /**
@@ -50,5 +54,10 @@ class User extends Authenticatable
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function favoriteBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_user')->withTimestamps();
     }
 }

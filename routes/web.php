@@ -7,13 +7,18 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Book;
 
 // 1. Halaman Depan (Landing Page)
 Route::get('/', function () {
-    $favBook = Book::where('featured', 1)->take(4)->get();
-    // dd($favBook);
-    return view('landing', compact('favBook'));
+    $favBook = Book::where('featured', 1)->take(5)->get();
+    $popularBooks = Book::withCount('transactions')
+        ->orderByDesc('transactions_count')
+        ->orderByDesc('read_count')
+        ->take(6)
+        ->get();
+    return view('landing', compact('favBook', 'popularBooks'));
 })->name('landing');
 
 
@@ -28,6 +33,8 @@ Route::middleware('guest')->group(function () {
 });
 
 
+use App\Http\Controllers\CategoryController;
+
 // 3. Route Khusus Admin (Wajib Login & Wajib Admin)
 Route::middleware(['auth'])->group(function () {
 
@@ -38,6 +45,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('my-books', [TransactionController::class, 'history'])->name('student.history');
     Route::get('book/{book:slug}', [BookController::class, 'show'])->name('book.show');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     Route::post('/pinjam/{bookId}', [TransactionController::class, 'pinjam'])->name('pinjam.buku');
     Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');
@@ -65,4 +76,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::post('books/{book}/featured', [BookController::class, 'featured'])->name('books.featured');
+
+    // CRUD Kategori
+    Route::resource('categories', CategoryController::class);
 });

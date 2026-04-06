@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', 'Anggota')
+
 @section('content')
     <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary">
         <div class="flex justify-between items-center mb-6">
