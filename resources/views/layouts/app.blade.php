@@ -54,6 +54,18 @@
                     <span class="font-semibold">Katalog Buku</span>
                 </a>
 
+                <!-- Library -->
+                <a href="{{ route('library') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
+                    {{ request()->routeIs('library') ? 'bg-primary text-background shadow-md' : 'text-text hover:shadow-sm' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+                        <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
+                    </svg>
+                    <span class="font-semibold">Library</span>
+                </a>
+
                 <!-- Riwayat Pinjam -->
                 <a href="{{ route('student.history') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:scale-105
@@ -113,7 +125,7 @@
 
     <!-- Main Content Area - Scrollable -->
     <main class="flex-1 overflow-y-auto h-screen">
-        <div class="px-8 py-6">
+        <div class="py-6 @yield('content-padding', 'px-8')">
             @yield('content')
         </div>
     </main>

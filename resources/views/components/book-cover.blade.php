@@ -9,9 +9,12 @@
         transform-style: preserve-3d;
         transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         transform-origin: left center;
+        /* Serong sedikit banget sebelum di hover */
+        transform: rotateY(-2deg);
     }
     .group:hover .book-3d {
-        transform: rotateY(-15deg) rotateX(2deg) scale(1.05) translateX(-5px);
+        /* Saat dihover serongnya juga tidak terlalu ekstrem */
+        transform: rotateY(-8deg) scale(1.02) translateX(-2px);
     }
     .book-pages {
         position: absolute;
@@ -22,7 +25,7 @@
         transform: translateZ(-5px) translateX(0);
         box-shadow: inset 4px 0 10px rgba(0,0,0,0.05);
         transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        opacity: 0;
+        opacity: 1; /* Always show slightly */
         z-index: -1;
     }
     .book-pages::before {
@@ -34,22 +37,22 @@
     .book-back {
         position: absolute;
         inset: 0;
-        background: linear-gradient(160deg, #374151 0%, #1f2937 100%);
+        /* Ganti dengan plain color (putih bersih dengan border) */
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 2px 10px 10px 2px;
-        transform: translateZ(-10px) translateX(0);
-        box-shadow: 3px 3px 8px rgba(0,0,0,0.08);
+        transform: translateZ(-8px) translateX(0);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        opacity: 0;
+        opacity: 1; /* Always show slightly */
         z-index: -2;
     }
     .group:hover .book-pages {
-        transform: translateZ(-5px) translateX(6px);
-        opacity: 1;
+        transform: translateZ(-5px) translateX(3px);
     }
     .group:hover .book-back {
-        transform: translateZ(-10px) translateX(9px);
-        box-shadow: 8px 8px 18px rgba(0,0,0,0.18);
-        opacity: 0.85;
+        transform: translateZ(-8px) translateX(5px);
+        box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
     }
 </style>
 @endonce

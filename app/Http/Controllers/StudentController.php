@@ -11,11 +11,9 @@ class StudentController extends Controller
     public function home(Request $request)
     {
 
-        $popularBooks = Book::withCount('transactions')
-            ->orderByDesc('transactions_count')
-            ->orderByDesc('read_count')
+        $popularBooks = Book::where('featured', 1)
             ->with('category')
-            ->take(6)
+            ->take(10)
             ->get();
 
         $query = Book::query()->with('category');

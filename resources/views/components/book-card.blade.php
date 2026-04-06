@@ -12,11 +12,14 @@
         transform-style: preserve-3d;
         transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         transform-origin: left center;
+        /* Serong sedikit banget sebelum di hover */
+        transform: rotateY(-2deg);
     }
 
     /* Hover Effect */
     .group:hover .book-3d {
-        transform: rotateY(-15deg) rotateX(2deg) scale(1.05) translateX(-5px);
+        /* Saat dihover serongnya juga tidak terlalu ekstrem */
+        transform: rotateY(-8deg) scale(1.02) translateX(-2px);
     }
 
     /* White pages on the right edge */
@@ -26,11 +29,11 @@
         background-color: #f3f4f6;
         border: 1px solid #e5e7eb;
         border-radius: 2px 8px 8px 2px;
-        /* Initial state: Perfectly aligned behind cover */
+        /* perfectly aligned behind cover */
         transform: translateZ(-5px) translateX(0);
         box-shadow: inset 4px 0 10px rgba(0,0,0,0.05);
         transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        opacity: 0;
+        opacity: 1; /* Always show slightly */
         z-index: -1;
     }
 
@@ -45,26 +48,26 @@
     /* Back Cover of the book */
     .book-back {
         position: absolute;
-        inset: 0 0 0 0;
-        background: linear-gradient(160deg, #374151 0%, #1f2937 100%);
+        inset: 0;
+        /* Ganti dengan plain color putih dengan border */
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 2px 10px 10px 2px;
-        transform: translateZ(-10px) translateX(0);
-        box-shadow: 3px 3px 8px rgba(0,0,0,0.08);
+        transform: translateZ(-8px) translateX(0);
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        opacity: 0;
+        opacity: 1; /* Always show slightly */
         z-index: -2;
     }
 
     /* Animation on hover: Slide out to the RIGHT */
     .group:hover .book-pages {
-        transform: translateZ(-5px) translateX(6px);
-        opacity: 1;
+        transform: translateZ(-5px) translateX(3px);
     }
 
     .group:hover .book-back {
-        transform: translateZ(-10px) translateX(9px);
-        box-shadow: 8px 8px 18px rgba(0,0,0,0.18);
-        opacity: 0.85;
+        transform: translateZ(-8px) translateX(5px);
+        box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
     }
 </style>
 @endonce
@@ -142,14 +145,8 @@
             <span class="text-[16px] text-gray-700 mr-2">Tersedia:</span>
             @if($book->stok > 0)
                 <span class="flex items-center text-[16px] text-gray-700">
-                    <span class="w-6 h-4 bg-blue-100 mr-2 rounded flex items-center justify-center overflow-hidden border border-gray-200 relative">
-                        <!-- Simplified US Flag via CSS -->
-                        <div class="w-full h-full bg-red-600 flex flex-col justify-between">
-                            <div class="w-full h-[15%] bg-white"></div><div class="w-full h-[15%] bg-white"></div><div class="w-full h-[15%] bg-white"></div>
-                        </div>
-                        <div class="absolute top-0 left-0 w-3 h-2 bg-blue-800"></div>
-                    </span>
-                    Buku ({{ $book->stok }})
+
+                     {{ $book->stok }} Buku
                 </span>
             @else
                 <span class="text-[16px] text-red-500 font-bold">Habis</span>

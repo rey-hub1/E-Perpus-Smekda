@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\UserLibrary;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -21,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'nisn',
         'password',
         'role',
         'avatar',
@@ -59,5 +61,10 @@ class User extends Authenticatable
     public function favoriteBooks()
     {
         return $this->belongsToMany(Book::class, 'book_user')->withTimestamps();
+    }
+
+    public function library(): HasMany
+    {
+        return $this->hasMany(UserLibrary::class);
     }
 }

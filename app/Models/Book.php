@@ -38,6 +38,21 @@ class Book extends Model
         return $this->belongsToMany(User::class, 'book_user')->withTimestamps();
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function libraryEntries(): HasMany
+    {
+        return $this->hasMany(UserLibrary::class);
+    }
+
+    public function getAverageRatingAttribute(): float
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
+    }
+
     public function getCoverUrlAttribute()
     {
         if ($this->gambar) {

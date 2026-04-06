@@ -65,11 +65,20 @@
 
         {{-- Flash messages --}}
         @if (session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2">
+            <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2 mb-4">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                {{ session('error') }}
             </div>
         @endif
 
@@ -123,13 +132,22 @@
                     @error('email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {{-- NISN --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-text/70 mb-1.5">NISN</label>
+                        <input type="text" name="nisn" value="{{ old('nisn', $user->nisn) }}"
+                               placeholder="Contoh: 12345678"
+                               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition @error('nisn') border-red-400 @enderror">
+                        @error('nisn') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                    </div>
+
                     {{-- Kelas --}}
                     <div>
                         <label class="block text-sm font-semibold text-text/70 mb-1.5">Kelas</label>
                         <input type="text" name="kelas" value="{{ old('kelas', $user->kelas) }}"
                                placeholder="Contoh: XII IPA 1"
-                               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition">
+                               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition @error('kelas') border-red-400 @enderror">
                     </div>
 
                     {{-- Phone --}}
@@ -137,7 +155,7 @@
                         <label class="block text-sm font-semibold text-text/70 mb-1.5">No. HP</label>
                         <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
                                placeholder="08xxxxxxxxxx"
-                               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition">
+                               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition @error('phone') border-red-400 @enderror">
                     </div>
                 </div>
 

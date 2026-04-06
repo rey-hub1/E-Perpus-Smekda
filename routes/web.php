@@ -8,7 +8,11 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LibraryController;
 use App\Models\Book;
+use App\Models\User;
+use App\Models\Transaction;
+use App\Models\Category;
 
 // 1. Halaman Depan (Landing Page)
 Route::get('/', function () {
@@ -18,7 +22,13 @@ Route::get('/', function () {
         ->orderByDesc('read_count')
         ->take(6)
         ->get();
-    return view('landing', compact('favBook', 'popularBooks'));
+    $stats = [
+        'buku'      => Book::count(),
+        'siswa'     => User::where('role', 'siswa')->count(),
+        'transaksi' => Transaction::count(),
+        'kategori'  => Category::count(),
+    ];
+    return view('landing', compact('favBook', 'popularBooks', 'stats'));
 })->name('landing');
 
 
@@ -49,6 +59,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    Route::get('/library', [LibraryController::class, 'index'])->name('library');
+    Route::post('/library/{book}', [LibraryController::class, 'store'])->name('library.store');
+    Route::delete('/library/{book}', [LibraryController::class, 'destroy'])->name('library.destroy');
 
     Route::post('/pinjam/{bookId}', [TransactionController::class, 'pinjam'])->name('pinjam.buku');
     Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');

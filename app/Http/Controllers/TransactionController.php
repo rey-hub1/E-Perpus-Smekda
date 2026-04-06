@@ -15,6 +15,12 @@ class TransactionController extends Controller
     {
         return \Illuminate\Support\Facades\DB::transaction(function () use ($bookId) {
             $user = Auth::user();
+
+            // 0. Cek Kelengkapan Profil
+            if (empty($user->nisn) || empty($user->kelas) || empty($user->phone)) {
+                return redirect()->route('profile')->with('error', 'Harap lengkapi profil kamu dulu ya (NISN, Kelas, Nomor HP) sebelum meminjam buku! 🚀');
+            }
+
             // Lock the book record for update to prevent race conditions
             $book = Book::where('id', $bookId)->lockForUpdate()->firstOrFail();
 
