@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/library/{book}', [LibraryController::class, 'store'])->name('library.store');
     Route::delete('/library/{book}', [LibraryController::class, 'destroy'])->name('library.destroy');
 
+    Route::get('/pinjam/{bookId}', [TransactionController::class, 'showJadwal'])->name('pinjam.jadwal');
     Route::post('/pinjam/{bookId}', [TransactionController::class, 'pinjam'])->name('pinjam.buku');
     Route::post('/kembalikan/{id}', [TransactionController::class, 'kembalikan'])->name('buku.kembalikan');
     Route::post('books/{book}/favorite', [BookController::class, 'favorite'])->name('books.favorite');

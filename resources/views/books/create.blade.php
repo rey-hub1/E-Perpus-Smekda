@@ -1,121 +1,146 @@
 @extends('layouts.admin')
 
 @section('title', 'Tambah Buku')
+@section('page-title', 'Tambah Buku Baru')
+@section('page-subtitle', 'Masukkan data buku lengkap')
 
 @section('content')
-    <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg border-t-4 border-cta">
-        <div class="mb-6 pb-4 border-b border-gray-100">
-            <h2 class="text-2xl font-bold text-primary">Tambah Buku Baru</h2>
-            <p class="text-gray-500 text-sm">Masukkan data buku lengkap dengan sinopsisnya.</p>
+<div class="max-w-2xl">
+
+    <!-- Back -->
+    <a href="{{ route('admin.books.index') }}"
+        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-700 mb-6 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        Kembali ke Koleksi
+    </a>
+
+    @if ($errors->any())
+        <div class="bg-red-50 border border-red-100 rounded-xl px-5 py-4 mb-5">
+            <p class="text-sm font-semibold text-primary mb-2">Perbaiki kesalahan berikut:</p>
+            <ul class="space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li class="text-sm text-red-600 flex items-start gap-2">
+                        <span class="mt-0.5 shrink-0">&#8226;</span>{{ $error }}
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-4">
+            <div class="px-6 py-4 border-b border-gray-100">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Informasi Buku</p>
+            </div>
+            <div class="px-6 py-5 space-y-4">
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Judul Buku</label>
+                    <input type="text" name="judul" value="{{ old('judul') }}"
+                        placeholder="Contoh: Laskar Pelangi"
+                        class="w-full border @error('judul') border-primary @else border-gray-200 @enderror rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                    @error('judul')
+                        <p class="text-xs text-primary mt-1.5">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Penulis</label>
+                        <input type="text" name="penulis" value="{{ old('penulis') }}"
+                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Penerbit</label>
+                        <input type="text" name="penerbit" value="{{ old('penerbit') }}"
+                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Tahun Terbit</label>
+                        <input type="number" name="tahun_terbit" value="{{ old('tahun_terbit') }}"
+                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Stok Awal</label>
+                        <input type="number" name="stok" value="{{ old('stok') }}"
+                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Kategori</label>
+                    <select name="category_id"
+                        class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Sinopsis / Deskripsi</label>
+                    <textarea name="deskripsi" rows="4"
+                        placeholder="Ceritakan isi bukunya di sini..."
+                        class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none">{{ old('deskripsi') }}</textarea>
+                </div>
+
+            </div>
         </div>
 
-        @if ($errors->any())
-            <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm" role="alert">
-                <p class="font-bold">Waduh, ada yang kurang pas nih:</p>
-                <ul class="list-disc list-inside text-sm mt-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        <!-- Cover Upload -->
+        <div class="bg-white rounded-xl border @error('gambar') border-primary @else border-gray-200 @enderror overflow-hidden mb-4">
+            <div class="px-6 py-4 border-b border-gray-100">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Cover Buku</p>
             </div>
-        @endif
-
-        <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
-            @csrf
-
-            <div>
-                <label class="block text-primary font-semibold mb-2">Judul Buku</label>
-                <input type="text" name="judul" value="{{ old('judul') }}"
-                    class="w-full border @error('judul') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
-                    placeholder="Contoh: Laskar Pelangi">
-
-                @error('judul')
-                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-primary font-semibold mb-2">Penulis</label>
-                    <input type="text" name="penulis" value="{{ old('penulis') }}"
-                        class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition">
-                </div>
-                <div>
-                    <label class="block text-primary font-semibold mb-2">Penerbit</label>
-                    <input type="text" name="penerbit" value="{{ old('penerbit') }}"
-                        class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-primary font-semibold mb-2">Tahun Terbit</label>
-                    <input type="number" name="tahun_terbit" value="{{ old('tahun_terbit') }}"
-                        class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition">
-                </div>
-                <div>
-                    <label class="block text-primary font-semibold mb-2">Stok Awal</label>
-                    <input type="number" name="stok" value="{{ old('stok') }}"
-                        class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition">
-                </div>
-            </div>
-            <div class="flex flex-col w-full">
-                <label for="category_id" class="block text-primary font-semibold mb-2">Kategori</label>
-                <select name="category_id" class="bg-gray-50 rounded-lg p-2 px-3">
-                    <option value="">-- Pilih Kategori --</option>
-
-                    @foreach ($categories as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                    @endforeach
-
-                </select>
-            </div>
-            <div>
-                <label class="block text-primary font-semibold mb-2">Sinopsis / Deskripsi</label>
-                <textarea name="deskripsi" rows="5"
-                    class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
-                    placeholder="Ceritakan isi bukunya di sini...">{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <div
-                class="p-4 bg-gray-50 rounded-lg border @error('gambar') border-red-500 bg-red-50 @else border-dashed border-gray-300 @enderror">
-                <label class="block text-primary font-semibold mb-2">Upload Cover Buku</label>
+            <div class="px-6 py-5">
                 <input type="file" id="imageInput" accept="image/*"
-                    class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/20 file:text-primary hover:file:bg-accent/40">
-
-                <!-- Hidden Input for Cropped Image -->
+                    class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-200 file:text-sm file:font-medium file:bg-white file:text-gray-600 hover:file:bg-gray-50 transition-all cursor-pointer">
                 <input type="hidden" name="cropped_image" id="croppedImageData">
+                <p class="text-xs text-gray-400 mt-2">Maksimal 5MB. Format: JPG, PNG, JPEG. Rasio cover: 3:4.</p>
 
-                <p class="text-xs text-gray-400 mt-2">*Maksimal ukuran: 5MB. Format: JPG, PNG, JPEG.</p>
-
-                <!-- Cropper Preview Area -->
                 <div id="cropperContainer" class="hidden mt-4">
-                    <p class="text-sm font-bold text-primary mb-2">Sesuaikan Posisi Cover (640x853):</p>
-                    <div class="max-h-[500px] overflow-hidden rounded-lg shadow-inner bg-gray-200">
+                    <p class="text-xs font-semibold text-gray-600 mb-2">Sesuaikan posisi cover:</p>
+                    <div class="max-h-96 overflow-hidden rounded-lg bg-gray-100 border border-gray-200">
                         <img id="imagePreview" src="" alt="Preview" class="max-w-full block">
                     </div>
-                    <div class="mt-3 flex gap-2">
+                    <div class="mt-3 flex items-center gap-3">
                         <button type="button" id="cropButton"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                            class="bg-gray-900 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
                             Potong Gambar
                         </button>
-                        <span id="cropSuccess" class="hidden text-green-600 text-sm font-bold items-center flex">
-                            ✅ Berhasil dipotong!
+                        <span id="cropSuccess" class="hidden text-xs font-semibold text-green-600 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Gambar berhasil dipotong
                         </span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="flex justify-end pt-4" id="formActions">
-                <a href="{{ route('admin.books.index') }}"
-                    class="mr-4 px-6 py-3 text-gray-500 hover:text-gray-700 font-medium">Batal</a>
-                <button type="submit" id="submitBtn"
-                    class="bg-cta text-primary font-bold px-8 py-3 rounded-lg hover:bg-yellow-400 transition shadow-lg transform hover:-translate-y-1">
-                    Simpan Buku
-                </button>
-            </div>
-        </form>
-    </div>
+        <!-- Actions -->
+        <div class="flex items-center gap-3 justify-end">
+            <a href="{{ route('admin.books.index') }}"
+                class="px-5 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
+                Batal
+            </a>
+            <button type="submit" id="submitBtn"
+                class="bg-primary hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
+                Simpan Buku
+            </button>
+        </div>
+
+    </form>
+</div>
 @endsection
 
 @push('scripts')
@@ -127,25 +152,17 @@
             const cropButton = document.getElementById('cropButton');
             const cropSuccess = document.getElementById('cropSuccess');
             const croppedImageData = document.getElementById('croppedImageData');
-            const submitBtn = document.getElementById('submitBtn');
 
             let cropper;
 
             imageInput.addEventListener('change', function(e) {
                 const files = e.target.files;
                 if (files && files.length > 0) {
-                    const file = files[0];
                     const reader = new FileReader();
-
                     reader.onload = function(event) {
                         imagePreview.src = event.target.result;
                         cropperContainer.classList.remove('hidden');
-
-                        if (cropper) {
-                            cropper.destroy();
-                        }
-
-                        // Inisialisasi Cropper.js
+                        if (cropper) cropper.destroy();
                         cropper = new Cropper(imagePreview, {
                             aspectRatio: 640 / 853,
                             viewMode: 1,
@@ -159,47 +176,30 @@
                             cropBoxResizable: true,
                             toggleDragModeOnDblclick: false,
                         });
-                        
                         cropSuccess.classList.add('hidden');
                         croppedImageData.value = '';
                     };
-
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(files[0]);
                 }
             });
 
             cropButton.addEventListener('click', function() {
                 if (cropper) {
-                    const canvas = cropper.getCroppedCanvas({
-                        width: 640,
-                        height: 853,
-                    });
-
-                    // Set value hidden input ke base64
+                    const canvas = cropper.getCroppedCanvas({ width: 640, height: 853 });
                     croppedImageData.value = canvas.toDataURL('image/jpeg', 0.9);
                     cropSuccess.classList.remove('hidden');
                     cropperContainer.classList.add('opacity-50');
-                    
-                    // Kita matikan cropper biar gak kegeser lagi gak sengaja
                     cropper.disable();
                 }
             });
 
-            // Pastikan gambar di-crop sebelum submit jika ada gambar dipilih
             document.querySelector('form').addEventListener('submit', function(e) {
                 if (imageInput.files.length > 0 && !croppedImageData.value) {
                     e.preventDefault();
-                    
-                    // Otomatis crop jika admin lupa klik tombol "Potong Gambar"
                     if (cropper) {
-                        const canvas = cropper.getCroppedCanvas({
-                            width: 640,
-                            height: 853,
-                        });
+                        const canvas = cropper.getCroppedCanvas({ width: 640, height: 853 });
                         croppedImageData.value = canvas.toDataURL('image/jpeg', 0.9);
                         this.submit();
-                    } else {
-                        alert('Silakan pilih gambar dan sesuaikan posisinya dulu ya!');
                     }
                 }
             });

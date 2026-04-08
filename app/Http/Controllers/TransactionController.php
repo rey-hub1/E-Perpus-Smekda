@@ -10,58 +10,102 @@ use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
+    // Halaman jadwal peminjaman
+    public function showJadwal($bookId)
+    {
+        $user = Auth::user();
+
+        if (empty($user->nisn) || empty($user->kelas) || empty($user->phone)) {
+            return redirect()->route('profile')->with('error', 'Harap lengkapi profil kamu dulu (NISN, Kelas, Nomor HP) sebelum meminjam buku.');
+        }
+
+        $book = Book::findOrFail($bookId);
+
+        if ($book->stok < 1) {
+            return redirect()->route('book.show', $book->slug)->with('error', 'Stok buku ini sudah habis.');
+        }
+
+        $sedangPinjam = Transaction::where('user_id', $user->id)
+            ->where('book_id', $book->id)
+            ->where('status', 'dipinjam')
+            ->exists();
+
+        if ($sedangPinjam) {
+            return redirect()->route('book.show', $book->slug)->with('error', 'Kamu masih meminjam buku ini, kembalikan dulu sebelum pinjam lagi.');
+        }
+
+        $pinjamBerapa = Transaction::where('user_id', $user->id)
+            ->where('status', 'dipinjam')
+            ->count();
+
+        if ($pinjamBerapa >= 3) {
+            return redirect()->route('book.show', $book->slug)->with('error', 'Kamu sudah meminjam 3 buku, kembalikan dulu sebelum pinjam lagi.');
+        }
+
+        return view('student.jadwal-pinjam', compact('book'));
+    }
+
     // Fungsi untuk memproses peminjaman
     public function pinjam(Request $request, $bookId)
     {
-        return \Illuminate\Support\Facades\DB::transaction(function () use ($bookId) {
+        $request->validate([
+            'tanggal_ambil' => ['required', 'date', 'after_or_equal:today'],
+        ], [
+            'tanggal_ambil.required' => 'Pilih tanggal pengambilan buku.',
+            'tanggal_ambil.date'     => 'Format tanggal tidak valid.',
+            'tanggal_ambil.after_or_equal' => 'Tanggal pengambilan tidak boleh sebelum hari ini.',
+        ]);
+
+        return \Illuminate\Support\Facades\DB::transaction(function () use ($bookId, $request) {
             $user = Auth::user();
 
-            // 0. Cek Kelengkapan Profil
             if (empty($user->nisn) || empty($user->kelas) || empty($user->phone)) {
-                return redirect()->route('profile')->with('error', 'Harap lengkapi profil kamu dulu ya (NISN, Kelas, Nomor HP) sebelum meminjam buku! 🚀');
+                return redirect()->route('profile')->with('error', 'Harap lengkapi profil kamu dulu (NISN, Kelas, Nomor HP) sebelum meminjam buku.');
             }
 
-            // Lock the book record for update to prevent race conditions
             $book = Book::where('id', $bookId)->lockForUpdate()->firstOrFail();
 
-            // 1. Cek Stok Dulu
             if ($book->stok < 1) {
-                return back()->with('error', 'Yah, stok bukunya habis dipinjam orang lain! 😭');
+                return redirect()->route('book.show', $book->slug)->with('error', 'Stok buku ini sudah habis dipinjam orang lain.');
             }
 
-            // 2. Cek apakah siswa ini SEDANG meminjam buku yang SAMA (biar gak double)
             $sedangPinjam = Transaction::where('user_id', $user->id)
                 ->where('book_id', $book->id)
                 ->where('status', 'dipinjam')
                 ->exists();
 
             if ($sedangPinjam) {
-                return back()->with('error', 'Kamu masih meminjam buku ini, balikin dulu ya sebelum pinjam lagi! 😅');
+                return redirect()->route('book.show', $book->slug)->with('error', 'Kamu masih meminjam buku ini, kembalikan dulu sebelum pinjam lagi.');
             }
 
-            // Mencek apakah user minjam buku lebih dari 3
             $pinjamBerapa = Transaction::where('user_id', $user->id)
                 ->where('status', 'dipinjam')
                 ->count();
 
             if ($pinjamBerapa >= 3) {
-                return back()->with('error', 'Kamu sudah meminjam 3 buku, balikan dulu baru nanti pinjem lagi ya! 😅');
+                return redirect()->route('book.show', $book->slug)->with('error', 'Kamu sudah meminjam 3 buku, kembalikan dulu sebelum pinjam lagi.');
             }
 
-            // 3. Catat Transaksi
+            $tanggalAmbil = Carbon::parse($request->tanggal_ambil);
+            $dueDate      = $tanggalAmbil->copy()->addDays(10);
+
             Transaction::create([
-                'user_id' => $user->id,
-                'book_id' => $book->id,
-                'tanggal_pinjam' => Carbon::now(),
-                'due_date' => Carbon::now()->addDays(7), // Jatuh tempo 7 hari lagi
-                'status' => 'dipinjam',
+                'user_id'       => $user->id,
+                'book_id'       => $book->id,
+                'tanggal_pinjam'=> Carbon::now(),
+                'tanggal_ambil' => $tanggalAmbil,
+                'due_date'      => $dueDate,
+                'status'        => 'dipinjam',
             ]);
 
-            // 4. Kurangi Stok Buku
             $book->decrement('stok');
             $book->increment('read_count');
 
-            return back()->with('success', 'Asik! Buku berhasil dipinjam. Jangan lupa dibaca ya! 📖');
+            $formatAmbil = $tanggalAmbil->translatedFormat('d F Y');
+            $formatDue   = $dueDate->translatedFormat('d F Y');
+
+            return redirect()->route('student.history')
+                ->with('success', "Peminjaman berhasil dijadwalkan! Silahkan ambil buku di perpustakaan pada tanggal {$formatAmbil}. Batas pengembalian: {$formatDue}.");
         });
     }
     public function history()

@@ -77,16 +77,13 @@
                     <!-- Pinjam Button -->
                     <div class="mt-4">
                         @if($book->stok > 0)
-                            <form action="{{ route('pinjam.buku', $book->id) }}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full bg-primary hover:bg-secondary text-white font-bold text-base py-3.5 rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
-                                    </svg>
-                                    Pinjam Buku
-                                </button>
-                            </form>
+                            <a href="{{ route('pinjam.jadwal', $book->id) }}"
+                                class="w-full bg-primary hover:bg-secondary text-white font-bold text-base py-3.5 rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/>
+                                </svg>
+                                Jadwalkan Peminjaman
+                            </a>
                         @else
                             <button disabled
                                 class="w-full bg-gray-200 text-gray-400 font-bold text-base py-3.5 rounded-xl cursor-not-allowed flex items-center justify-center gap-2">
@@ -327,18 +324,18 @@
             perspective: 1000px;
         }
 
-        /* Book wrapper – angled so pages + back are visible */
+        /* Book wrapper – flat by default, tilts on hover */
         .show-book-wrap {
             width: 270px;
             height: 385px;
             position: relative;
             transform-style: preserve-3d;
-            /* Dari awal kelikatan */
-            transform: rotateY(-8deg) rotateX(2deg);
-            transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: rotateY(0deg) rotateX(0deg);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
         }
         .show-book-wrap:hover {
-            transform: rotateY(-12deg) rotateX(3deg) scale(1.02);
+            transform: rotateY(-18deg) rotateX(3deg) scale(1.03) translateY(-4px);
+            filter: drop-shadow(0 16px 20px rgba(0,0,0,0.15));
         }
 
         /* ── Front Cover ── */
@@ -387,10 +384,10 @@
         }
 
         .show-book-wrap:hover .show-pages {
-            transform: translateZ(-5px) translateX(4px);
+            transform: translateZ(-5px) translateX(5px);
         }
         .show-book-wrap:hover .show-back-cover {
-            transform: translateZ(-8px) translateX(6px);
+            transform: translateZ(-8px) translateX(9px);
             box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
         }
     </style>

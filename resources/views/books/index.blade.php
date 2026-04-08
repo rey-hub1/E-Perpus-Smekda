@@ -1,205 +1,177 @@
 @extends('layouts.admin')
 
 @section('title', 'Koleksi Buku')
+@section('page-title', 'Koleksi Buku')
+@section('page-subtitle', 'Kelola dan organisir koleksi perpustakaan')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Koleksi Buku</h1>
-            <p class="text-sm text-gray-500">Kelola dan organisir koleksi perpustakaan</p>
+<div class="space-y-5">
+
+    @if (session('success'))
+        <div class="bg-white border border-gray-200 rounded-xl px-5 py-4 flex items-center gap-3 text-sm">
+            <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <span class="text-gray-700 font-medium">{{ session('success') }}</span>
         </div>
+    @endif
+
+    <!-- Stats -->
+    <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl border border-gray-200 px-5 py-4">
+            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Judul</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $books->total() }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 px-5 py-4">
+            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Stok</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $books->sum('stok') }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 px-5 py-4">
+            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Buku Unggulan</p>
+            <p class="text-2xl font-bold text-primary">{{ \App\Models\Book::where('featured', true)->count() }}</p>
+        </div>
+    </div>
+
+    <!-- Search + Add -->
+    <div class="flex gap-3">
+        <form action="{{ route('admin.books.index') }}" method="GET" class="flex gap-2 flex-1">
+            <div class="relative flex-1">
+                <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Cari judul atau penulis..."
+                    class="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+            </div>
+            <button type="submit" class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                Cari
+            </button>
+            @if(request('search'))
+                <a href="{{ route('admin.books.index') }}" class="px-4 py-2.5 bg-white border border-gray-200 text-gray-500 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                    Reset
+                </a>
+            @endif
+        </form>
         <a href="{{ route('admin.books.create') }}"
-            class="bg-primary text-white font-semibold px-5 py-2 rounded-lg hover:bg-secondary transition flex items-center gap-2 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            class="flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2.5 rounded-lg text-sm hover:bg-red-700 transition-colors shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
             Tambah Buku
         </a>
     </div>
 
-    @if (session('success'))
-        <div class="border-l-4 border-accent bg-accent/10 text-text p-5 rounded-lg mb-6 shadow-md">
-            <div class="flex items-center gap-3">
-                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span class="font-semibold">{{ session('success') }}</span>
-            </div>
-        </div>
-    @endif
-
-    <!-- Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-
-        <div
-            class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-primary to-secondary text-background">
-            <p class="text-sm font-medium mb-1 opacity-90">Total Buku</p>
-            <p class="text-3xl font-bold">{{ $books->total() }}</p>
-        </div>
-
-        <div class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-secondary text-background">
-            <p class="text-sm font-medium mb-1 opacity-90">Total Stok</p>
-            <p class="text-3xl font-bold">{{ $books->sum('stok') }}</p>
-        </div>
-
-        <div class="rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow bg-accent text-background">
-            <p class="text-sm font-medium mb-1 opacity-90">Buku Unggulan</p>
-            <p class="text-3xl font-bold">{{ \App\Models\Book::where('featured', true)->count() }}</p>
-        </div>
-    </div>
-
-    <!-- Search Section -->
-    <div class="mb-6">
-        <form action="{{ route('admin.books.index') }}" method="GET" class="flex gap-2">
-            <div class="relative flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" 
-                    placeholder="Cari judul buku atau penulis..." 
-                    class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all">
-                <svg class="w-6 h-6 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
-            <button type="submit" class="px-8 py-3 bg-secondary text-background rounded-xl font-bold hover:opacity-90 transition-all shadow-md">
-                Cari
-            </button>
-            @if(request('search'))
-                <a href="{{ route('admin.books.index') }}" class="px-6 py-3 bg-gray-100 text-text rounded-xl font-bold hover:bg-gray-200 transition-all flex items-center">
-                    Reset
-                </a>
-            @endif
-        </form>
-    </div>
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-
-        <div class="p-6 bg-gradient-to-r from-secondary to-primary text-background">
-            <h3 class="text-xl font-bold">Daftar Buku</h3>
-        </div>
-
+    <!-- Table -->
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-50 border-b-2 border-gray-200">
-                    <tr>
-                        <th class="p-5 text-left text-xs font-bold text-gray-600 uppercase">Cover</th>
-                        <th class="p-5 text-left text-xs font-bold text-gray-600 uppercase">Informasi</th>
-                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Tahun</th>
-                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Stok</th>
-                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Unggulan</th>
-                        <th class="p-5 text-center text-xs font-bold text-gray-600 uppercase">Aksi</th>
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Cover</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Informasi Buku</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Tahun</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Stok</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Unggulan</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @forelse ($books as $book)
+                        <tr class="hover:bg-gray-50 transition-colors">
 
-                <tbody class="divide-y divide-gray-100">
-                    @foreach ($books as $book)
-                        <tr class="hover:bg-gray-50 transition-all duration-200">
-
-                            <td class="p-5 w-32">
+                            <td class="px-5 py-4 w-24">
                                 @if ($book->gambar)
-                                    <img src="{{ $book->cover_url }}"
-                                        class="w-20 h-28 object-cover rounded-lg shadow-md" alt="{{ $book->judul }}">
-                                @endif
-                            </td>
-
-                            <td class="p-5">
-                                <h4 class="font-bold text-lg text-text">
-                                    {{ $book->judul }}
-                                </h4>
-                                <p class="text-sm text-gray-600">
-                                    {{ $book->penulis }}
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    {{ $book->penerbit }}
-                                </p>
-                            </td>
-
-                            <td class="p-5 text-center">
-                                <span
-                                    class="inline-flex items-center justify-center w-16 h-10 rounded-full font-bold shadow-sm bg-gradient-to-br from-primary to-secondary text-background">
-                                    {{ $book->tahun_terbit }}
-                                </span>
-                            </td>
-
-                            <td class="p-5 text-center">
-                                @if ($book->stok > 10)
-                                    <span class="px-4 py-2 rounded-full text-sm font-bold bg-green-100 text-green-700">
-                                        {{ $book->stok }}
-                                    </span>
-                                @elseif ($book->stok > 5)
-                                    <span class="px-4 py-2 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700">
-                                        {{ $book->stok }}
-                                    </span>
+                                    <img src="{{ $book->cover_url }}" class="w-12 h-16 object-cover rounded-lg border border-gray-100 shadow-sm" alt="{{ $book->judul }}">
                                 @else
-                                    <span class="px-4 py-2 rounded-full text-sm font-bold bg-red-100 text-red-700">
-                                        {{ $book->stok }}
-                                    </span>
+                                    <div class="w-12 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                                        </svg>
+                                    </div>
                                 @endif
                             </td>
 
-                            <td class="p-5 text-center">
-                                @if ($book->featured)
-                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">
-                                        ⭐ Featured
-                                    </span>
+                            <td class="px-5 py-4">
+                                <p class="font-semibold text-gray-900 leading-snug">{{ $book->judul }}</p>
+                                <p class="text-xs text-gray-500 mt-0.5">{{ $book->penulis }}</p>
+                                <p class="text-xs text-gray-400">{{ $book->penerbit }}</p>
+                                @if($book->category)
+                                    <span class="inline-block mt-1.5 text-[10px] font-semibold text-primary bg-red-50 px-2 py-0.5 rounded-full">{{ $book->category->name }}</span>
+                                @endif
+                            </td>
+
+                            <td class="px-5 py-4 text-center">
+                                <span class="text-sm font-medium text-gray-600">{{ $book->tahun_terbit }}</span>
+                            </td>
+
+                            <td class="px-5 py-4 text-center">
+                                @if ($book->stok > 5)
+                                    <span class="inline-block text-xs font-bold text-gray-700 bg-gray-100 px-3 py-1 rounded-full">{{ $book->stok }}</span>
+                                @elseif ($book->stok > 0)
+                                    <span class="inline-block text-xs font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">{{ $book->stok }}</span>
                                 @else
-                                    <span class="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-500">
-                                        Reguler
-                                    </span>
+                                    <span class="inline-block text-xs font-bold text-primary bg-red-50 px-3 py-1 rounded-full">Habis</span>
                                 @endif
                             </td>
 
-                            <td class="p-5 text-center  justify-center gap-2 h-full my-auto">
-                                <div class="flex gap-2">
-                                    <form action="{{ route('admin.books.featured', $book->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="px-4 py-2 rounded-lg  text-white text-sm font-medium hover:opacity-90">
-                                            @if ($book->featured)
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="lucide lucide-star-icon lucide-star fill-yellow-500 stroke-yellow-500">
-                                                    <path
-                                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
-                                                </svg>
-                                            @else
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="lucide lucide-star-icon lucide-star  stroke-text">
-                                                    <path
-                                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
-                                                </svg>
-                                            @endif
-                                        </button>
+                            <td class="px-5 py-4 text-center">
+                                <form action="{{ route('admin.books.featured', $book->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors" title="{{ $book->featured ? 'Hapus dari unggulan' : 'Jadikan unggulan' }}">
+                                        @if ($book->featured)
+                                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                            </svg>
+                                        @else
+                                            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                            </svg>
+                                        @endif
+                                    </button>
+                                </form>
+                            </td>
 
-                                    </form>
+                            <td class="px-5 py-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
                                     <a href="{{ route('admin.books.edit', $book->id) }}"
-                                        class="px-4 py-2 rounded-lg bg-accent text-background text-sm font-medium hover:opacity-90">
+                                        class="text-xs font-semibold text-gray-600 border border-gray-200 bg-white hover:border-gray-300 px-3 py-1.5 rounded-lg transition-colors">
                                         Edit
                                     </a>
                                     <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST"
-                                        onsubmit="return confirm('Anda yakin mau menghapus buku ini?')">
+                                        onsubmit="return confirm('Yakin hapus buku ini? Tindakan tidak dapat dibatalkan.')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="px-4 py-2 rounded-lg bg-secondary text-white text-sm font-medium hover:opacity-90">
+                                            class="text-xs font-semibold text-primary border border-red-100 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
                                             Hapus
                                         </button>
                                     </form>
                                 </div>
-
-
                             </td>
 
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-16 text-center">
+                                <svg class="w-10 h-10 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                                </svg>
+                                <p class="text-sm text-gray-400">Belum ada buku di koleksi.</p>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            {{ $books->links() }}
-        </div>
-
+        @if($books->hasPages())
+            <div class="px-5 py-4 border-t border-gray-100 bg-gray-50">
+                {{ $books->links() }}
+            </div>
+        @endif
     </div>
+
+</div>
 @endsection

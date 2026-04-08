@@ -48,10 +48,10 @@
         z-index: -2;
     }
     .group:hover .book-pages {
-        transform: translateZ(-5px) translateX(3px);
+        transform: translateZ(-5px) translateX(5px);
     }
     .group:hover .book-back {
-        transform: translateZ(-8px) translateX(5px);
+        transform: translateZ(-8px) translateX(9px);
         box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
     }
 </style>
@@ -59,11 +59,11 @@
 
 <a href="{{ route('book.show', $book->slug) }}" class="group block">
     <div class="book-wrapper mx-auto {{ $large ? 'w-[200px] h-[285px] sm:w-[220px] sm:h-[315px] md:w-[240px] md:h-[340px]' : 'w-[140px] h-[200px] sm:w-[150px] sm:h-[215px] md:w-[160px] md:h-[230px]' }}">
-        <div class="book-3d relative w-full h-full rounded-l-[3px] rounded-r-xl shadow-lg">
+        <div class="book-3d relative w-full h-full rounded-l-[3px] rounded-r-lg shadow-lg">
             <div class="book-back"></div>
             <div class="book-pages"></div>
 
-            <div class="absolute inset-0 rounded-l-[3px] rounded-r-xl overflow-hidden z-10 bg-gray-300">
+            <div class="absolute inset-0 rounded-l-[3px] rounded-r-lg overflow-hidden z-10 bg-gray-300">
                 @if ($book->gambar)
                     <img src="{{ $book->cover_url }}" class="w-full h-full object-cover" alt="{{ $book->judul }}">
                 @else
@@ -72,10 +72,16 @@
                     </div>
                 @endif
 
-                <div class="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/30 to-transparent pointer-events-none"></div>
-                <div class="absolute inset-y-0 left-0 w-[1.5px] bg-white/20 pointer-events-none"></div>
-                <div class="absolute inset-y-0 left-[4px] w-[1px] bg-black/15 pointer-events-none"></div>
-                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/15 pointer-events-none"></div>
+                <!-- Spine binding shadow -->
+                <div class="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-black/50 via-black/15 to-transparent pointer-events-none"></div>
+                <!-- Spine outer edge highlight -->
+                <div class="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-white/50 via-white/30 to-white/10 pointer-events-none"></div>
+                <!-- Spine inner crease -->
+                <div class="absolute inset-y-0 left-[3px] w-[1.5px] bg-black/20 pointer-events-none"></div>
+                <!-- Spine soft shadow band -->
+                <div class="absolute inset-y-0 left-[5px] w-[6px] bg-gradient-to-r from-black/10 to-transparent pointer-events-none"></div>
+                <!-- Gloss sheen -->
+                <div class="absolute inset-0 bg-gradient-to-br from-white/15 via-white/5 to-transparent pointer-events-none"></div>
             </div>
         </div>
     </div>

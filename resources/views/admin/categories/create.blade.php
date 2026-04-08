@@ -1,38 +1,51 @@
 @extends('layouts.admin')
 
 @section('title', 'Tambah Kategori')
+@section('page-title', 'Tambah Kategori')
+@section('page-subtitle', 'Buat kategori baru untuk pengelompokan buku')
 
 @section('content')
-    <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('admin.categories.index') }}" class="text-gray-400 hover:text-primary transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-        </a>
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Tambah Kategori Baru</h1>
+<div class="max-w-lg">
+
+    <a href="{{ route('admin.categories.index') }}"
+        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-700 mb-6 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        Kembali ke Kategori
+    </a>
+
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100">
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Informasi Kategori</p>
+        </div>
+        <div class="px-6 py-5">
+            <form action="{{ route('admin.categories.store') }}" method="POST">
+                @csrf
+                <div class="mb-5">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1.5">Nama Kategori</label>
+                    <input type="text" name="name" id="name"
+                        placeholder="Contoh: Novel, Komik, Ilmu Pengetahuan..."
+                        class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                        value="{{ old('name') }}" required>
+                    @error('name')
+                        <p class="text-xs text-primary mt-1.5 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex items-center gap-3 justify-end">
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="px-5 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
+                        Batal
+                    </a>
+                    <button type="submit"
+                        class="bg-primary hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
+                        Simpan Kategori
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-xl p-8 max-w-2xl mx-auto border border-gray-100">
-        <form action="{{ route('admin.categories.store') }}" method="POST">
-            @csrf
-            <div class="mb-6">
-                <label for="name" class="block text-sm font-bold text-gray-700 uppercase mb-2">Nama Kategori</label>
-                <input type="text" name="name" id="name"
-                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-lg"
-                    placeholder="Masukkan nama kategori (Contoh: Novel, Komik, dsb)" value="{{ old('name') }}" required>
-                @error('name')
-                    <p class="text-red-500 text-xs mt-2 font-semibold">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="flex gap-4">
-                <button type="submit"
-                    class="flex-1 bg-gradient-to-r from-secondary to-primary text-background font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 uppercase tracking-wider">
-                    Simpan Kategori
-                </button>
-            </div>
-        </form>
-    </div>
+</div>
 @endsection

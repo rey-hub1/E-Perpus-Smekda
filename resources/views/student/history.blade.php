@@ -74,12 +74,14 @@
         <div class="space-y-3" id="bookList">
             @forelse ($transactions as $trx)
                 @php
-                    $terlambat     = $trx->status === 'dipinjam' && $trx->due_date && \Carbon\Carbon::now()->gt($trx->due_date);
-                    $hariTelat     = $terlambat ? (int) \Carbon\Carbon::now()->diffInDays($trx->due_date) : 0;
-                    $estimasiDenda = $hariTelat * 1000;
-                    $sisaHari      = !$terlambat && $trx->status === 'dipinjam' && $trx->due_date
-                                        ? (int) \Carbon\Carbon::now()->diffInDays($trx->due_date, false)
-                                        : null;
+                    $terlambat       = $trx->status === 'dipinjam' && $trx->due_date && \Carbon\Carbon::now()->gt($trx->due_date);
+                    $hariTelat       = $terlambat ? (int) \Carbon\Carbon::now()->diffInDays($trx->due_date) : 0;
+                    $estimasiDenda   = $hariTelat * 1000;
+                    $belumDiambil    = $trx->status === 'dipinjam' && $trx->tanggal_ambil && \Carbon\Carbon::today()->lt(\Carbon\Carbon::parse($trx->tanggal_ambil));
+                    $hariMenunggu    = $belumDiambil ? (int) \Carbon\Carbon::today()->diffInDays(\Carbon\Carbon::parse($trx->tanggal_ambil)) : 0;
+                    $sisaHari        = !$terlambat && !$belumDiambil && $trx->status === 'dipinjam' && $trx->due_date
+                                          ? (int) \Carbon\Carbon::now()->diffInDays($trx->due_date, false)
+                                          : null;
                 @endphp
 
                 <div class="book-item bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-200 overflow-hidden"
@@ -123,6 +125,8 @@
                                     @if ($trx->status === 'dipinjam')
                                         @if ($terlambat)
                                             <span class="shrink-0 text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full">Terlambat {{ $hariTelat }}h</span>
+                                        @elseif ($belumDiambil)
+                                            <span class="shrink-0 text-[10px] font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">Belum Diambil</span>
                                         @else
                                             <span class="shrink-0 text-[10px] font-bold bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Dipinjam</span>
                                         @endif
@@ -139,8 +143,18 @@
                                         <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
-                                        <span>{{ \Carbon\Carbon::parse($trx->tanggal_pinjam)->translatedFormat('d M Y') }}</span>
+                                        <span>Dipesan {{ \Carbon\Carbon::parse($trx->tanggal_pinjam)->translatedFormat('d M Y') }}</span>
                                     </div>
+
+                                    @if ($trx->tanggal_ambil)
+                                        @php $belumDiambil = $trx->status === 'dipinjam' && \Carbon\Carbon::today()->lt(\Carbon\Carbon::parse($trx->tanggal_ambil)); @endphp
+                                        <div class="flex items-center gap-1.5 {{ $belumDiambil ? 'text-primary font-semibold' : '' }}">
+                                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/>
+                                            </svg>
+                                            <span>Ambil {{ \Carbon\Carbon::parse($trx->tanggal_ambil)->translatedFormat('d M Y') }}</span>
+                                        </div>
+                                    @endif
 
                                     @if ($trx->due_date)
                                         <div class="flex items-center gap-1.5 {{ $terlambat ? 'text-red-500 font-semibold' : '' }}">
@@ -178,6 +192,18 @@
                                         <div class="text-center mb-1">
                                             <span class="text-2xl font-black text-red-500">-{{ $hariTelat }}</span>
                                             <p class="text-[10px] text-red-400 font-semibold">hari</p>
+                                        </div>
+                                    @elseif ($belumDiambil)
+                                        <div class="text-center mb-1">
+                                            <div class="flex items-center gap-1.5 bg-blue-50 border border-blue-200 rounded-xl px-3 py-2">
+                                                <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a48.667 48.667 0 0 1 12 0m-12 0V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3.349M6.75 21V16.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21"/>
+                                                </svg>
+                                                <div class="text-left">
+                                                    <p class="text-[10px] text-blue-500 font-bold leading-none">Ambil di perpus</p>
+                                                    <p class="text-[10px] text-blue-400 leading-none mt-0.5">{{ $hariMenunggu === 0 ? 'hari ini' : $hariMenunggu . ' hari lagi' }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     @elseif ($sisaHari !== null)
                                         <div class="text-center mb-1">
