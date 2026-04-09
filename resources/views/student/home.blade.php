@@ -38,6 +38,61 @@
             </div>
         </div>
 
+        {{-- Kategori --}}
+        @if ($categories->isNotEmpty())
+        @php
+            $catPalette = [
+                ['bg' => '#FEE2E2', 'accent' => '#DC2626', 'dot' => '#FCA5A5'],
+                ['bg' => '#FEF3C7', 'accent' => '#D97706', 'dot' => '#FCD34D'],
+                ['bg' => '#D1FAE5', 'accent' => '#059669', 'dot' => '#6EE7B7'],
+                ['bg' => '#DBEAFE', 'accent' => '#2563EB', 'dot' => '#93C5FD'],
+                ['bg' => '#EDE9FE', 'accent' => '#7C3AED', 'dot' => '#C4B5FD'],
+                ['bg' => '#FFEDD5', 'accent' => '#EA580C', 'dot' => '#FDBA74'],
+                ['bg' => '#CCFBF1', 'accent' => '#0D9488', 'dot' => '#5EEAD4'],
+                ['bg' => '#FCE7F3', 'accent' => '#DB2777', 'dot' => '#F9A8D4'],
+            ];
+        @endphp
+        <div>
+            <div class="flex items-center justify-between mb-4 px-8">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-xl font-bold text-text">Kategori</h2>
+                    <svg class="w-5 h-5 text-text/30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+                    </svg>
+                </div>
+                <a href="{{ route('student.katalog') }}" class="text-xs font-semibold text-text/40 hover:text-primary transition-colors">
+                    Semua buku &rarr;
+                </a>
+            </div>
+
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide pl-8 pr-4 snap-x snap-proximity scroll-pl-8">
+                @foreach ($categories as $cat)
+                    @php $p = $catPalette[$loop->index % count($catPalette)]; @endphp
+                    <a href="{{ route('student.katalog', ['category' => $cat->id]) }}"
+                        class="cat-card shrink-0 snap-start flex flex-col justify-between rounded-2xl px-4 py-4 w-40 min-h-28 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                        style="background: {{ $p['bg'] }};">
+                        {{-- Top: icon + arrow --}}
+                        <div class="flex items-start justify-between">
+                            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: {{ $p['accent'] }}20;">
+                                <x-category-icon :name="$cat->icon ?? 'book-open'" class="w-5 h-5" style="color: {{ $p['accent'] }};" />
+                            </div>
+                            <svg class="w-3.5 h-3.5 opacity-30 mt-1" style="color: {{ $p['accent'] }};" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </div>
+
+                        {{-- Bottom: name + count --}}
+                        <div class="mt-3">
+                            <p class="font-bold text-sm leading-tight" style="color: {{ $p['accent'] }}; font-family: var(--font-heading);">{{ $cat->name }}</p>
+                            <p class="text-xs mt-0.5 font-medium" style="color: {{ $p['accent'] }}; opacity: 0.6;">{{ $cat->books_count }} buku</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <div class="px-8 space-y-8">
             @if (session('success'))
                 <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow animate-fade-in-up">

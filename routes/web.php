@@ -9,6 +9,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\IconController;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Transaction;
@@ -87,6 +88,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('books', [BookController::class, 'index'])->name('books.index');
     Route::get('books/create', [BookController::class, 'create'])->name('books.create');
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
+    Route::get('books/bulk-create', [BookController::class, 'bulkCreate'])->name('books.bulk-create');
+    Route::post('books/bulk-store', [BookController::class, 'bulkStore'])->name('books.bulk-store');
 
     Route::get('books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('books/{book}', [BookController::class, 'update'])->name('books.update');
@@ -95,4 +98,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // CRUD Kategori
     Route::resource('categories', CategoryController::class);
+
+    // Manajemen Icon
+    Route::get('icons', [IconController::class, 'index'])->name('icons.index');
+    Route::post('icons', [IconController::class, 'store'])->name('icons.store');
+    Route::delete('icons/{icon}', [IconController::class, 'destroy'])->name('icons.destroy');
 });

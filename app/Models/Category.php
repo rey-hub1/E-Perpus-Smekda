@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends Model
 {
     protected $fillable = [
-        'name'
+        'name', 'icon'
     ];
 
     public function books(): HasMany

@@ -229,6 +229,55 @@ class BookController extends Controller
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus dari daftar unggulan.');
     }
 
+    public function bulkCreate()
+    {
+        $categories = Category::all();
+        return view('books.bulk-create', compact('categories'));
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $booksData = $request->input('books', []);
+        $croppedImages = $request->input('cropped_images', []);
+
+        if (empty($booksData)) {
+            return redirect()->back()->withErrors(['Data buku tidak boleh kosong.']);
+        }
+
+        $manager = new ImageManager(new Driver());
+
+        foreach ($booksData as $index => $bookData) {
+            // Generate unique slug
+            $slug = Str::slug($bookData['judul'] ?? 'buku');
+            $originalSlug = $slug;
+            $count = 1;
+            while (Book::where('slug', $slug)->exists()) {
+                $slug = $originalSlug . '-' . $count++;
+            }
+            $bookData['slug'] = $slug;
+
+            // Sanitize
+            unset($bookData['_token']);
+
+            // Handle cropped image
+            if (!empty($croppedImages[$index])) {
+                $imageData = $croppedImages[$index];
+                $filename = time() . '_' . $index . '_bulk.jpg';
+                $path = 'images/' . $filename;
+
+                $image = $manager->read($imageData);
+                $image->save(storage_path('app/public/' . $path));
+                $bookData['gambar'] = $path;
+            }
+
+            Book::create($bookData);
+        }
+
+        $count = count($booksData);
+        return redirect()->route('admin.books.index')
+            ->with('success', $count . ' buku berhasil ditambahkan!');
+    }
+
     public function show(Book $book)
     {
         return view('books.show', compact('book'));

@@ -21,7 +21,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        $customIcons = \App\Models\Icon::orderBy('label')->pluck('label', 'name');
+        return view('admin.categories.create', compact('customIcons'));
     }
 
     /**
@@ -30,11 +31,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name'
+            'name' => 'required|unique:categories,name',
+            'icon' => 'nullable|string',
         ]);
 
         Category::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'icon' => $request->icon ?? 'book-open',
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Kategori baru berhasil ditambahkan!');
@@ -45,7 +48,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', compact('category'));
+        $customIcons = \App\Models\Icon::orderBy('label')->pluck('label', 'name');
+        return view('admin.categories.edit', compact('category', 'customIcons'));
     }
 
     /**
@@ -54,11 +58,13 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id
+            'name' => 'required|unique:categories,name,' . $category->id,
+            'icon' => 'nullable|string',
         ]);
 
         $category->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'icon' => $request->icon ?? $category->icon,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diperbarui!');

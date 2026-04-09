@@ -265,6 +265,12 @@
                             <span class="text-sm text-text/45">Kategori</span>
                             <span class="text-sm text-text font-medium">{{ $book->category->name ?? '—' }}</span>
                         </div>
+                        @if($book->jumlah_halaman)
+                        <div class="flex justify-between items-center px-5 py-3">
+                            <span class="text-sm text-text/45">Jumlah Halaman</span>
+                            <span class="text-sm text-text font-medium">{{ number_format($book->jumlah_halaman) }} halaman</span>
+                        </div>
+                        @endif
                         <div class="flex justify-between items-center px-5 py-3">
                             <span class="text-sm text-text/45">Stok</span>
                             <span class="text-sm font-semibold {{ $book->stok > 0 ? 'text-accent' : 'text-red-500' }}">

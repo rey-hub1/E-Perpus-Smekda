@@ -94,12 +94,6 @@
             @endforelse
         </div>
 
-        {{-- Pagination --}}
-        @if ($books->hasPages())
-            <div class="mt-4">
-                {{ $books->links() }}
-            </div>
-        @endif
 
     </div>
 

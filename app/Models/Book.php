@@ -17,6 +17,7 @@ class Book extends Model
         'penerbit',
         'tahun_terbit',
         'stok',
+        'jumlah_halaman',
         'deskripsi',
         'gambar',
         'favorite',

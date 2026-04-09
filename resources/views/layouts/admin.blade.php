@@ -93,6 +93,21 @@
                 Anggota
             </a>
 
+            <div class="pt-3 pb-1" style="border-top: 1px solid rgba(255,255,255,0.06); margin-top: 8px;">
+                <p class="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest" style="color: rgba(255,255,255,0.25);">Konfigurasi</p>
+            </div>
+
+            <a href="{{ route('admin.icons.index') }}"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+                {{ request()->routeIs('admin.icons.*') ? 'text-white' : 'hover:bg-white/5' }}"
+                style="{{ request()->routeIs('admin.icons.*') ? 'background: #DC2626; color: #fff;' : 'color: rgba(255,255,255,0.5);' }}">
+                <!-- Sparkles icon -->
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/>
+                </svg>
+                Kelola Icon
+            </a>
+
         </nav>
 
         <!-- User & Logout -->

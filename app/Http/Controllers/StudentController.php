@@ -26,10 +26,12 @@ class StudentController extends Controller
                 ->orWhere('penulis', 'LIKE', '%' . $keyword . '%');
         }
 
+        $categories = Category::withCount('books')->orderBy('name')->get();
+
         // 3. Ambil datanya (Get)
         $books = $query->paginate(10);
 
-        return view('student.home', compact('books', 'popularBooks'));
+        return view('student.home', compact('books', 'popularBooks', 'categories'));
     }
     public function katalog(Request $request)
     {
@@ -48,7 +50,7 @@ class StudentController extends Controller
             $query->where('category_id', $request->category);
         }
 
-        $books = $query->paginate(12)->withQueryString();
+        $books = $query->get();
 
         return view('student.katalog', compact('books', 'categories'));
     }

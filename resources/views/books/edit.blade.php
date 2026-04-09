@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-text/70 mb-1.5">Tahun Terbit</label>
                         <input type="number" name="tahun_terbit" value="{{ old('tahun_terbit', $book->tahun_terbit) }}"
@@ -78,6 +78,12 @@
                     <div>
                         <label class="block text-sm font-medium text-text/70 mb-1.5">Stok</label>
                         <input type="number" name="stok" value="{{ old('stok', $book->stok) }}"
+                            class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-text/70 mb-1.5">Jumlah Halaman</label>
+                        <input type="number" name="jumlah_halaman" value="{{ old('jumlah_halaman', $book->jumlah_halaman) }}" min="1"
+                            placeholder="Opsional"
                             class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                 </div>
@@ -173,7 +179,7 @@
                         if (currentCoverContainer) currentCoverContainer.classList.add('opacity-30');
                         if (cropper) cropper.destroy();
                         cropper = new Cropper(imagePreview, {
-                            aspectRatio: 640 / 853,
+                            aspectRatio: 801 / 1206,
                             viewMode: 1,
                             dragMode: 'move',
                             autoCropArea: 1,
@@ -194,7 +200,7 @@
 
             cropButton.addEventListener('click', function() {
                 if (cropper) {
-                    const canvas = cropper.getCroppedCanvas({ width: 640, height: 853 });
+                    const canvas = cropper.getCroppedCanvas({ width: 801, height: 1206 });
                     croppedImageData.value = canvas.toDataURL('image/jpeg', 0.9);
                     cropSuccess.classList.remove('hidden');
                     cropperContainer.classList.add('opacity-50');
@@ -206,7 +212,7 @@
                 if (imageInput.files.length > 0 && !croppedImageData.value) {
                     e.preventDefault();
                     if (cropper) {
-                        const canvas = cropper.getCroppedCanvas({ width: 640, height: 853 });
+                        const canvas = cropper.getCroppedCanvas({ width: 801, height: 1206 });
                         croppedImageData.value = canvas.toDataURL('image/jpeg', 0.9);
                         this.submit();
                     }
