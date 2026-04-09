@@ -76,12 +76,12 @@
                                     <div class="hist-book-back"></div>
                                     <div class="hist-book-pages"></div>
                                     <div class="hist-book-front">
-                                        @if ($entry->book->gambar)
+                                        @if ($entry->book->cover_url)
                                             <img src="{{ $entry->book->cover_url }}" alt="{{ $entry->book->judul }}"
                                                 class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center p-2 bg-linear-to-br from-text/50 to-text/80">
-                                                <p class="text-white text-center font-bold text-[9px] leading-tight">{{ $entry->book->judul }}</p>
+                                            <div class="w-full h-full flex items-center justify-center p-2 bg-linear-to-br from-text/40 to-text/60">
+                                                <p class="text-white/90 text-center font-bold text-[9px] leading-tight">{{ $entry->book->judul }}</p>
                                             </div>
                                         @endif
                                         <div class="absolute inset-y-0 left-0 w-2.5 bg-linear-to-r from-black/30 to-transparent pointer-events-none"></div>
@@ -223,9 +223,8 @@
             position: absolute; inset: 0;
             border-radius: 1px 6px 6px 1px;
             overflow: hidden; z-index: 10;
-            background: var(--color-text);
-            opacity: 0.1;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            background: var(--color-background);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .hist-book-pages {
             position: absolute; top: 3px; right: 0; bottom: 3px; left: 1px;
