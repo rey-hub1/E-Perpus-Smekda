@@ -8,28 +8,28 @@
 <div class="space-y-5">
 
     @if (session('success'))
-        <div class="bg-white border border-gray-200 rounded-xl px-5 py-4 flex items-center gap-3 text-sm">
-            <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shrink-0">
-                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+        <div class="bg-background border border-text/10 rounded-xl px-5 py-4 flex items-center gap-3 text-sm">
+            <div class="w-5 h-5 rounded-full bg-accent flex items-center justify-center shrink-0">
+                <svg class="w-3 h-3 text-background" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
-            <span class="text-gray-700 font-medium">{{ session('success') }}</span>
+            <span class="text-text font-medium">{{ session('success') }}</span>
         </div>
     @endif
 
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-gray-200 px-5 py-4">
-            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Judul</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $books->total() }}</p>
+        <div class="bg-background rounded-xl border border-text/10 px-5 py-4">
+            <p class="text-xs text-text/40 uppercase tracking-wider mb-1">Total Judul</p>
+            <p class="text-2xl font-bold text-text">{{ $books->total() }}</p>
         </div>
-        <div class="bg-white rounded-xl border border-gray-200 px-5 py-4">
-            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Stok</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $books->sum('stok') }}</p>
+        <div class="bg-background rounded-xl border border-text/10 px-5 py-4">
+            <p class="text-xs text-text/40 uppercase tracking-wider mb-1">Total Stok</p>
+            <p class="text-2xl font-bold text-text">{{ $books->sum('stok') }}</p>
         </div>
-        <div class="bg-white rounded-xl border border-gray-200 px-5 py-4">
-            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Buku Unggulan</p>
+        <div class="bg-background rounded-xl border border-text/10 px-5 py-4">
+            <p class="text-xs text-text/40 uppercase tracking-wider mb-1">Buku Unggulan</p>
             <p class="text-2xl font-bold text-primary">{{ \App\Models\Book::where('featured', true)->count() }}</p>
         </div>
     </div>
@@ -55,7 +55,7 @@
             @endif
         </form>
         <a href="{{ route('admin.books.create') }}"
-            class="flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2.5 rounded-lg text-sm hover:bg-red-700 transition-colors shrink-0">
+            class="flex items-center gap-2 bg-primary text-background font-semibold px-4 py-2.5 rounded-lg text-sm hover:bg-secondary transition-colors shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
@@ -64,22 +64,22 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="bg-background rounded-xl border border-text/10 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead>
-                    <tr class="border-b border-gray-100 bg-gray-50">
-                        <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Cover</th>
-                        <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Informasi Buku</th>
-                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Tahun</th>
-                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Stok</th>
-                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Unggulan</th>
-                        <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Aksi</th>
+                    <tr class="border-b border-text/5 bg-text/[0.02]">
+                        <th class="px-5 py-3 text-left text-xs font-semibold text-text/40 uppercase tracking-wider">Cover</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold text-text/40 uppercase tracking-wider">Informasi Buku</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-text/40 uppercase tracking-wider">Tahun</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-text/40 uppercase tracking-wider">Stok</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-text/40 uppercase tracking-wider">Unggulan</th>
+                        <th class="px-5 py-3 text-center text-xs font-semibold text-text/40 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-50">
+                <tbody class="divide-y divide-text/5">
                     @forelse ($books as $book)
-                        <tr class="hover:bg-gray-50 transition-colors">
+                        <tr class="hover:bg-text/[0.02] transition-colors">
 
                             <td class="px-5 py-4 w-24">
                                 @if ($book->gambar)
@@ -94,11 +94,11 @@
                             </td>
 
                             <td class="px-5 py-4">
-                                <p class="font-semibold text-gray-900 leading-snug">{{ $book->judul }}</p>
-                                <p class="text-xs text-gray-500 mt-0.5">{{ $book->penulis }}</p>
-                                <p class="text-xs text-gray-400">{{ $book->penerbit }}</p>
+                                <p class="font-semibold text-text leading-snug">{{ $book->judul }}</p>
+                                <p class="text-xs text-text/50 mt-0.5">{{ $book->penulis }}</p>
+                                <p class="text-xs text-text/40">{{ $book->penerbit }}</p>
                                 @if($book->category)
-                                    <span class="inline-block mt-1.5 text-[10px] font-semibold text-primary bg-red-50 px-2 py-0.5 rounded-full">{{ $book->category->name }}</span>
+                                    <span class="inline-block mt-1.5 text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">{{ $book->category->name }}</span>
                                 @endif
                             </td>
 
@@ -108,11 +108,11 @@
 
                             <td class="px-5 py-4 text-center">
                                 @if ($book->stok > 5)
-                                    <span class="inline-block text-xs font-bold text-gray-700 bg-gray-100 px-3 py-1 rounded-full">{{ $book->stok }}</span>
+                                    <span class="inline-block text-xs font-bold text-text/70 bg-text/5 px-3 py-1 rounded-full">{{ $book->stok }}</span>
                                 @elseif ($book->stok > 0)
-                                    <span class="inline-block text-xs font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">{{ $book->stok }}</span>
+                                    <span class="inline-block text-xs font-bold text-primary/80 bg-cta px-3 py-1 rounded-full">{{ $book->stok }}</span>
                                 @else
-                                    <span class="inline-block text-xs font-bold text-primary bg-red-50 px-3 py-1 rounded-full">Habis</span>
+                                    <span class="inline-block text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">Habis</span>
                                 @endif
                             </td>
 
@@ -144,7 +144,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="text-xs font-semibold text-primary border border-red-100 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
+                                            class="text-xs font-semibold text-primary border border-primary/10 bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors">
                                             Hapus
                                         </button>
                                     </form>

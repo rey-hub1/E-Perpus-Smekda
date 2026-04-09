@@ -9,36 +9,38 @@
     <style>
         /* ── NAV ── */
         .nav-link-landing {
-            color: #374151;
+            color: var(--color-text);
+            opacity: 0.8;
             font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             transition: color 0.3s ease;
         }
-        .nav-link-landing:hover { color: #DC2626; }
+        .nav-link-landing:hover { color: var(--color-primary); opacity: 1; }
 
         .nav-dot {
             width: 4px; height: 4px;
-            background-color: #9ca3af;
+            background-color: var(--color-text);
+            opacity: 0.3;
             border-radius: 50%; display: inline-block;
         }
 
         .btn-masuk {
-            background-color: #DC2626; color: white;
+            background-color: var(--color-primary); color: var(--color-background);
             padding: 8px 24px; border-radius: 9999px;
             font-weight: 600; font-size: 0.875rem;
             transition: all 0.3s ease;
         }
-        .btn-masuk:hover { background-color: #b91c1c; }
+        .btn-masuk:hover { background-color: var(--color-secondary); }
 
         .btn-daftar {
-            border: 1.5px solid #374151; color: #374151;
+            border: 1.5px solid var(--color-text); color: var(--color-text);
             padding: 8px 24px; border-radius: 9999px;
             font-weight: 600; font-size: 0.875rem;
             transition: all 0.3s ease;
         }
-        .btn-daftar:hover { background-color: #374151; color: white; }
+        .btn-daftar:hover { background-color: var(--color-text); color: var(--color-background); }
 
         /* ── HERO ── */
         .hero-bg {
@@ -49,7 +51,7 @@
         .hero-glow-red {
             position: absolute;
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(220,38,38,0.18) 0%, transparent 70%);
+            background: radial-gradient(circle, color-mix(in srgb, var(--color-primary) 18%, transparent) 0%, transparent 70%);
             border-radius: 50%;
             top: -100px; right: -100px;
             pointer-events: none;
@@ -71,16 +73,16 @@
         }
         .badge-hero {
             display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(220,38,38,0.12);
-            border: 1px solid rgba(220,38,38,0.25);
-            color: #f87171;
+            background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+            color: color-mix(in srgb, var(--color-primary) 80%, white);
             padding: 6px 16px; border-radius: 9999px;
             font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
             text-transform: uppercase;
         }
         .badge-dot {
             width: 6px; height: 6px;
-            background: #DC2626; border-radius: 50%;
+            background: var(--color-primary); border-radius: 50%;
             animation: pulse-dot 2s infinite;
         }
         @keyframes pulse-dot {
@@ -88,16 +90,16 @@
             50% { opacity: 0.5; transform: scale(0.8); }
         }
         .btn-hero-primary {
-            background: #DC2626; color: white;
+            background: var(--color-primary); color: var(--color-background);
             padding: 14px 40px; border-radius: 9999px;
             font-weight: 700; font-size: 0.95rem;
             letter-spacing: 0.02em;
             transition: all 0.3s ease;
-            box-shadow: 0 0 30px rgba(220,38,38,0.35);
+            box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary) 35%, transparent);
         }
         .btn-hero-primary:hover {
-            background: #b91c1c; transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(220,38,38,0.5);
+            background: var(--color-secondary); transform: translateY(-2px);
+            box-shadow: 0 0 40px color-mix(in srgb, var(--color-primary) 50%, transparent);
         }
         .btn-hero-ghost {
             background: rgba(255,255,255,0.06);
@@ -157,7 +159,7 @@
         }
         .stat-icon {
             width: 52px; height: 52px;
-            background: #fef2f2; border-radius: 14px;
+            background: color-mix(in srgb, var(--color-primary) 10%, transparent); border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 1rem;
             font-size: 1.4rem;
@@ -167,16 +169,16 @@
         .footer-bg { background: #080810; }
         .footer-brand-line {
             width: 40px; height: 3px;
-            background: #DC2626; border-radius: 9999px;
+            background: var(--color-primary); border-radius: 9999px;
             margin-top: 12px;
         }
         .footer-link {
-            color: rgba(255,255,255,0.45);
+            color: color-mix(in srgb, var(--color-background) 45%, transparent);
             font-size: 0.9rem;
             transition: color 0.25s;
             display: flex; align-items: center; gap: 6px;
         }
-        .footer-link:hover { color: #f87171; }
+        .footer-link:hover { color: color-mix(in srgb, var(--color-primary) 80%, white); }
         .footer-link::before {
             content: '';
             width: 5px; height: 5px;
@@ -219,15 +221,15 @@
 
         /* ── BTN PRIMARY (sections) ── */
         .btn-primary-landing {
-            background-color: #DC2626; color: white;
+            background-color: var(--color-primary); color: var(--color-background);
             padding: 14px 48px; border-radius: 9999px;
             font-weight: 600; font-size: 1rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(220,38,38,0.3);
+            box-shadow: 0 4px 14px color-mix(in srgb, var(--color-primary) 30%, transparent);
         }
         .btn-primary-landing:hover {
-            background-color: #b91c1c; transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220,38,38,0.4);
+            background-color: var(--color-secondary); transform: translateY(-2px);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--color-primary) 40%, transparent);
         }
     </style>
 </head>
@@ -262,19 +264,19 @@
                 @endauth
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-gray-700 p-2">
+            <button id="mobile-menu-btn" class="md:hidden text-text/70 p-2">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
         </div>
 
-        <div id="mobile-menu" class="mobile-menu md:hidden bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div id="mobile-menu" class="mobile-menu md:hidden bg-background/95 backdrop-blur-md border-b border-text/10">
             <div class="cont py-4 flex flex-col gap-4">
                 <a href="#popular" class="nav-link-landing">Eksplorasi</a>
                 <a href="#about" class="nav-link-landing">Tentang</a>
                 <a href="#maps" class="nav-link-landing">Lokasi</a>
-                <div class="flex gap-3 pt-2 border-t border-gray-200">
+                <div class="flex gap-3 pt-2 border-t border-text/10">
                     @auth
                         @if (Auth::user()->role == 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="btn-masuk">Dashboard Admin</a>
@@ -313,7 +315,7 @@
                         Baca Lebih Banyak.
                     </span>
                     <span class="block mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-[5rem]"
-                          style="background: linear-gradient(135deg,#f87171 0%,#DC2626 50%,#c2410c 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
+                          style="background: linear-gradient(135deg,color-mix(in srgb, var(--color-primary) 80%, white) 0%,var(--color-primary) 50%,var(--color-secondary) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
                         Tumbuh Lebih Jauh.
                     </span>
                 </h1>
@@ -378,7 +380,7 @@
     </section>
 
     <!-- ═══════════════════════════ POPULAR BOOKS ═══════════════════════════ -->
-    <section id="popular" class="py-24 bg-background border-t border-gray-200 section-fade">
+    <section id="popular" class="py-24 bg-background border-t border-text/10 section-fade">
         <div class="cont">
             <div class="text-center mb-14">
                 <p class="text-primary font-semibold tracking-widest text-sm uppercase mb-3">Koleksi Pilihan</p>
@@ -394,7 +396,7 @@
     </section>
 
     <!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
-    <section id="about" class="py-24 bg-gray-50 border-t border-gray-200 section-fade">
+    <section id="about" class="py-24 bg-text/2 border-t border-text/10 section-fade">
         <div class="cont">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div>
@@ -453,14 +455,14 @@
     </section>
 
     <!-- ═══════════════════════════ MAPS ═══════════════════════════ -->
-    <section id="maps" class="py-24 bg-background border-t border-gray-200 section-fade">
+    <section id="maps" class="py-24 bg-background border-t border-text/10 section-fade">
         <div class="cont">
             <div class="text-center mb-14">
                 <p class="text-primary font-semibold tracking-widest text-sm uppercase mb-3">Lokasi</p>
                 <h2 class="text-4xl md:text-5xl font-bold font-heading text-text mb-2">Temukan Kami</h2>
                 <p class="text-text/50 text-lg">SMKN 2 Purwakarta, Jawa Barat</p>
             </div>
-            <div class="rounded-2xl overflow-hidden shadow-lg h-126 border border-gray-200">
+            <div class="rounded-2xl overflow-hidden shadow-lg h-126 border border-text/10">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.77000106877!2d107.43932322577727!3d-6.550696643442323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e690e5975014a5d%3A0x87f7a97e7f9f961!2sSMKN%202%20Purwakarta!5e0!3m2!1sid!2sid!4v1769698917066!5m2!1sid!2sid"
                     class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"
@@ -470,7 +472,7 @@
     </section>
 
     <!-- ═══════════════════════════ FEEDBACK ═══════════════════════════ -->
-    <section class="py-24 bg-gray-50 border-t border-gray-200 section-fade">
+    <section class="py-24 bg-text/2 border-t border-text/10 section-fade">
         <div class="cont">
             <div class="max-w-3xl mx-auto">
                 <div class="text-center mb-10">
@@ -508,7 +510,7 @@
                 <div class="md:col-span-4">
                     <img src="images/global/logoperpus.png" alt="E-Perpus Logo" class="h-10 w-auto mb-4 brightness-0 invert opacity-90">
                     <div class="footer-brand-line"></div>
-                    <p class="mt-5 text-white/40 text-sm leading-relaxed max-w-xs">
+                    <p class="mt-5 text-text/40 text-sm leading-relaxed max-w-xs">
                         Platform perpustakaan digital SMKN 2 Purwakarta. Mendukung kegiatan belajar
                         mengajar melalui akses literasi yang mudah dan modern.
                     </p>
@@ -534,7 +536,7 @@
 
                 <!-- Quick Links -->
                 <div class="md:col-span-2 md:col-start-6">
-                    <h4 class="text-white/80 font-semibold text-sm uppercase tracking-wider mb-5">Navigasi</h4>
+                    <h4 class="text-text/80 font-semibold text-sm uppercase tracking-wider mb-5">Navigasi</h4>
                     <ul class="space-y-3">
                         <li><a href="#" class="footer-link">Beranda</a></li>
                         <li><a href="#popular" class="footer-link">Katalog Buku</a></li>
@@ -545,7 +547,7 @@
 
                 <!-- Akun Links -->
                 <div class="md:col-span-2">
-                    <h4 class="text-white/80 font-semibold text-sm uppercase tracking-wider mb-5">Akun</h4>
+                    <h4 class="text-text/80 font-semibold text-sm uppercase tracking-wider mb-5">Akun</h4>
                     <ul class="space-y-3">
                         <li><a href="{{ route('login') }}" class="footer-link">Masuk</a></li>
                         <li><a href="{{ route('register') }}" class="footer-link">Daftar</a></li>
@@ -554,36 +556,36 @@
 
                 <!-- Contact -->
                 <div class="md:col-span-3 md:col-start-10">
-                    <h4 class="text-white/80 font-semibold text-sm uppercase tracking-wider mb-5">Kontak</h4>
+                    <h4 class="text-text/80 font-semibold text-sm uppercase tracking-wider mb-5">Kontak</h4>
                     <ul class="space-y-4">
                         <li class="footer-contact-item">
                             <span class="footer-contact-icon">
-                                <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+                                <svg class="w-4 h-4 text-primary/80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
                             </span>
-                            <span>perpus@smkn2pwk.sch.id</span>
+                            <span class="text-text/50">perpus@smkn2pwk.sch.id</span>
                         </li>
                         <li class="footer-contact-item">
                             <span class="footer-contact-icon">
-                                <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
+                                <svg class="w-4 h-4 text-primary/80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
                             </span>
-                            <span>(0264) 123456</span>
+                            <span class="text-text/50">(0264) 123456</span>
                         </li>
                         <li class="footer-contact-item">
                             <span class="footer-contact-icon">
-                                <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                                <svg class="w-4 h-4 text-primary/80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                             </span>
-                            <span>Jl. Industri No.1,<br>Purwakarta, Jawa Barat 41114</span>
+                            <span class="text-text/50">Jl. Industri No.1,<br>Purwakarta, Jawa Barat 41114</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
             <!-- Footer Bottom -->
-            <div class="border-t footer-divider pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-white/25 text-sm">
+            <div class="border-t border-text/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-text/20 text-sm">
                     &copy; {{ date('Y') }} E-Perpus SMKN 2 Purwakarta. All rights reserved.
                 </p>
-                <p class="text-white/20 text-xs">
+                <p class="text-text/20 text-xs">
                     Dibuat dengan penuh semangat untuk kemajuan pendidikan
                 </p>
             </div>

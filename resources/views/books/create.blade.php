@@ -9,7 +9,7 @@
 
     <!-- Back -->
     <a href="{{ route('admin.books.index') }}"
-        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-700 mb-6 transition-colors">
+        class="inline-flex items-center gap-2 text-sm text-text/40 hover:text-text mb-6 transition-colors font-medium">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
         </svg>
@@ -17,11 +17,11 @@
     </a>
 
     @if ($errors->any())
-        <div class="bg-red-50 border border-red-100 rounded-xl px-5 py-4 mb-5">
-            <p class="text-sm font-semibold text-primary mb-2">Perbaiki kesalahan berikut:</p>
+        <div class="bg-secondary/5 border border-secondary/10 rounded-xl px-5 py-4 mb-5">
+            <p class="text-sm font-semibold text-secondary mb-2">Perbaiki kesalahan berikut:</p>
             <ul class="space-y-1">
                 @foreach ($errors->all() as $error)
-                    <li class="text-sm text-red-600 flex items-start gap-2">
+                    <li class="text-sm text-secondary/80 flex items-start gap-2">
                         <span class="mt-0.5 shrink-0">&#8226;</span>{{ $error }}
                     </li>
                 @endforeach
@@ -32,17 +32,17 @@
     <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-4">
-            <div class="px-6 py-4 border-b border-gray-100">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Informasi Buku</p>
+        <div class="bg-background rounded-xl border border-text/10 overflow-hidden mb-4">
+            <div class="px-6 py-4 border-b border-text/5">
+                <p class="text-xs font-semibold text-text/40 uppercase tracking-wider">Informasi Buku</p>
             </div>
             <div class="px-6 py-5 space-y-4">
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Judul Buku</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Judul Buku</label>
                     <input type="text" name="judul" value="{{ old('judul') }}"
                         placeholder="Contoh: Laskar Pelangi"
-                        class="w-full border @error('judul') border-primary @else border-gray-200 @enderror rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                        class="w-full border @error('judul') border-primary @else border-text/10 @enderror rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     @error('judul')
                         <p class="text-xs text-primary mt-1.5">{{ $message }}</p>
                     @enderror
@@ -50,34 +50,34 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Penulis</label>
+                        <label class="block text-sm font-medium text-text/70 mb-1.5">Penulis</label>
                         <input type="text" name="penulis" value="{{ old('penulis') }}"
-                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                            class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Penerbit</label>
+                        <label class="block text-sm font-medium text-text/70 mb-1.5">Penerbit</label>
                         <input type="text" name="penerbit" value="{{ old('penerbit') }}"
-                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                            class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Tahun Terbit</label>
+                        <label class="block text-sm font-medium text-text/70 mb-1.5">Tahun Terbit</label>
                         <input type="number" name="tahun_terbit" value="{{ old('tahun_terbit') }}"
-                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                            class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Stok Awal</label>
+                        <label class="block text-sm font-medium text-text/70 mb-1.5">Stok Awal</label>
                         <input type="number" name="stok" value="{{ old('stok') }}"
-                            class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                            class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Kategori</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Kategori</label>
                     <select name="category_id"
-                        class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                        class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                         <option value="">-- Pilih Kategori --</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -86,37 +86,37 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Sinopsis / Deskripsi</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Sinopsis / Deskripsi</label>
                     <textarea name="deskripsi" rows="4"
                         placeholder="Ceritakan isi bukunya di sini..."
-                        class="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none">{{ old('deskripsi') }}</textarea>
+                        class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none">{{ old('deskripsi') }}</textarea>
                 </div>
 
             </div>
         </div>
 
         <!-- Cover Upload -->
-        <div class="bg-white rounded-xl border @error('gambar') border-primary @else border-gray-200 @enderror overflow-hidden mb-4">
-            <div class="px-6 py-4 border-b border-gray-100">
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Cover Buku</p>
+        <div class="bg-background rounded-xl border @error('gambar') border-primary @else border-text/10 @enderror overflow-hidden mb-4">
+            <div class="px-6 py-4 border-b border-text/5">
+                <p class="text-xs font-semibold text-text/40 uppercase tracking-wider">Cover Buku</p>
             </div>
             <div class="px-6 py-5">
                 <input type="file" id="imageInput" accept="image/*"
-                    class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-200 file:text-sm file:font-medium file:bg-white file:text-gray-600 hover:file:bg-gray-50 transition-all cursor-pointer">
+                    class="w-full text-sm text-text/50 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border file:border-text/10 file:text-sm file:font-medium file:bg-background file:text-text/70 hover:file:bg-text/5 transition-all cursor-pointer">
                 <input type="hidden" name="cropped_image" id="croppedImageData">
-                <p class="text-xs text-gray-400 mt-2">Maksimal 5MB. Format: JPG, PNG, JPEG. Rasio cover: 3:4.</p>
+                <p class="text-xs text-text/30 mt-2">Maksimal 5MB. Format: JPG, PNG, JPEG. Rasio cover: 3:4.</p>
 
                 <div id="cropperContainer" class="hidden mt-4">
-                    <p class="text-xs font-semibold text-gray-600 mb-2">Sesuaikan posisi cover:</p>
-                    <div class="max-h-96 overflow-hidden rounded-lg bg-gray-100 border border-gray-200">
+                    <p class="text-xs font-semibold text-text/60 mb-2">Sesuaikan posisi cover:</p>
+                    <div class="max-h-96 overflow-hidden rounded-lg bg-text/5 border border-text/10">
                         <img id="imagePreview" src="" alt="Preview" class="max-w-full block">
                     </div>
                     <div class="mt-3 flex items-center gap-3">
                         <button type="button" id="cropButton"
-                            class="bg-gray-900 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                            class="bg-text text-background text-xs font-semibold px-4 py-2 rounded-lg hover:bg-text/80 transition-colors">
                             Potong Gambar
                         </button>
-                        <span id="cropSuccess" class="hidden text-xs font-semibold text-green-600 flex items-center gap-1.5">
+                        <span id="cropSuccess" class="hidden text-xs font-semibold text-accent flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                             </svg>
@@ -130,11 +130,11 @@
         <!-- Actions -->
         <div class="flex items-center gap-3 justify-end">
             <a href="{{ route('admin.books.index') }}"
-                class="px-5 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
+                class="px-5 py-2.5 text-sm font-medium text-text/50 hover:text-text transition-colors">
                 Batal
             </a>
             <button type="submit" id="submitBtn"
-                class="bg-primary hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
+                class="bg-primary hover:bg-secondary text-background font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
                 Simpan Buku
             </button>
         </div>

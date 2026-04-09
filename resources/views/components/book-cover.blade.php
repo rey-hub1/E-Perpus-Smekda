@@ -19,8 +19,9 @@
     .book-pages {
         position: absolute;
         inset: 4px 2px 4px 0;
-        background-color: #f3f4f6;
-        border: 1px solid #e5e7eb;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-text);
+        border-color: color-mix(in srgb, var(--color-text) 10%, transparent);
         border-radius: 2px 8px 8px 2px;
         transform: translateZ(-5px) translateX(0);
         box-shadow: inset 4px 0 10px rgba(0,0,0,0.05);
@@ -38,8 +39,9 @@
         position: absolute;
         inset: 0;
         /* Ganti dengan plain color (putih bersih dengan border) */
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: var(--color-background);
+        border: 1px solid var(--color-text);
+        border-color: color-mix(in srgb, var(--color-text) 10%, transparent);
         border-radius: 2px 10px 10px 2px;
         transform: translateZ(-8px) translateX(0);
         box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
@@ -63,11 +65,11 @@
             <div class="book-back"></div>
             <div class="book-pages"></div>
 
-            <div class="absolute inset-0 rounded-l-[3px] rounded-r-lg overflow-hidden z-10 bg-gray-300">
+            <div class="absolute inset-0 rounded-l-[3px] rounded-r-lg overflow-hidden z-10 bg-text/10">
                 @if ($book->gambar)
                     <img src="{{ $book->cover_url }}" class="w-full h-full object-cover" alt="{{ $book->judul }}">
                 @else
-                    <div class="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-gray-700 to-gray-900">
+                    <div class="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-text/70 to-text">
                         <p class="text-white text-center font-bold text-xs leading-tight">{{ $book->judul }}</p>
                     </div>
                 @endif

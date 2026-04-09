@@ -9,12 +9,12 @@
 
     @if (session('success'))
         <div class="bg-white border border-gray-200 rounded-xl px-5 py-4 flex items-center gap-3 text-sm">
-            <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shrink-0">
-                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <div class="w-5 h-5 rounded-full bg-accent flex items-center justify-center shrink-0">
+                <svg class="w-3 h-3 text-background" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
-            <span class="text-gray-700 font-medium">{{ session('success') }}</span>
+            <span class="text-text font-medium">{{ session('success') }}</span>
         </div>
     @endif
 
@@ -25,7 +25,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </div>
-            <span class="text-gray-700 font-medium">{{ session('error') }}</span>
+            <span class="text-text font-medium">{{ session('error') }}</span>
         </div>
     @endif
 
@@ -33,8 +33,8 @@
 
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
-                <p class="text-sm font-semibold text-gray-900">Daftar Siswa</p>
-                <p class="text-xs text-gray-400 mt-0.5">{{ $users->total() }} total anggota terdaftar</p>
+                <p class="text-sm font-semibold text-text">Daftar Siswa</p>
+                <p class="text-xs text-text/40 mt-0.5">{{ $users->total() }} total anggota terdaftar</p>
             </div>
         </div>
 
@@ -62,7 +62,7 @@
                                     <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                                         <span class="text-xs font-bold text-primary">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                                     </div>
-                                    <p class="font-semibold text-gray-900">{{ $user->name }}</p>
+                                    <p class="font-semibold text-text">{{ $user->name }}</p>
                                 </div>
                             </td>
 

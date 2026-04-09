@@ -88,8 +88,8 @@
 
             <!-- Header -->
             <div class="mb-8">
-                <h1 class="text-2xl font-bold font-heading text-gray-900">Masuk ke akun kamu</h1>
-                <p class="text-sm text-gray-400 mt-1.5">Gunakan email dan password yang sudah terdaftar.</p>
+                <h1 class="text-2xl font-bold font-heading text-text">Masuk ke akun kamu</h1>
+                <p class="text-sm text-text/40 mt-1.5">Gunakan email dan password yang sudah terdaftar.</p>
             </div>
 
             <!-- Error -->
@@ -133,7 +133,7 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-primary hover:bg-red-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors mt-2 shadow-sm shadow-primary/20">
+                    class="w-full bg-primary hover:bg-secondary text-background font-semibold py-3 rounded-xl text-sm transition-colors mt-2 shadow-sm shadow-primary/20">
                     Masuk
                 </button>
             </form>
@@ -146,7 +146,7 @@
             </div>
 
             <!-- Register link -->
-            <p class="text-center text-sm text-gray-400">
+            <p class="text-center text-sm text-text/40">
                 Belum punya akun?
                 <a href="{{ route('register') }}" class="text-primary font-semibold hover:underline ml-1">Daftar sekarang</a>
             </p>

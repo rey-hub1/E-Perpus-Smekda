@@ -19,8 +19,8 @@
             <div class="flex flex-col items-center gap-2">
                 <img src="/images/global/perpus_smekda.png" class="w-24" alt="Perpus SMEKDA">
                 <div class="text-center">
-                    <h1 class="text-sm font-bold text-gray-800">GoRead</h1>
-                    <p class="text-xs text-gray-400">Perpustakaan Digital</p>
+                    <h1 class="text-sm font-bold text-text">GoRead</h1>
+                    <p class="text-xs text-text/40">Perpustakaan Digital</p>
                 </div>
             </div>
         </a>

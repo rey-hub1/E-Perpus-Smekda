@@ -8,12 +8,12 @@
 
         <div class="px-8">
             <form action="{{ route('student.katalog') }}" method="GET">
-                <div class="flex rounded-lg overflow-hidden border border-gray-300 shadow-sm focus-within:ring-2 focus-within:ring-primary/40">
+                <div class="flex rounded-lg overflow-hidden border border-text/10 shadow-sm focus-within:ring-2 focus-within:ring-primary/40">
                     <input type="text" name="search"
-                        class="w-full text-gray-800 px-4 py-2.5 text-sm focus:outline-none bg-white"
+                        class="w-full text-text px-4 py-2.5 text-sm focus:outline-none bg-background"
                         placeholder="Cari judul buku atau penulis..." value="{{ request('search') }}">
                     <button type="submit"
-                        class="bg-primary text-white px-6 py-2.5 text-sm font-semibold hover:bg-primary/90 transition shrink-0">
+                        class="bg-primary text-background px-6 py-2.5 text-sm font-semibold hover:bg-secondary transition shrink-0">
                         Cari
                     </button>
                 </div>
@@ -31,7 +31,7 @@
 
             <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide pl-8 pr-4 snap-x snap-proximity scroll-pl-8">
                 @foreach ($popularBooks as $NB)
-                    <div class="shrink-0 w-[300px] snap-start">
+                    <div class="shrink-0 w-75 snap-start">
                         <x-book-card :book="$NB" />
                     </div>
                 @endforeach
@@ -40,14 +40,14 @@
 
         <div class="px-8 space-y-8">
             @if (session('success'))
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow animate-fade-in-up">
+                <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow animate-fade-in-up">
                     <p class="font-bold">Berhasil!</p>
                     <p>{{ session('success') }}</p>
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow animate-fade-in-up">
+                <div class="bg-primary/10 border-l-4 border-primary text-secondary px-4 py-4 rounded shadow animate-fade-in-up">
                     <p class="font-bold">Gagal!</p>
                     <p>{{ session('error') }}</p>
                 </div>
@@ -55,9 +55,9 @@
 
             @if (request('search'))
                 <div class="flex justify-between items-center">
-                    <p class="text-gray-500">Hasil pencarian: <span
+                    <p class="text-text/50">Hasil pencarian: <span
                             class="font-bold text-primary">"{{ request('search') }}"</span></p>
-                    <a href="{{ route('student.home') }}" class="text-red-500 text-sm hover:underline font-semibold">Reset
+                    <a href="{{ route('student.home') }}" class="text-primary text-sm hover:underline font-semibold">Reset
                         / Tampilkan Semua</a>
                 </div>
             @endif
@@ -73,12 +73,12 @@
                 @forelse ($books as $book)
                     <x-book-card :book="$book" />
                 @empty
-                    <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
+                    <div class="col-span-full text-center py-20 bg-background rounded-xl border border-dashed border-text/10">
                         <div class="flex justify-center mb-4">
-                            <svg class="w-14 h-14 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+                            <svg class="w-14 h-14 text-text/10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-600">Buku tidak ditemukan</h3>
-                        <p class="text-gray-400">Coba cari dengan kata kunci lain.</p>
+                        <h3 class="text-xl font-bold text-text/60">Buku tidak ditemukan</h3>
+                        <p class="text-text/40">Coba cari dengan kata kunci lain.</p>
                     </div>
                 @endforelse
                 <div class="mt-8">

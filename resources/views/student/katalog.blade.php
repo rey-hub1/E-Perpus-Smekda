@@ -7,14 +7,14 @@
 
         {{-- Flash Messages --}}
         @if (session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow animate-fade-in-up">
+            <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow animate-fade-in-up">
                 <p class="font-bold">Berhasil!</p>
                 <p>{{ session('success') }}</p>
             </div>
         @endif
 
         @if (session('error'))
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow animate-fade-in-up">
+            <div class="bg-primary/10 border-l-4 border-primary text-secondary px-4 py-4 rounded shadow animate-fade-in-up">
                 <p class="font-bold">Gagal!</p>
                 <p>{{ session('error') }}</p>
             </div>
@@ -71,7 +71,7 @@
                         @endif
                     @endif
                 </p>
-                <a href="{{ route('student.katalog') }}" class="text-red-500 text-sm hover:underline font-semibold">
+                <a href="{{ route('student.katalog') }}" class="text-primary text-sm hover:underline font-semibold">
                     Reset Filter
                 </a>
             </div>
@@ -84,8 +84,8 @@
             @empty
                 <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                     <div class="text-6xl mb-4">🔍</div>
-                    <h3 class="text-xl font-bold text-gray-600">Buku tidak ditemukan</h3>
-                    <p class="text-gray-400">Coba kata kunci lain atau pilih kategori berbeda.</p>
+                    <h3 class="text-xl font-bold text-text/60">Buku tidak ditemukan</h3>
+                    <p class="text-text/40">Coba kata kunci lain atau pilih kategori berbeda.</p>
                     <a href="{{ route('student.katalog') }}"
                         class="mt-4 inline-block text-primary font-semibold hover:underline text-sm">
                         Tampilkan semua buku &rarr;

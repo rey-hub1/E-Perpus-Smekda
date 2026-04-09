@@ -6,7 +6,7 @@
     <title>Daftar — GoRead</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-white min-h-screen flex">
+<body class="bg-background min-h-screen flex">
 
     <!-- Left Panel: Branding -->
     <div class="hidden lg:flex lg:w-[45%] bg-primary flex-col justify-between p-12 relative overflow-hidden">
@@ -92,7 +92,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
                     </svg>
                 </div>
-                <span class="font-bold text-lg text-gray-900 font-heading">GoRead</span>
+                <span class="font-bold text-lg text-text font-heading">GoRead</span>
             </a>
         </div>
 
@@ -100,8 +100,8 @@
 
             <!-- Header -->
             <div class="mb-7">
-                <h1 class="text-2xl font-bold font-heading text-gray-900">Buat akun baru</h1>
-                <p class="text-sm text-gray-400 mt-1.5">Daftar gratis dan mulai pinjam buku hari ini.</p>
+                <h1 class="text-2xl font-bold font-heading text-text">Buat akun baru</h1>
+                <p class="text-sm text-text/40 mt-1.5">Daftar gratis dan mulai pinjam buku hari ini.</p>
             </div>
 
             <!-- Form -->
@@ -109,10 +109,10 @@
                 @csrf
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Nama Lengkap</label>
                     <input type="text" name="name" value="{{ old('name') }}"
                         placeholder="Contoh: Budi Santoso"
-                        class="w-full border @error('name') border-primary @else border-gray-200 @enderror rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                        class="w-full border @error('name') border-primary @else border-text/10 @enderror rounded-xl px-4 py-3 text-sm text-text placeholder-text/30 bg-background focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                         required>
                     @error('name')
                         <p class="text-xs text-primary mt-1.5 font-medium">{{ $message }}</p>
@@ -120,10 +120,10 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Email</label>
                     <input type="email" name="email" value="{{ old('email') }}"
                         placeholder="nama@sekolah.sch.id"
-                        class="w-full border @error('email') border-primary @else border-gray-200 @enderror rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                        class="w-full border @error('email') border-primary @else border-text/10 @enderror rounded-xl px-4 py-3 text-sm text-text placeholder-text/30 bg-background focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                         required>
                     @error('email')
                         <p class="text-xs text-primary mt-1.5 font-medium">{{ $message }}</p>
@@ -131,13 +131,13 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Password</label>
                     <div class="relative">
                         <input type="password" name="password" id="passwordInput"
                             placeholder="Minimal 6 karakter"
-                            class="w-full border @error('password') border-primary @else border-gray-200 @enderror rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all pr-11"
+                            class="w-full border @error('password') border-primary @else border-text/10 @enderror rounded-xl px-4 py-3 text-sm text-text placeholder-text/30 bg-background focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all pr-11"
                             required>
-                        <button type="button" onclick="togglePassword('passwordInput', 'eyeIcon1')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                        <button type="button" onclick="togglePassword('passwordInput', 'eyeIcon1')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-text/30 hover:text-text/60 transition-colors">
                             <svg id="eyeIcon1" class="w-4.5 h-4.5" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -150,13 +150,13 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Ulangi Password</label>
+                    <label class="block text-sm font-medium text-text/70 mb-1.5">Ulangi Password</label>
                     <div class="relative">
                         <input type="password" name="password_confirmation" id="confirmInput"
                             placeholder="Ketik ulang password"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all pr-11"
+                            class="w-full border border-text/10 rounded-xl px-4 py-3 text-sm text-text placeholder-text/30 bg-background focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all pr-11"
                             required>
-                        <button type="button" onclick="togglePassword('confirmInput', 'eyeIcon2')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                        <button type="button" onclick="togglePassword('confirmInput', 'eyeIcon2')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-text/30 hover:text-text/60 transition-colors">
                             <svg id="eyeIcon2" class="w-4.5 h-4.5" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -166,27 +166,27 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-primary hover:bg-red-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors mt-1 shadow-sm shadow-primary/20">
+                    class="w-full bg-primary hover:bg-secondary text-background font-semibold py-3 rounded-xl text-sm transition-colors mt-1 shadow-sm shadow-primary/20">
                     Buat Akun
                 </button>
             </form>
 
             <!-- Divider -->
             <div class="flex items-center gap-4 my-6">
-                <div class="flex-1 h-px bg-gray-100"></div>
-                <span class="text-xs text-gray-400">atau</span>
-                <div class="flex-1 h-px bg-gray-100"></div>
+                <div class="flex-1 h-px bg-text/5"></div>
+                <span class="text-xs text-text/30">atau</span>
+                <div class="flex-1 h-px bg-text/5"></div>
             </div>
 
             <!-- Login link -->
-            <p class="text-center text-sm text-gray-400">
+            <p class="text-center text-sm text-text/40">
                 Sudah punya akun?
                 <a href="{{ route('login') }}" class="text-primary font-semibold hover:underline ml-1">Masuk di sini</a>
             </p>
 
             <!-- Back to home -->
             <div class="mt-6 text-center">
-                <a href="{{ route('landing') }}" class="inline-flex items-center gap-1.5 text-xs text-gray-300 hover:text-gray-500 transition-colors">
+                <a href="{{ route('landing') }}" class="inline-flex items-center gap-1.5 text-xs text-text/20 hover:text-text/50 transition-colors font-medium">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
                     </svg>

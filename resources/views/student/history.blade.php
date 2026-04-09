@@ -22,18 +22,18 @@
 
             {{-- Stats --}}
             <div class="flex gap-3">
-                <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-center min-w-[72px]">
+                <div class="bg-background border border-text/10 rounded-xl px-4 py-2.5 text-center min-w-18">
                     <p class="text-xl font-black text-text">{{ $dipinjam->count() }}</p>
                     <p class="text-[11px] font-medium text-text/40 mt-0.5">Dipinjam</p>
                 </div>
-                <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-center min-w-[72px]">
+                <div class="bg-background border border-text/10 rounded-xl px-4 py-2.5 text-center min-w-18">
                     <p class="text-xl font-black text-text">{{ $dikembalikan->count() }}</p>
                     <p class="text-[11px] font-medium text-text/40 mt-0.5">Selesai</p>
                 </div>
                 @if ($terlambatCount > 0)
-                    <div class="bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 text-center min-w-[72px]">
-                        <p class="text-xl font-black text-red-500">{{ $terlambatCount }}</p>
-                        <p class="text-[11px] font-medium text-red-400 mt-0.5">Terlambat</p>
+                    <div class="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2.5 text-center min-w-18">
+                        <p class="text-xl font-black text-primary">{{ $terlambatCount }}</p>
+                        <p class="text-[11px] font-medium text-primary/60 mt-0.5">Terlambat</p>
                     </div>
                 @endif
             </div>
@@ -41,20 +41,20 @@
 
         {{-- Flash messages --}}
         @if (session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm font-medium">
+            <div class="bg-accent/10 border border-accent/20 text-accent px-4 py-3 rounded-xl text-sm font-medium">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
-            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
+            <div class="bg-primary/10 border border-primary/20 text-secondary px-4 py-3 rounded-xl text-sm font-medium">
                 {{ session('error') }}
             </div>
         @endif
 
         {{-- Tab Filter --}}
-        <div class="flex gap-1 bg-gray-100 p-1 rounded-xl w-fit">
+        <div class="flex gap-1 bg-text/5 p-1 rounded-xl w-fit">
             <button onclick="switchTab('semua')"
-                class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-white text-text shadow-sm"
+                class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-background text-text shadow-sm"
                 data-tab="semua">
                 Semua ({{ $transactions->count() }})
             </button>
@@ -84,13 +84,13 @@
                                           : null;
                 @endphp
 
-                <div class="book-item bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-200 overflow-hidden"
+                <div class="book-item bg-background rounded-xl border border-text/5 hover:border-text/10 hover:shadow-sm transition-all duration-200 overflow-hidden"
                      data-status="{{ $trx->status }}">
                     <div class="flex">
 
                         {{-- 3D Book Cover --}}
                         <a href="{{ route('book.show', $trx->book->slug) }}"
-                            class="shrink-0 flex items-center justify-center bg-gray-100 px-5 py-5 group"
+                            class="shrink-0 flex items-center justify-center bg-text/2 px-5 py-5 group"
                             style="min-width: 110px;">
                             <div class="hist-book-perspective">
                                 <div class="hist-book-3d group-hover:hist-book-hover">
@@ -101,12 +101,12 @@
                                             <img src="{{ $trx->book->cover_url }}" alt="{{ $trx->book->judul }}"
                                                 class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center p-2 bg-gradient-to-br from-gray-600 to-gray-800">
+                                            <div class="w-full h-full flex items-center justify-center p-2 bg-linear-to-br from-text/50 to-text/80">
                                                 <p class="text-white text-center font-bold text-[9px] leading-tight">{{ $trx->book->judul }}</p>
                                             </div>
                                         @endif
-                                        <div class="absolute inset-y-0 left-0 w-2.5 bg-gradient-to-r from-black/30 to-transparent pointer-events-none"></div>
-                                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none"></div>
+                                        <div class="absolute inset-y-0 left-0 w-2.5 bg-linear-to-r from-black/30 to-transparent pointer-events-none"></div>
+                                        <div class="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-white/10 pointer-events-none"></div>
                                     </div>
                                 </div>
                             </div>
@@ -124,14 +124,14 @@
                                     </a>
                                     @if ($trx->status === 'dipinjam')
                                         @if ($terlambat)
-                                            <span class="shrink-0 text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full">Terlambat {{ $hariTelat }}h</span>
+                                            <span class="shrink-0 text-[10px] font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-full">Terlambat {{ $hariTelat }}h</span>
                                         @elseif ($belumDiambil)
-                                            <span class="shrink-0 text-[10px] font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">Belum Diambil</span>
+                                            <span class="shrink-0 text-[10px] font-bold bg-cta text-text/70 px-2 py-0.5 rounded-full">Belum Diambil</span>
                                         @else
-                                            <span class="shrink-0 text-[10px] font-bold bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Dipinjam</span>
+                                            <span class="shrink-0 text-[10px] font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-full">Dipinjam</span>
                                         @endif
                                     @else
-                                        <span class="shrink-0 text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Selesai</span>
+                                        <span class="shrink-0 text-[10px] font-bold bg-accent/10 text-accent px-2 py-0.5 rounded-full">Selesai</span>
                                     @endif
                                 </div>
 
@@ -157,7 +157,7 @@
                                     @endif
 
                                     @if ($trx->due_date)
-                                        <div class="flex items-center gap-1.5 {{ $terlambat ? 'text-red-500 font-semibold' : '' }}">
+                                        <div class="flex items-center gap-1.5 {{ $terlambat ? 'text-secondary font-semibold' : '' }}">
                                             <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
@@ -175,7 +175,7 @@
                                     @endif
 
                                     @if ($trx->fine > 0)
-                                        <div class="flex items-center gap-1.5 text-red-500 font-semibold">
+                                        <div class="flex items-center gap-1.5 text-secondary font-semibold">
                                             <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z"/>
                                             </svg>
@@ -190,18 +190,18 @@
                                 @if ($trx->status === 'dipinjam')
                                     @if ($terlambat)
                                         <div class="text-center mb-1">
-                                            <span class="text-2xl font-black text-red-500">-{{ $hariTelat }}</span>
-                                            <p class="text-[10px] text-red-400 font-semibold">hari</p>
+                                            <span class="text-2xl font-black text-secondary">{{ $hariTelat }}</span>
+                                            <p class="text-[10px] text-secondary/60 font-semibold">hari telat</p>
                                         </div>
                                     @elseif ($belumDiambil)
                                         <div class="text-center mb-1">
-                                            <div class="flex items-center gap-1.5 bg-blue-50 border border-blue-200 rounded-xl px-3 py-2">
-                                                <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <div class="flex items-center gap-1.5 bg-primary/5 border border-primary/20 rounded-xl px-3 py-2">
+                                                <svg class="w-4 h-4 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a48.667 48.667 0 0 1 12 0m-12 0V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3.349M6.75 21V16.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21"/>
                                                 </svg>
                                                 <div class="text-left">
-                                                    <p class="text-[10px] text-blue-500 font-bold leading-none">Ambil di perpus</p>
-                                                    <p class="text-[10px] text-blue-400 leading-none mt-0.5">{{ $hariMenunggu === 0 ? 'hari ini' : $hariMenunggu . ' hari lagi' }}</p>
+                                                    <p class="text-[10px] text-primary font-bold leading-none">Ambil di perpus</p>
+                                                    <p class="text-[10px] text-primary/60 leading-none mt-0.5">{{ $hariMenunggu === 0 ? 'hari ini' : $hariMenunggu . ' hari lagi' }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -221,7 +221,7 @@
                                           onsubmit="return confirm('{{ $confirmMsg }}');">
                                         @csrf
                                         <button type="submit"
-                                            class="{{ $terlambat ? 'bg-red-500 hover:bg-red-600' : 'bg-primary hover:bg-secondary' }} text-white pl-3 pr-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:shadow">
+                                            class="{{ $terlambat ? 'bg-secondary hover:bg-secondary/90' : 'bg-primary hover:bg-secondary' }} text-background pl-3 pr-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:shadow">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
                                             </svg>
@@ -241,16 +241,16 @@
                     </div>
                 </div>
             @empty
-                <div class="text-center py-20 bg-white rounded-xl border border-dashed border-gray-200">
+                <div class="text-center py-20 bg-background rounded-xl border border-dashed border-text/10">
                     <div class="flex justify-center mb-4">
-                        <svg class="w-14 h-14 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <svg class="w-14 h-14 text-text/10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
                         </svg>
                     </div>
                     <h3 class="text-lg font-bold text-text/50">Belum ada riwayat peminjaman</h3>
                     <p class="text-sm text-text/40 mt-1">Kamu belum meminjam buku apapun.</p>
                     <a href="{{ route('student.home') }}"
-                        class="mt-5 inline-flex items-center gap-2 bg-primary text-white font-semibold text-sm px-5 py-2.5 rounded-xl hover:bg-secondary transition shadow-sm">
+                        class="mt-5 inline-flex items-center gap-2 bg-primary text-background font-semibold text-sm px-5 py-2.5 rounded-xl hover:bg-secondary transition shadow-sm">
                         Jelajah Buku
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -289,14 +289,16 @@
             border-radius: 1px 6px 6px 1px;
             overflow: hidden;
             z-index: 10;
-            background: #d1d5db;
+            background: var(--color-text);
+            opacity: 0.1;
             box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
         .hist-book-pages {
             position: absolute;
             top: 3px; right: 0; bottom: 3px; left: 1px;
             background: #f5f5f0;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--color-text);
+            border-color: color-mix(in srgb, var(--color-text) 10%, transparent);
             border-radius: 1px 5px 5px 1px;
             transform: translateZ(-4px) translateX(5px);
             z-index: 5;
@@ -310,7 +312,7 @@
         .hist-book-back {
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, #4b5563 0%, #1f2937 100%);
+            background: linear-gradient(160deg, var(--color-text) 0%, var(--color-secondary) 100%);
             border-radius: 1px 6px 6px 1px;
             transform: translateZ(-8px) translateX(8px);
             box-shadow: 3px 5px 12px rgba(0,0,0,0.18);
@@ -321,10 +323,10 @@
     <script>
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'text-text', 'shadow-sm');
+                btn.classList.remove('bg-background', 'text-text', 'shadow-sm');
                 btn.classList.add('text-text/50');
                 if (btn.dataset.tab === tab) {
-                    btn.classList.add('bg-white', 'text-text', 'shadow-sm');
+                    btn.classList.add('bg-background', 'text-text', 'shadow-sm');
                     btn.classList.remove('text-text/50');
                 }
             });

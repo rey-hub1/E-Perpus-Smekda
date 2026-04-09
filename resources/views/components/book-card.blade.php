@@ -79,8 +79,8 @@
 
         <!-- Badges (Category & Status) -->
         <div class="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
-            <span class="text-sm font-semibold text-gray-800 tracking-wide">{{ $book->category->name ?? 'Kategori' }}</span>
-            <span class="text-[10px] font-extrabold bg-green-100 text-green-700 px-3 py-1 rounded-sm uppercase tracking-wider">
+            <span class="text-sm font-semibold text-text/60 tracking-wide">{{ $book->category->name ?? 'Kategori' }}</span>
+            <span class="text-[10px] font-extrabold bg-accent/10 text-accent px-3 py-1 rounded-sm uppercase tracking-wider">
                 Tersedia
             </span>
         </div>
@@ -121,7 +121,7 @@
     <div class="p-5 flex flex-col grow justify-between">
 
         <div class="mb-2">
-            <h3 class="font-bold text-gray-900 text-xl leading-tight mb-3 line-clamp-2">{{ $book->judul }}</h3>
+            <h3 class="font-bold text-text text-xl leading-tight mb-3 line-clamp-2">{{ $book->judul }}</h3>
 
             <div class="flex items-center gap-3 mb-3">
                 <div class="w-7 h-7 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-gray-500 shrink-0">
@@ -151,7 +151,7 @@
                      {{ $book->stok }} Buku
                 </span>
             @else
-                <span class="text-[16px] text-red-500 font-bold">Habis</span>
+                <span class="text-[16px] text-primary font-bold">Habis</span>
             @endif
         </div>
 

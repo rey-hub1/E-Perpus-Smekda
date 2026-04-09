@@ -69,7 +69,7 @@
 
                     <!-- Error -->
                     @if (session('error'))
-                        <div class="mt-4 bg-red-50 border border-red-200 text-red-700 text-sm font-medium px-4 py-3 rounded-xl text-center">
+                        <div class="mt-4 bg-primary/10 border border-primary/20 text-secondary text-sm font-medium px-4 py-3 rounded-xl text-center">
                             {{ session('error') }}
                         </div>
                     @endif
@@ -100,7 +100,7 @@
                         @if($book->stok > 0)
                             <span class="text-xs text-text/40">Stok tersedia: <span class="font-semibold text-accent">{{ $book->stok }}</span> buku</span>
                         @else
-                            <span class="text-xs font-semibold text-red-400">Stok tidak tersedia saat ini</span>
+                            <span class="text-xs font-semibold text-primary">Stok tidak tersedia saat ini</span>
                         @endif
                     </div>
 
