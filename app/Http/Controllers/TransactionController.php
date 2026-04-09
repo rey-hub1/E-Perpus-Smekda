@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class TransactionController extends Controller
@@ -124,32 +125,23 @@ class TransactionController extends Controller
 
         if ($transaction->user_id != Auth::id()) {
             abort(403);
-        };
-
-        $tanggal_kembali = Carbon::now();
-        $denda = 0;
-        $hari_telat = 0;
-
-        if ($transaction->due_date && $tanggal_kembali->gt($transaction->due_date)) {
-            $hari_telat = (int) $tanggal_kembali->diffInDays($transaction->due_date);
-            $denda = $hari_telat * 1000;
         }
+
+        if ($transaction->status !== 'dipinjam') {
+            return back()->with('error', 'Buku ini tidak bisa dikembalikan saat ini.');
+        }
+
+        // Generate kode unik untuk pengembalian
+        do {
+            $kode = 'KMB-' . strtoupper(Str::random(6));
+        } while (Transaction::where('return_code', $kode)->exists());
 
         $transaction->update([
-            'status' => 'kembali',
-            'tanggal_kembali' => $tanggal_kembali,
-            'fine' => $denda
+            'status'      => 'mengembalikan',
+            'return_code' => $kode,
         ]);
 
-        $transaction->book->increment('stok');
-
-        if ($denda > 0) {
-            $message = 'Buku dikembalikan terlambat ' . $hari_telat . ' hari. Denda: Rp' . number_format($denda, 0, ',', '.') . ' 💸';
-        } else {
-            $message = 'Terima kasih sudah mengembalikan buku tepat waktu! 👍';
-        }
-
-        return back()->with('success', $message);
+        return back();
     }
     public function indexAdmin()
     {
@@ -160,14 +152,22 @@ class TransactionController extends Controller
         return view('admin.transactions', compact('transactions'));
     }
 
-    // Pengambilan sama admin
-    public function adminReturn($id)
+    // Admin konfirmasi pengembalian via kode
+    public function adminReturnByCode(Request $request)
     {
-        $transaction = Transaction::findOrFail($id);
+        $request->validate([
+            'return_code' => 'required|string',
+        ]);
 
+        $kode = strtoupper(trim($request->return_code));
 
-        if ($transaction->status == 'kembali') {
-            return back()->with('error', 'Buku Ini udah di kembaliin');
+        $transaction = Transaction::with(['user', 'book'])
+            ->where('return_code', $kode)
+            ->where('status', 'mengembalikan')
+            ->first();
+
+        if (!$transaction) {
+            return back()->with('error', 'Kode tidak valid atau buku sudah diproses.');
         }
 
         $tanggal_kembali = Carbon::now();
@@ -179,14 +179,50 @@ class TransactionController extends Controller
         }
 
         $transaction->update([
-            'status' => 'kembali',
+            'status'          => 'kembali',
             'tanggal_kembali' => $tanggal_kembali,
-            'fine' => $denda
+            'fine'            => $denda,
+            'return_code'     => null,
         ]);
 
         $transaction->book->increment('stok');
 
-        return back()->with('success', 'Buku sudah di kembalikan sama admin');
+        $msg = "Buku \"{$transaction->book->judul}\" dari {$transaction->user->name} berhasil dikembalikan.";
+        if ($denda > 0) {
+            $msg .= " Denda: Rp" . number_format($denda, 0, ',', '.');
+        }
+
+        return back()->with('success', $msg);
+    }
+
+    // Pengembalian manual sama admin (tanpa kode)
+    public function adminReturn($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->status == 'kembali') {
+            return back()->with('error', 'Buku ini sudah dikembalikan.');
+        }
+
+        $tanggal_kembali = Carbon::now();
+        $denda = 0;
+
+        if ($transaction->due_date && $tanggal_kembali->gt($transaction->due_date)) {
+            $hari_telat = (int) $tanggal_kembali->diffInDays($transaction->due_date);
+            $denda = $hari_telat * 1000;
+        }
+
+        $transaction->update([
+            'status'          => 'kembali',
+            'tanggal_kembali' => $tanggal_kembali,
+            'fine'            => $denda,
+            'return_code'     => null,
+        ]);
+
+        // Stok selalu dikembalikan karena buku belum kembali (dipinjam / mengembalikan)
+        $transaction->book->increment('stok');
+
+        return back()->with('success', 'Buku berhasil dikembalikan secara manual.');
     }
     public function adminPinjam($id)
     {

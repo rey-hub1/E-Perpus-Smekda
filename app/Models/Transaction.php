@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Transaction extends Model
 {
     protected $fillable = [
-        'user_id', 'book_id', 'tanggal_pinjam', 'tanggal_ambil', 'due_date', 'tanggal_kembali', 'status', 'fine'
+        'user_id', 'book_id', 'tanggal_pinjam', 'tanggal_ambil', 'due_date', 'tanggal_kembali', 'status', 'fine', 'return_code'
     ];
 
     // Relasi ke User (Siapa yang minjam?)

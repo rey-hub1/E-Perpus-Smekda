@@ -77,6 +77,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('transactions', [TransactionController::class, 'indexAdmin'])->name('transactions');
 
     Route::post('return/{id}', [TransactionController::class, 'adminReturn'])->name('return');
+    Route::post('return-by-code', [TransactionController::class, 'adminReturnByCode'])->name('return.by-code');
     Route::post('pinjam/{id}', [TransactionController::class, 'adminPinjam'])->name('pinjam');
 
     Route::get('users', [UserController::class, 'index'])->name('users.index');

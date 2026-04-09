@@ -4,9 +4,10 @@
 
 @section('content')
     @php
-        $dipinjam       = $transactions->where('status', 'dipinjam');
-        $dikembalikan   = $transactions->where('status', 'dikembalikan');
-        $terlambatCount = $dipinjam->filter(fn($t) =>
+        $dipinjam        = $transactions->where('status', 'dipinjam');
+        $mengembalikan   = $transactions->where('status', 'mengembalikan');
+        $dikembalikan    = $transactions->where('status', 'kembali');
+        $terlambatCount  = $dipinjam->filter(fn($t) =>
             $t->due_date && \Carbon\Carbon::now()->gt($t->due_date)
         )->count();
     @endphp
@@ -26,6 +27,12 @@
                     <p class="text-xl font-black text-text">{{ $dipinjam->count() }}</p>
                     <p class="text-[11px] font-medium text-text/40 mt-0.5">Dipinjam</p>
                 </div>
+                @if ($mengembalikan->count() > 0)
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-center min-w-18">
+                        <p class="text-xl font-black text-amber-600">{{ $mengembalikan->count() }}</p>
+                        <p class="text-[11px] font-medium text-amber-500 mt-0.5">Proses Kembali</p>
+                    </div>
+                @endif
                 <div class="bg-background border border-text/10 rounded-xl px-4 py-2.5 text-center min-w-18">
                     <p class="text-xl font-black text-text">{{ $dikembalikan->count() }}</p>
                     <p class="text-[11px] font-medium text-text/40 mt-0.5">Selesai</p>
@@ -39,7 +46,39 @@
             </div>
         </div>
 
-        {{-- Flash messages --}}
+        {{-- Notifikasi pengembalian aktif --}}
+        @if ($mengembalikan->count() > 0)
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0 mt-0.5">
+                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-amber-800 text-sm">
+                            {{ $mengembalikan->count() > 1 ? $mengembalikan->count() . ' buku menunggu konfirmasi pengembalian' : 'Permintaan pengembalian dikirim!' }}
+                        </p>
+                        <p class="text-amber-700 text-sm mt-1">Tunjukkan kode berikut ke petugas perpustakaan saat mengembalikan buku:</p>
+                        <div class="mt-3 flex flex-wrap gap-3">
+                            @foreach ($mengembalikan as $trxKembali)
+                                <div class="bg-white border-2 border-amber-300 rounded-xl px-4 py-3 flex flex-col gap-1 min-w-48">
+                                    <p class="text-[10px] font-semibold text-amber-500 uppercase tracking-wide truncate">{{ $trxKembali->book->judul }}</p>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-black text-xl text-amber-700 tracking-widest" style="font-family: monospace; letter-spacing: 0.15em;">{{ $trxKembali->return_code }}</span>
+                                        <button onclick="navigator.clipboard.writeText('{{ $trxKembali->return_code }}').then(() => { this.textContent='Disalin!'; setTimeout(()=>this.textContent='Salin',1500) })"
+                                            class="text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-700 px-2 py-0.5 rounded-lg transition-colors shrink-0">
+                                            Salin
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="text-amber-600 text-xs mt-3">Setiap kode hanya berlaku sekali dan akan hilang setelah dikonfirmasi petugas.</p>
+                    </div>
+                </div>
+            </div>
+        @endif
         @if (session('success'))
             <div class="bg-accent/10 border border-accent/20 text-accent px-4 py-3 rounded-xl text-sm font-medium">
                 {{ session('success') }}
@@ -52,7 +91,7 @@
         @endif
 
         {{-- Tab Filter --}}
-        <div class="flex gap-1 bg-text/5 p-1 rounded-xl w-fit">
+        <div class="flex gap-1 bg-text/5 p-1 rounded-xl w-fit flex-wrap">
             <button onclick="switchTab('semua')"
                 class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-background text-text shadow-sm"
                 data-tab="semua">
@@ -63,9 +102,16 @@
                 data-tab="dipinjam">
                 Dipinjam ({{ $dipinjam->count() }})
             </button>
-            <button onclick="switchTab('dikembalikan')"
+            @if ($mengembalikan->count() > 0)
+                <button onclick="switchTab('mengembalikan')"
+                    class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-text/50"
+                    data-tab="mengembalikan">
+                    Proses Kembali ({{ $mengembalikan->count() }})
+                </button>
+            @endif
+            <button onclick="switchTab('kembali')"
                 class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-text/50"
-                data-tab="dikembalikan">
+                data-tab="kembali">
                 Selesai ({{ $dikembalikan->count() }})
             </button>
         </div>
@@ -82,9 +128,11 @@
                     $sisaHari        = !$terlambat && !$belumDiambil && $trx->status === 'dipinjam' && $trx->due_date
                                           ? (int) \Carbon\Carbon::now()->diffInDays($trx->due_date, false)
                                           : null;
+                    $sedangKembali   = $trx->status === 'mengembalikan';
                 @endphp
 
-                <div class="book-item bg-background rounded-xl border border-text/5 hover:border-text/10 hover:shadow-sm transition-all duration-200 overflow-hidden"
+                <div class="book-item bg-background rounded-xl border transition-all duration-200 overflow-hidden
+                     {{ $sedangKembali ? 'border-amber-200 bg-amber-50/30' : 'border-text/5 hover:border-text/10 hover:shadow-sm' }}"
                      data-status="{{ $trx->status }}">
                     <div class="flex">
 
@@ -122,7 +170,9 @@
                                        class="font-bold text-text text-base leading-tight hover:text-primary transition-colors line-clamp-1">
                                         {{ $trx->book->judul }}
                                     </a>
-                                    @if ($trx->status === 'dipinjam')
+                                    @if ($sedangKembali)
+                                        <span class="shrink-0 text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full border border-amber-200">Menunggu Konfirmasi</span>
+                                    @elseif ($trx->status === 'dipinjam')
                                         @if ($terlambat)
                                             <span class="shrink-0 text-[10px] font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-full">Terlambat {{ $hariTelat }}h</span>
                                         @elseif ($belumDiambil)
@@ -187,7 +237,19 @@
 
                             {{-- Action / Right side --}}
                             <div class="shrink-0 flex flex-col items-end gap-2">
-                                @if ($trx->status === 'dipinjam')
+                                @if ($sedangKembali)
+                                    <div class="text-right">
+                                        <p class="text-[10px] text-amber-600 font-semibold mb-1.5">Kode pengembalianmu:</p>
+                                        <div class="inline-flex items-center gap-2 bg-white border-2 border-amber-300 rounded-xl px-3 py-2">
+                                            <span class="font-black text-base text-amber-700 tracking-widest" style="font-family: monospace;">{{ $trx->return_code }}</span>
+                                            <button onclick="navigator.clipboard.writeText('{{ $trx->return_code }}').then(() => { this.textContent='Disalin!'; setTimeout(()=>this.textContent='Salin',1500) })"
+                                                class="text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-700 px-2 py-0.5 rounded-lg transition-colors">
+                                                Salin
+                                            </button>
+                                        </div>
+                                        <p class="text-[10px] text-amber-500 mt-1.5">Tunjukkan ke petugas perpus</p>
+                                    </div>
+                                @elseif ($trx->status === 'dipinjam')
                                     @if ($terlambat)
                                         <div class="text-center mb-1">
                                             <span class="text-2xl font-black text-secondary">{{ $hariTelat }}</span>

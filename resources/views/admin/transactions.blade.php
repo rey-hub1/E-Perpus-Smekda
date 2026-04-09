@@ -29,6 +29,38 @@
         </div>
     @endif
 
+    <!-- Konfirmasi Pengembalian via Kode -->
+    <div class="bg-background border border-text/10 rounded-xl p-5">
+        <div class="flex items-start gap-4">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style="background: #DC2626;">
+                <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5z"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-semibold text-text">Konfirmasi Pengembalian</p>
+                <p class="text-xs text-text/40 mt-0.5">Masukkan kode yang ditunjukkan siswa untuk memproses pengembalian buku.</p>
+                <form action="{{ route('admin.return.by-code') }}" method="POST" class="flex items-center gap-3 mt-3">
+                    @csrf
+                    <input type="text" name="return_code"
+                        placeholder="KMB-XXXXXX"
+                        value="{{ old('return_code') }}"
+                        maxlength="10"
+                        class="uppercase tracking-widest font-mono text-sm border border-text/10 rounded-lg px-4 py-2 w-44 focus:outline-none focus:border-primary bg-white text-text placeholder:text-text/30 placeholder:normal-case placeholder:tracking-normal"
+                        style="font-family: monospace;"
+                        oninput="this.value = this.value.toUpperCase()">
+                    <button type="submit"
+                        class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-secondary transition-colors">
+                        Proses Pengembalian
+                    </button>
+                </form>
+                @error('return_code')
+                    <p class="text-xs text-primary mt-1.5">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+    </div>
+
     <!-- Table -->
     <div class="bg-background rounded-xl border border-text/10 overflow-hidden">
 
@@ -106,6 +138,15 @@
                                     <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full border border-primary/10">
                                         Dipinjam
                                     </span>
+                                @elseif ($trx->status == 'mengembalikan')
+                                    <div class="flex flex-col items-center gap-1">
+                                        <span class="inline-block bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-200">
+                                            Mengembalikan
+                                        </span>
+                                        @if ($trx->return_code)
+                                            <span class="text-[10px] font-mono font-bold text-amber-600 tracking-widest">{{ $trx->return_code }}</span>
+                                        @endif
+                                    </div>
                                 @else
                                     <span class="inline-block bg-text/5 text-text/50 text-xs font-semibold px-2.5 py-1 rounded-full">
                                         Selesai
@@ -120,9 +161,11 @@
                                         @csrf
                                         <button type="submit"
                                             class="bg-background border border-text/10 text-text/70 hover:border-primary hover:text-primary text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
-                                            Kembalikan
+                                            Manual
                                         </button>
                                     </form>
+                                @elseif ($trx->status == 'mengembalikan')
+                                    <span class="text-[11px] text-amber-600 font-medium">Tunggu kode</span>
                                 @else
                                     <form action="{{ route('admin.pinjam', $trx->id) }}" method="POST"
                                         onsubmit="return confirm('Proses peminjaman buku ini secara manual?')">
