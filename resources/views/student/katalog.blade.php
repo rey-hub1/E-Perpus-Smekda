@@ -78,7 +78,7 @@
         @endif
 
         {{-- Grid Buku --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 gap-x-20">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @forelse ($books as $book)
                 <x-book-card :book="$book" />
             @empty

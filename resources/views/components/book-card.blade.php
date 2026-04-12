@@ -19,7 +19,7 @@
     /* Hover Effect */
     .group:hover .book-3d {
         /* Saat dihover serongnya juga tidak terlalu ekstrem */
-        transform: rotateY(-8deg) scale(1.02) translateX(-2px);
+        transform: rotateY(-15deg) scale(1.02) translateX(-2px);
     }
 
     /* White pages on the right edge */
@@ -75,18 +75,15 @@
 <a href="{{ route('book.show', $book->slug) }}" class="group block flex flex-col h-full bg-background rounded-xl overflow-hidden  transition-all duration-300 border border-gray-100">
 
     <!-- Top Area: Gray background box with Book -->
-    <div class="relative bg-gray-100 p-6 pt-16 pb-16 flex justify-center items-center rounded-t-xl overflow-hidden">
+    <div class="relative bg-gray-100 p-4 pt-12 pb-12 flex justify-center items-center rounded-t-xl overflow-hidden">
 
         <!-- Badges (Category & Status) -->
         <div class="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
-            <span class="text-sm font-semibold text-text/60 tracking-wide">{{ $book->category->name ?? 'Kategori' }}</span>
-            <span class="text-[10px] font-extrabold bg-accent/10 text-accent px-3 py-1 rounded-sm uppercase tracking-wider">
-                Tersedia
-            </span>
+            <span class="text-[10px] font-semibold text-text/50 tracking-wide truncate max-w-full">{{ $book->category->name ?? '' }}</span>
         </div>
 
         <!-- The 3D Book Container -->
-        <div class="book-wrapper w-[150px] h-[210px] sm:w-[160px] sm:h-[220px] md:w-[170px] md:h-[240px]">
+        <div class="book-wrapper w-[110px] h-[155px] sm:w-[120px] sm:h-[170px] md:w-[130px] md:h-[185px]">
             <div class="book-3d relative w-full h-full rounded-l-[3px] rounded-r-lg shadow-lg">
                 <!-- Layers (Bottom-most to Top-most) -->
                 <div class="book-back"></div>
@@ -118,40 +115,23 @@
     </div>
 
     <!-- Bottom Info Area -->
-    <div class="p-5 flex flex-col grow justify-between">
+    <div class="px-3.5 py-3 flex flex-col grow justify-between">
 
-        <div class="mb-2">
-            <h3 class="font-bold text-text text-xl leading-tight mb-3 line-clamp-2">{{ $book->judul }}</h3>
-
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-7 h-7 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-gray-500 shrink-0">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                </div>
-                <p class="text-[15px] text-gray-600 truncate">{{ $book->penulis }}</p>
-            </div>
-
-            <div class="flex items-center gap-1.5 mb-4">
-                <div class="flex text-yellow-400">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                    <svg class="w-5 h-5 text-gray-200" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                </div>
-                <span class="text-[15px] text-gray-600 font-medium ml-1">4/5</span>
-                <span class="text-[14px] text-gray-500">({{ rand(2, 50) }} ulasan)</span>
-            </div>
+        <div>
+            <span class="text-[10px] font-semibold text-text/40 uppercase tracking-wide truncate block mb-1">{{ $book->category->name ?? '' }}</span>
+            <h3 class="font-bold text-text text-sm leading-tight truncate mb-1">{{ $book->judul }}</h3>
+            <p class="text-xs text-gray-500 truncate">{{ $book->penulis }}</p>
         </div>
 
-        <div class="mt-auto flex items-center pt-2">
-            <span class="text-[16px] text-gray-700 mr-2">Tersedia:</span>
+        <div class="mt-2 flex items-center justify-between">
+            <div class="flex items-center gap-0.5 text-yellow-400">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                <span class="text-[11px] text-gray-500 font-medium">4.0</span>
+            </div>
             @if($book->stok > 0)
-                <span class="flex items-center text-[16px] text-gray-700">
-
-                     {{ $book->stok }} Buku
-                </span>
+                <span class="text-[11px] font-semibold text-accent">{{ $book->stok }} tersedia</span>
             @else
-                <span class="text-[16px] text-primary font-bold">Habis</span>
+                <span class="text-[11px] font-semibold text-primary">Habis</span>
             @endif
         </div>
 

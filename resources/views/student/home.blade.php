@@ -29,9 +29,9 @@
                 </svg>
             </div>
 
-            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide pl-8 pr-4 snap-x snap-proximity scroll-pl-8">
+            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide pl-8 pr-4 snap-x snap-proximity scroll-pl-8 lg:grid lg:grid-cols-5 lg:overflow-x-visible lg:pb-0 lg:px-8">
                 @foreach ($popularBooks as $NB)
-                    <div class="shrink-0 w-75 snap-start">
+                    <div class="shrink-0 w-[260px] snap-start lg:w-auto lg:shrink">
                         <x-book-card :book="$NB" />
                     </div>
                 @endforeach
@@ -117,27 +117,53 @@
                 </div>
             @endif
 
-            <div class="flex items-center gap-2 mb-1">
-                <h2 class="text-xl font-bold text-text">Koleksi</h2>
-                <svg class="w-5 h-5 text-text/40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
-                </svg>
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-xl font-bold text-text">Koleksi</h2>
+                    <svg class="w-5 h-5 text-text/40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+                    </svg>
+                </div>
+                <a href="{{ route('student.katalog') }}" class="text-xs font-semibold text-text/40 hover:text-primary transition-colors flex items-center gap-1 group/all">
+                    Lihat Semua
+                    <svg class="w-4 h-4 transition-transform group-hover/all:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                    </svg>
+                </a>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 gap-x-10">
-                @forelse ($books as $book)
-                    <x-book-card :book="$book" />
-                @empty
-                    <div class="col-span-full text-center py-20 bg-background rounded-xl border border-dashed border-text/10">
-                        <div class="flex justify-center mb-4">
-                            <svg class="w-14 h-14 text-text/10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+            <div class="-mx-8">
+                <div class="flex gap-1.5 overflow-x-auto pb-8 scrollbar-hide px-8 snap-x snap-proximity lg:grid lg:grid-cols-5 lg:overflow-x-visible lg:pb-0 lg:gap-4">
+                    @forelse ($books->take(5) as $book)
+                        <div class="shrink-0 w-[260px] snap-start lg:w-auto lg:shrink">
+                            <x-book-card :book="$book" />
                         </div>
-                        <h3 class="text-xl font-bold text-text/60">Buku tidak ditemukan</h3>
-                        <p class="text-text/40">Coba cari dengan kata kunci lain.</p>
-                    </div>
-                @endforelse
-                <div class="mt-8">
-                    {{ $books->withQueryString()->links() }}
+                    @empty
+                        <div class="w-full text-center py-20 bg-background rounded-xl border border-dashed border-text/10 mx-8">
+                            <div class="flex justify-center mb-4">
+                                <svg class="w-14 h-14 text-text/10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-text/60">Buku tidak ditemukan</h3>
+                            <p class="text-text/40">Koleksi kami masih kosong atau tidak ada yang sesuai.</p>
+                        </div>
+                    @endforelse
+
+                    @if($books->count() > 0)
+                        {{-- Final Card: View All --}}
+                        <div class="shrink-0 pr-8">
+                            <a href="{{ route('student.katalog') }}" class="flex flex-col items-center justify-center bg-text/5 hover:bg-text/10 transition-all rounded-xl border-2 border-dashed border-text/10 group/viewall w-[180px] h-full min-h-[400px]">
+                                <div class="w-14 h-14 rounded-full bg-background flex items-center justify-center mb-3 shadow-sm group-hover/viewall:scale-110 transition-transform">
+                                    <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </div>
+                                <span class="font-bold text-text/60">Lihat Semua</span>
+                                <span class="text-xs text-text/30 mt-1">Total {{ $books->total() }} buku</span>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

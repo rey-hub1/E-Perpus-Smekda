@@ -240,7 +240,7 @@
         }
         .hist-book-back {
             position: absolute; inset: 0;
-            background: linear-gradient(160deg, var(--color-text) 0%, var(--color-secondary) 100%);
+            background: #ffffff;
             border-radius: 1px 6px 6px 1px;
             transform: translateZ(-8px) translateX(8px);
             box-shadow: 3px 5px 12px rgba(0,0,0,0.18); z-index: 1;
