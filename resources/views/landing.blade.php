@@ -240,7 +240,7 @@
     <nav class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm">
         <div class="cont py-5 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="images/global/logoperpus.png" alt="E-Perpus Logo" class="h-10 w-auto">
+                <img src="{{ asset('images/global/logo.png') }}" alt="GoRead Logo" class="h-14 w-auto">
             </div>
 
             <div class="hidden md:flex items-center gap-5">
@@ -508,7 +508,7 @@
 
                 <!-- Brand Column -->
                 <div class="md:col-span-4">
-                    <img src="images/global/logoperpus.png" alt="E-Perpus Logo" class="h-10 w-auto mb-4 brightness-0 invert opacity-90">
+                    <img src="{{ asset('images/global/logo.png') }}" alt="GoRead Logo" class="h-16 w-auto mb-4 brightness-0 invert opacity-90">
                     <div class="footer-brand-line"></div>
                     <p class="mt-5 text-text/40 text-sm leading-relaxed max-w-xs">
                         Platform perpustakaan digital SMKN 2 Purwakarta. Mendukung kegiatan belajar

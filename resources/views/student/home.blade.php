@@ -150,20 +150,6 @@
                         </div>
                     @endforelse
 
-                    @if($books->count() > 0)
-                        {{-- Final Card: View All --}}
-                        <div class="shrink-0 pr-8">
-                            <a href="{{ route('student.katalog') }}" class="flex flex-col items-center justify-center bg-text/5 hover:bg-text/10 transition-all rounded-xl border-2 border-dashed border-text/10 group/viewall w-[180px] h-full min-h-[400px]">
-                                <div class="w-14 h-14 rounded-full bg-background flex items-center justify-center mb-3 shadow-sm group-hover/viewall:scale-110 transition-transform">
-                                    <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                                    </svg>
-                                </div>
-                                <span class="font-bold text-text/60">Lihat Semua</span>
-                                <span class="text-xs text-text/30 mt-1">Total {{ $books->total() }} buku</span>
-                            </a>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

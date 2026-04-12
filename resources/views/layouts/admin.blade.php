@@ -16,11 +16,7 @@
 
         <!-- Logo -->
         <div class="px-5 py-5 flex items-center gap-3" style="border-bottom: 1px solid rgba(255,255,255,0.07);">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background: #DC2626;">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
-                </svg>
-            </div>
+            <img src="{{ asset('images/global/logo.png') }}" alt="Logo" class="h-12 w-auto object-contain shrink-0">
             <div>
                 <p class="text-sm font-bold leading-none" style="color: #f9fafb; font-family: var(--font-heading);">GoRead</p>
                 <p class="text-[10px] uppercase tracking-widest mt-0.5" style="color: rgba(255,255,255,0.3);">Admin Panel</p>
