@@ -23,7 +23,7 @@
                 :class="step >= 1 ? 'bg-primary text-white' : 'bg-text/10 text-text/40'">1</div>
             <span class="text-sm font-medium" :class="step >= 1 ? 'text-text' : 'text-text/40'">Input JSON</span>
         </div>
-        <div class="flex-1 h-px bg-text/10 max-w-16"></div>
+        <div class="flex-1 h-px bg-text/10 max-w-16"></div> 
         <div class="flex items-center gap-2">
             <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors"
                 :class="step >= 2 ? 'bg-primary text-white' : 'bg-text/10 text-text/40'">2</div>

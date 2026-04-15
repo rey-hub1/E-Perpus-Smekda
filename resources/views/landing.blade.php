@@ -115,7 +115,13 @@
         }
         .hero-stat-item {
             display: flex; flex-direction: column; align-items: center;
-            padding: 0 28px;
+            padding: 0 14px;
+        }
+        @media (min-width: 640px) {
+            .hero-stat-item { padding: 0 22px; }
+        }
+        @media (min-width: 768px) {
+            .hero-stat-item { padding: 0 28px; }
         }
         .hero-stat-divider {
             width: 1px; height: 40px;
@@ -327,16 +333,16 @@
                 </p>
 
                 <!-- CTA Buttons -->
-                <div class="opacity-0 animate-fade-in-up animate-delay-3 mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                <div class="opacity-0 animate-fade-in-up animate-delay-3 mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
                     @auth
-                        <a href="{{ route('student.home') }}" class="btn-hero-primary inline-block">
+                        <a href="{{ route('student.home') }}" class="btn-hero-primary text-center">
                             Mulai Membaca →
                         </a>
                     @else
-                        <a href="{{ route('register') }}" class="btn-hero-primary inline-block">
+                        <a href="{{ route('register') }}" class="btn-hero-primary text-center">
                             Daftar Gratis →
                         </a>
-                        <a href="{{ route('login') }}" class="btn-hero-ghost inline-block">
+                        <a href="{{ route('login') }}" class="btn-hero-ghost text-center">
                             Masuk
                         </a>
                     @endauth
@@ -384,10 +390,10 @@
         <div class="cont">
             <div class="text-center mb-14">
                 <p class="text-primary font-semibold tracking-widest text-sm uppercase mb-3">Koleksi Pilihan</p>
-                <h2 class="text-4xl md:text-5xl font-bold text-text font-heading">Buku Terpopuler</h2>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-text font-heading">Buku Terpopuler</h2>
                 <p class="text-text/50 text-lg mt-3 max-w-lg mx-auto">Paling banyak dipinjam oleh siswa SMKN 2 Purwakarta</p>
             </div>
-            <div class="flex justify-center gap-10 flex-wrap">
+            <div class="flex justify-center gap-5 sm:gap-8 md:gap-10 flex-wrap">
                 @foreach ($popularBooks as $book)
                     <x-book-cover :book="$book" :large="true" />
                 @endforeach
@@ -398,10 +404,10 @@
     <!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
     <section id="about" class="py-24 bg-text/2 border-t border-text/10 section-fade">
         <div class="cont">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
                 <div>
                     <p class="text-primary font-semibold tracking-widest text-sm uppercase mb-3">Tentang Kami</p>
-                    <h2 class="text-4xl md:text-5xl font-bold font-heading text-text leading-tight">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-text leading-tight">
                         Perpustakaan Digital<br>untuk Generasi Modern
                     </h2>
                     <p class="mt-6 text-text/60 text-lg leading-relaxed">
@@ -459,10 +465,10 @@
         <div class="cont">
             <div class="text-center mb-14">
                 <p class="text-primary font-semibold tracking-widest text-sm uppercase mb-3">Lokasi</p>
-                <h2 class="text-4xl md:text-5xl font-bold font-heading text-text mb-2">Temukan Kami</h2>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-text mb-2">Temukan Kami</h2>
                 <p class="text-text/50 text-lg">SMKN 2 Purwakarta, Jawa Barat</p>
             </div>
-            <div class="rounded-2xl overflow-hidden shadow-lg h-126 border border-text/10">
+            <div class="rounded-2xl overflow-hidden shadow-lg h-56 sm:h-80 md:h-96 lg:h-[504px] border border-text/10">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.77000106877!2d107.43932322577727!3d-6.550696643442323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e690e5975014a5d%3A0x87f7a97e7f9f961!2sSMKN%202%20Purwakarta!5e0!3m2!1sid!2sid!4v1769698917066!5m2!1sid!2sid"
                     class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"
@@ -477,7 +483,7 @@
             <div class="max-w-3xl mx-auto">
                 <div class="text-center mb-10">
                     <p class="text-primary font-semibold tracking-widest text-sm uppercase mb-3">Feedback</p>
-                    <h2 class="text-4xl md:text-5xl font-bold font-heading text-gray-900 mb-4">Kirim Pendapat Anda</h2>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-gray-900 mb-4">Kirim Pendapat Anda</h2>
                     <p class="text-gray-500 text-lg">Bantu kami menjadi lebih baik dengan masukan kamu</p>
                 </div>
                 <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
@@ -504,10 +510,10 @@
         <div class="cont pt-16 pb-8">
 
             <!-- Main Footer Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 md:gap-12 mb-12">
 
                 <!-- Brand Column -->
-                <div class="md:col-span-4">
+                <div class="sm:col-span-2 md:col-span-4">
                     <img src="{{ asset('images/global/logo.png') }}" alt="GoRead Logo" class="h-16 w-auto mb-4 brightness-0 invert opacity-90">
                     <div class="footer-brand-line"></div>
                     <p class="mt-5 text-text/40 text-sm leading-relaxed max-w-xs">

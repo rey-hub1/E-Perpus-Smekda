@@ -3,28 +3,20 @@
 @section('title', 'Library Saya')
 
 @section('content')
-    <div class="space-y-6">
+    <div class="space-y-5 sm:space-y-6">
 
         {{-- Header --}}
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold font-heading text-text">Library Saya</h1>
+                <h1 class="text-xl sm:text-2xl font-bold font-heading text-text">Library Saya</h1>
                 <p class="text-sm text-text/50 mt-1">Koleksi buku yang kamu tandai secara pribadi.</p>
             </div>
 
             {{-- Stats --}}
-            <div class="flex gap-3">
-                <div class="bg-background border border-text/10 rounded-xl px-4 py-2.5 text-center min-w-18">
-                    <p class="text-xl font-black text-text">{{ $reading->count() }}</p>
-                    <p class="text-[11px] font-medium text-text/40 mt-0.5">Dibaca</p>
-                </div>
-                <div class="bg-background border border-text/10 rounded-xl px-4 py-2.5 text-center min-w-18">
-                    <p class="text-xl font-black text-text">{{ $saved->count() }}</p>
-                    <p class="text-[11px] font-medium text-text/40 mt-0.5">Tersimpan</p>
-                </div>
-                <div class="bg-background border border-text/10 rounded-xl px-4 py-2.5 text-center min-w-18">
-                    <p class="text-xl font-black text-text">{{ $finished->count() }}</p>
-                    <p class="text-[11px] font-medium text-text/40 mt-0.5">Selesai</p>
+            <div class="flex flex-wrap gap-2 sm:gap-3">
+                <div class="bg-background border border-text/10 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-center min-w-16">
+                    <p class="text-lg sm:text-xl font-black text-text">{{ $library->count() }}</p>
+                    <p class="text-[10px] sm:text-[11px] font-medium text-text/40 mt-0.5">Total Tersimpan</p>
                 </div>
             </div>
         </div>
@@ -37,40 +29,18 @@
         @endif
 
         {{-- Tab Filter --}}
-        <div class="flex gap-1 bg-text/5 p-1 rounded-xl w-fit">
-            <button onclick="switchTab('semua')"
-                class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-background text-text shadow-sm"
-                data-tab="semua">
-                Semua ({{ $library->count() }})
-            </button>
-            <button onclick="switchTab('reading')"
-                class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-text/50"
-                data-tab="reading">
-                Sedang Dibaca ({{ $reading->count() }})
-            </button>
-            <button onclick="switchTab('saved')"
-                class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-text/50"
-                data-tab="saved">
-                Tersimpan ({{ $saved->count() }})
-            </button>
-            <button onclick="switchTab('finished')"
-                class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all text-text/50"
-                data-tab="finished">
-                Selesai ({{ $finished->count() }})
-            </button>
-        </div>
+
 
         {{-- Book List --}}
         <div class="space-y-3" id="bookList">
             @forelse ($library as $entry)
                 <div class="lib-item bg-background rounded-xl border border-text/5 hover:border-text/10 hover:shadow-sm transition-all duration-200 overflow-hidden"
                      data-status="{{ $entry->status }}">
-                    <div class="flex">
+                    <div class="flex flex-col sm:flex-row">
 
                         {{-- 3D Book Cover --}}
                         <a href="{{ route('book.show', $entry->book->slug) }}"
-                            class="shrink-0 flex items-center justify-center bg-text/2 px-5 py-5 group"
-                            style="min-width: 110px;">
+                            class="shrink-0 flex items-center justify-center bg-text/2 px-4 sm:px-5 py-4 sm:py-5 group sm:min-w-[100px]">
                             <div class="hist-book-perspective">
                                 <div class="hist-book-3d">
                                     <div class="hist-book-back"></div>
@@ -92,31 +62,23 @@
                         </a>
 
                         {{-- Content --}}
-                        <div class="flex-1 px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4 min-w-0">
+                        <div class="flex-1 px-4 sm:px-5 py-3 sm:py-4 flex flex-col gap-3 sm:gap-4 min-w-0">
 
                             {{-- Info --}}
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                                <div class="flex items-start sm:items-center gap-2 mb-1 flex-wrap">
                                     <a href="{{ route('book.show', $entry->book->slug) }}"
-                                       class="font-bold text-text text-base leading-tight hover:text-primary transition-colors line-clamp-1">
+                                       class="font-bold text-text text-sm sm:text-base leading-tight hover:text-primary transition-colors line-clamp-2 sm:line-clamp-1">
                                         {{ $entry->book->judul }}
                                     </a>
-                                    @php
-                                        $badgeMap = [
-                                            'reading'  => ['label' => 'Sedang Dibaca', 'class' => 'bg-cta text-text/70'],
-                                            'saved'    => ['label' => 'Tersimpan',     'class' => 'bg-cta text-text/70'],
-                                            'finished' => ['label' => 'Selesai',       'class' => 'bg-accent/10 text-accent'],
-                                        ];
-                                        $badge = $badgeMap[$entry->status];
-                                    @endphp
-                                    <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full {{ $badge['class'] }}">
-                                        {{ $badge['label'] }}
+                                    <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-cta text-text/70">
+                                        Tersimpan
                                     </span>
                                 </div>
 
-                                <p class="text-sm text-text/40 mb-3">{{ $entry->book->penulis }}</p>
+                                <p class="text-xs sm:text-sm text-text/40 mb-2 sm:mb-3">{{ $entry->book->penulis }}</p>
 
-                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-text/40">
+                                <div class="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-xs text-text/40">
                                     @if ($entry->book->category)
                                         <div class="flex items-center gap-1.5">
                                             <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -135,37 +97,9 @@
                             </div>
 
                             {{-- Actions --}}
-                            <div class="shrink-0 flex items-center gap-2">
+                            <div class="flex items-center gap-2 pt-1 sm:pt-0 border-t border-text/5 sm:border-t-0">
                                 {{-- Update status --}}
-                                <div class="relative" x-data="{ open: false }">
-                                    <button @click="open = !open"
-                                        class="flex items-center gap-1.5 text-xs font-semibold text-text/50 hover:text-text bg-background border border-text/10 px-3 py-2 rounded-lg transition-all hover:bg-text/5">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
-                                        </svg>
-                                        Pindahkan
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
-                                        </svg>
-                                    </button>
 
-                                    <div x-show="open" @click.outside="open = false"
-                                        class="absolute right-0 mt-1 w-44 bg-background rounded-xl border border-text/10 shadow-lg z-20 overflow-hidden"
-                                        x-transition>
-                                        @foreach (['reading' => 'Sedang Dibaca', 'saved' => 'Tersimpan', 'finished' => 'Selesai Dibaca'] as $status => $label)
-                                            @if ($entry->status !== $status)
-                                                <form action="{{ route('library.store', $entry->book) }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="{{ $status }}">
-                                                    <button type="submit"
-                                                        class="w-full text-left px-4 py-2.5 text-sm text-text/70 hover:bg-text/2 hover:text-text transition-colors">
-                                                        {{ $label }}
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                </div>
 
                                 {{-- Hapus --}}
                                 <form action="{{ route('library.destroy', $entry->book) }}" method="POST"
@@ -184,13 +118,13 @@
                     </div>
                 </div>
             @empty
-                <div class="text-center py-20 bg-background rounded-xl border border-dashed border-text/10">
+                <div class="text-center py-16 sm:py-20 bg-background rounded-xl border border-dashed border-text/10">
                     <div class="flex justify-center mb-4">
-                        <svg class="w-14 h-14 text-text/10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <svg class="w-12 sm:w-14 h-12 sm:h-14 text-text/10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold text-text/50">Library masih kosong</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-text/50">Library masih kosong</h3>
                     <p class="text-sm text-text/40 mt-1">Tandai buku dari halaman detail buku.</p>
                     <a href="{{ route('student.home') }}"
                                class="mt-5 inline-flex items-center gap-2 bg-primary text-background font-semibold text-sm px-5 py-2.5 rounded-xl hover:bg-secondary transition shadow-sm">
@@ -210,13 +144,19 @@
     </div>
 
     <style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
         .hist-book-perspective { perspective: 700px; }
         .hist-book-3d {
-            width: 68px; height: 96px;
+            width: 60px; height: 84px;
             position: relative;
             transform-style: preserve-3d;
             transform: rotateY(-16deg) rotateX(2deg);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        @media (min-width: 640px) {
+            .hist-book-3d { width: 68px; height: 96px; }
         }
         .group:hover .hist-book-3d { transform: rotateY(-22deg) rotateX(3deg) scale(1.05); }
         .hist-book-front {
@@ -228,7 +168,7 @@
         }
         .hist-book-pages {
             position: absolute; top: 3px; right: 0; bottom: 3px; left: 1px;
-            background: #f5f5f0; 
+            background: #f5f5f0;
             border: 1px solid var(--color-text);
             border-color: color-mix(in srgb, var(--color-text) 10%, transparent);
             border-radius: 1px 5px 5px 1px;
@@ -247,28 +187,5 @@
         }
     </style>
 
-    <script>
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-background', 'text-text', 'shadow-sm');
-                btn.classList.add('text-text/50');
-                if (btn.dataset.tab === tab) {
-                    btn.classList.add('bg-background', 'text-text', 'shadow-sm');
-                    btn.classList.remove('text-text/50');
-                }
-            });
 
-            const items = document.querySelectorAll('.lib-item');
-            let visibleCount = 0;
-            items.forEach(item => {
-                const show = tab === 'semua' || item.dataset.status === tab;
-                item.style.display = show ? '' : 'none';
-                if (show) visibleCount++;
-            });
-
-            document.getElementById('emptyTab').classList.toggle('hidden', visibleCount > 0 || items.length === 0);
-        }
-
-        switchTab('semua');
-    </script>
 @endsection

@@ -57,15 +57,7 @@
 
                     </div>
 
-                    <!-- Favorite badge -->
-                    @if ($book->favorite)
-                        <div class="mt-4 flex items-center justify-center gap-1.5 text-sm text-accent font-semibold">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                            </svg>
-                            Buku Favorit
-                        </div>
-                    @endif
+
 
                     <!-- Error -->
                     @if (session('error'))
@@ -104,70 +96,32 @@
                         @endif
                     </div>
 
-                    <!-- Tambah ke Library -->
                     @php
                         $libraryEntry = \App\Models\UserLibrary::where('user_id', auth()->id())
                             ->where('book_id', $book->id)
                             ->first();
-                        $libraryOptions = [
-                            'reading'  => 'Sedang Dibaca',
-                            'saved'    => 'Simpan ke Library',
-                            'finished' => 'Tandai Selesai',
-                        ];
                     @endphp
-                    <div class="mt-3 relative" x-data="{ open: false }">
-                        <button @click="open = !open"
-                            class="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl border transition-all text-sm font-semibold
-                                {{ $libraryEntry ? 'bg-primary/5 border-primary/20 text-primary hover:bg-primary/10' : 'bg-gray-50 border-gray-200 text-text/60 hover:bg-gray-100 hover:text-text' }}">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
-                                </svg>
-                                @if ($libraryEntry)
-                                    {{ $libraryOptions[$libraryEntry->status] }}
-                                @else
-                                    Tambah ke Library
-                                @endif
-                            </div>
-                            <svg class="w-3.5 h-3.5 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
-                            </svg>
-                        </button>
-
-                        <div x-show="open" @click.outside="open = false"
-                            class="absolute left-0 right-0 mt-1 bg-white rounded-xl border border-gray-100 shadow-lg z-30 overflow-hidden"
-                            x-transition>
-                            @foreach ($libraryOptions as $status => $label)
-                                @if (!$libraryEntry || $libraryEntry->status !== $status)
-                                    <form action="{{ route('library.store', $book) }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="status" value="{{ $status }}">
-                                        <button type="submit"
-                                            class="w-full text-left px-4 py-3 text-sm text-text/70 hover:bg-gray-50 hover:text-text transition-colors flex items-center gap-2">
-                                            @if ($status === 'reading')
-                                                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
-                                            @elseif ($status === 'saved')
-                                                <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>
-                                            @else
-                                                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
-                                            @endif
-                                            {{ $label }}
-                                        </button>
-                                    </form>
-                                @endif
-                            @endforeach
-                            @if ($libraryEntry)
-                                <form action="{{ route('library.destroy', $book) }}" method="POST"
-                                      class="border-t border-gray-100">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-50 hover:text-red-500 transition-colors flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
-                                        Hapus dari Library
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
+                    <div class="mt-3">
+                        @if ($libraryEntry)
+                            <form action="{{ route('library.destroy', $book) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="submit"
+                                    class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border transition-all text-sm font-semibold bg-accent/10 border-accent/20 text-accent hover:bg-accent/20">
+                                    <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>
+                                    Tersimpan di Library
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('library.store', $book) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="saved">
+                                <button type="submit"
+                                    class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border transition-all text-sm font-semibold bg-gray-50 border-gray-200 text-text/60 hover:bg-gray-100 hover:text-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>
+                                    Simpan ke Library
+                                </button>
+                            </form>
+                        @endif
                     </div>
 
                 </div>

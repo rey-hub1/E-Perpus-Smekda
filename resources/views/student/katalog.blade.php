@@ -3,7 +3,7 @@
 @section('title', 'Katalog Buku')
 
 @section('content')
-    <div class="space-y-6">
+    <div class="space-y-5">
 
         {{-- Flash Messages --}}
         @if (session('success'))
@@ -20,72 +20,73 @@
             </div>
         @endif
 
-        {{-- Search + Filter --}}
-        <div class="flex items-center gap-3">
-            {{-- Filter Kategori (overflow scroll) --}}
-            <div class="flex gap-2 overflow-x-auto scrollbar-hide flex-nowrap py-1 flex-1">
-                <a href="{{ route('student.katalog', array_filter(['search' => request('search')])) }}"
-                    class="shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition whitespace-nowrap
-                        {{ !request('category') ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary' }}">
-                    Semua
-                </a>
-                @foreach ($categories as $cat)
-                    <a href="{{ route('student.katalog', array_filter(['search' => request('search'), 'category' => $cat->id])) }}"
-                        class="shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition whitespace-nowrap
-                            {{ request('category') == $cat->id ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary' }}">
-                        {{ $cat->name }}
-                    </a>
-                @endforeach
+        {{-- Search Bar (Mobile: full width, Desktop: inline with filter) --}}
+        <form action="{{ route('student.katalog') }}" method="GET">
+            @if (request('category'))
+                <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
+            <div class="flex rounded-lg overflow-hidden border border-gray-300 shadow-sm focus-within:ring-2 focus-within:ring-primary/40">
+                <input type="text" name="search"
+                    class="w-full text-gray-800 px-4 py-2.5 text-sm focus:outline-none bg-white"
+                    placeholder="Cari judul atau penulis..." value="{{ request('search') }}">
+                <button type="submit"
+                    class="bg-primary text-white px-5 py-2.5 text-sm font-semibold hover:bg-primary/90 transition shrink-0">
+                    Cari
+                </button>
             </div>
+        </form>
 
-            {{-- Search --}}
-            <form action="{{ route('student.katalog') }}" method="GET" class="shrink-0">
-                @if (request('category'))
-                    <input type="hidden" name="category" value="{{ request('category') }}">
-                @endif
-                <div class="flex rounded-lg overflow-hidden border border-gray-300 shadow-sm focus-within:ring-2 focus-within:ring-primary/40">
-                    <input type="text" name="search"
-                        class="w-52 md:w-64 text-gray-800 px-4 py-2 text-sm focus:outline-none bg-white"
-                        placeholder="Cari judul atau penulis..." value="{{ request('search') }}">
-                    <button type="submit"
-                        class="bg-primary text-white px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition">
-                        Cari
-                    </button>
-                </div>
-            </form>
+        {{-- Filter Kategori --}}
+        <div class="flex gap-2 overflow-x-auto scrollbar-hide flex-nowrap py-0.5 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+            <a href="{{ route('student.katalog', array_filter(['search' => request('search')])) }}"
+                class="shrink-0 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition whitespace-nowrap
+                    {{ !request('category') ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary' }}">
+                Semua
+            </a>
+            @foreach ($categories as $cat)
+                <a href="{{ route('student.katalog', array_filter(['search' => request('search'), 'category' => $cat->id])) }}"
+                    class="shrink-0 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition whitespace-nowrap
+                        {{ request('category') == $cat->id ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary' }}">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
         </div>
 
         {{-- Info pencarian/filter aktif --}}
         @if (request('search') || request('category'))
-            <div class="flex justify-between items-center px-1">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                 <p class="text-gray-500 text-sm">
                     Menampilkan
                     <span class="font-bold text-primary">{{ $books->total() }}</span> buku
                     @if (request('search'))
-                        untuk pencarian <span class="font-bold text-primary">"{{ request('search') }}"</span>
+                        untuk <span class="font-bold text-primary">"{{ request('search') }}"</span>
                     @endif
                     @if (request('category'))
                         @php $activeCat = $categories->firstWhere('id', request('category')); @endphp
                         @if ($activeCat)
-                            dalam kategori <span class="font-bold text-primary">{{ $activeCat->name }}</span>
+                            dalam <span class="font-bold text-primary">{{ $activeCat->name }}</span>
                         @endif
                     @endif
                 </p>
-                <a href="{{ route('student.katalog') }}" class="text-primary text-sm hover:underline font-semibold">
+                <a href="{{ route('student.katalog') }}" class="text-primary text-sm hover:underline font-semibold self-start sm:self-auto">
                     Reset Filter
                 </a>
             </div>
         @endif
 
         {{-- Grid Buku --}}
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             @forelse ($books as $book)
                 <x-book-card :book="$book" />
             @empty
-                <div class="col-span-full text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
-                    <div class="text-6xl mb-4">🔍</div>
-                    <h3 class="text-xl font-bold text-text/60">Buku tidak ditemukan</h3>
-                    <p class="text-text/40">Coba kata kunci lain atau pilih kategori berbeda.</p>
+                <div class="col-span-full text-center py-16 sm:py-20 bg-white rounded-xl border border-dashed border-gray-300">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-12 sm:w-16 h-12 sm:h-16 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-text/60">Buku tidak ditemukan</h3>
+                    <p class="text-text/40 text-sm mt-1">Coba kata kunci lain atau pilih kategori berbeda.</p>
                     <a href="{{ route('student.katalog') }}"
                         class="mt-4 inline-block text-primary font-semibold hover:underline text-sm">
                         Tampilkan semua buku &rarr;
@@ -94,6 +95,12 @@
             @endforelse
         </div>
 
+        {{-- Pagination --}}
+        @if ($books->hasPages())
+            <div class="bg-white border border-gray-200 rounded-xl px-5 py-4">
+                {{ $books->links() }}
+            </div>
+        @endif
 
     </div>
 
@@ -102,9 +109,7 @@
             from { opacity: 0; transform: translateY(20px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in-up {
-            animation: fadeInUp 0.3s ease-out forwards;
-        }
+        .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>

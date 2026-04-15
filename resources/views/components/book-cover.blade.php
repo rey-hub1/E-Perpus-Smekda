@@ -60,7 +60,7 @@
 @endonce
 
 <a href="{{ route('book.show', $book->slug) }}" class="group block">
-    <div class="book-wrapper mx-auto {{ $large ? 'w-[200px] h-[285px] sm:w-[220px] sm:h-[315px] md:w-[240px] md:h-[340px]' : 'w-[140px] h-[200px] sm:w-[150px] sm:h-[215px] md:w-[160px] md:h-[230px]' }}">
+    <div class="book-wrapper mx-auto {{ $large ? 'w-[150px] h-[215px] sm:w-[200px] sm:h-[285px] md:w-[220px] md:h-[315px] lg:w-[240px] lg:h-[340px]' : 'w-[120px] h-[170px] sm:w-[140px] sm:h-[200px] md:w-[160px] md:h-[230px]' }}">
         <div class="book-3d relative w-full h-full rounded-l-[3px] rounded-r-lg shadow-lg">
             <div class="book-back"></div>
             <div class="book-pages"></div>

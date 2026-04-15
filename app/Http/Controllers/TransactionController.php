@@ -88,27 +88,52 @@ class TransactionController extends Controller
             }
 
             $tanggalAmbil = Carbon::parse($request->tanggal_ambil);
-            $dueDate      = $tanggalAmbil->copy()->addDays(10);
+
+            do {
+                $pickupCode = 'AMB-' . strtoupper(Str::random(6));
+            } while (Transaction::where('pickup_code', $pickupCode)->exists());
 
             Transaction::create([
                 'user_id'       => $user->id,
                 'book_id'       => $book->id,
                 'tanggal_pinjam'=> Carbon::now(),
                 'tanggal_ambil' => $tanggalAmbil,
-                'due_date'      => $dueDate,
-                'status'        => 'dipinjam',
+                'due_date'      => null,
+                'status'        => 'menunggu_pengambilan',
+                'pickup_code'   => $pickupCode,
             ]);
 
             $book->decrement('stok');
             $book->increment('read_count');
 
             $formatAmbil = $tanggalAmbil->translatedFormat('d F Y');
-            $formatDue   = $dueDate->translatedFormat('d F Y');
 
             return redirect()->route('student.history')
-                ->with('success', "Peminjaman berhasil dijadwalkan! Silahkan ambil buku di perpustakaan pada tanggal {$formatAmbil}. Batas pengembalian: {$formatDue}.");
+                ->with('success', "Peminjaman berhasil dijadwalkan! Silahkan ambil buku di perpustakaan pada tanggal {$formatAmbil}. Waktu pinjaman akan dihitung setelah admin menyerahkan buku kepada kamu.");
         });
     }
+    public function batalkan($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->user_id != Auth::id()) {
+            abort(403);
+        }
+
+        if ($transaction->status !== 'menunggu_pengambilan') {
+            return back()->with('error', 'Peminjaman ini tidak bisa dibatalkan.');
+        }
+
+        $transaction->update([
+            'status'      => 'dibatalkan',
+            'pickup_code' => null,
+        ]);
+
+        $transaction->book->increment('stok');
+
+        return back()->with('success', 'Peminjaman berhasil dibatalkan. Stok buku sudah dikembalikan.');
+    }
+
     public function history()
     {
         $transactions = Transaction::with('book')
@@ -171,12 +196,7 @@ class TransactionController extends Controller
         }
 
         $tanggal_kembali = Carbon::now();
-        $denda = 0;
-
-        if ($transaction->due_date && $tanggal_kembali->gt($transaction->due_date)) {
-            $hari_telat = (int) $tanggal_kembali->diffInDays($transaction->due_date);
-            $denda = $hari_telat * 1000;
-        }
+        $denda = $transaction->denda_berjalan;
 
         $transaction->update([
             'status'          => 'kembali',
@@ -205,12 +225,7 @@ class TransactionController extends Controller
         }
 
         $tanggal_kembali = Carbon::now();
-        $denda = 0;
-
-        if ($transaction->due_date && $tanggal_kembali->gt($transaction->due_date)) {
-            $hari_telat = (int) $tanggal_kembali->diffInDays($transaction->due_date);
-            $denda = $hari_telat * 1000;
-        }
+        $denda = $transaction->denda_berjalan;
 
         $transaction->update([
             'status'          => 'kembali',
@@ -236,11 +251,74 @@ class TransactionController extends Controller
             'status' => 'dipinjam',
             'tanggal_kembali' => null,
             'fine' => 0,
-            'due_date' => Carbon::now()->addDays(7),
+            'due_date' => Carbon::now()->addDays(Transaction::loanDays()),
         ]);
 
         $transaction->book->decrement('stok');
 
         return back()->with('success', 'Buku berhasil dipinjamkan kembali oleh admin');
+    }
+
+    public function adminAccAmbilByCode(Request $request)
+    {
+        $request->validate([
+            'pickup_code' => 'required|string',
+        ]);
+
+        $kode = strtoupper(trim($request->pickup_code));
+
+        $transaction = Transaction::with(['user', 'book'])
+            ->where('pickup_code', $kode)
+            ->where('status', 'menunggu_pengambilan')
+            ->first();
+
+        if (!$transaction) {
+            return back()->with('error', 'Kode pengambilan tidak valid atau sudah diproses.');
+        }
+
+        $transaction->update([
+            'status'         => 'dipinjam',
+            'tanggal_pinjam' => Carbon::now(),
+            'due_date'       => Carbon::now()->addDays(Transaction::loanDays()),
+            'pickup_code'    => null,
+        ]);
+
+        return back()->with('success', "Buku \"{$transaction->book->judul}\" berhasil diserahkan ke {$transaction->user->name}. Waktu pinjaman mulai dihitung.");
+    }
+
+    public function adminAccAmbil($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->status !== 'menunggu_pengambilan') {
+            return back()->with('error', 'Status transaksi bukan menunggu pengambilan.');
+        }
+
+        $transaction->update([
+            'status'         => 'dipinjam',
+            'tanggal_pinjam' => Carbon::now(),
+            'due_date'       => Carbon::now()->addDays(Transaction::loanDays()),
+            'pickup_code'    => null,
+        ]);
+
+        return back()->with('success', 'Buku berhasil diserahkan kepada peminjam. Waktu pinjaman mulai dihitung.');
+    }
+
+    public function adminBatalAmbil($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->status !== 'menunggu_pengambilan') {
+            return back()->with('error', 'Status transaksi bukan menunggu pengambilan.');
+        }
+
+        $transaction->update([
+            'status' => 'dibatalkan',
+        ]);
+
+        // Kembalikan stok karena peminjaman tidak jadi
+        $transaction->book->increment('stok');
+
+        return back()->with('success', 'Peminjaman dibatalkan, buku kembali ke rak.');
     }
 }

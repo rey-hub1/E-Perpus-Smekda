@@ -7,7 +7,7 @@
 
     <!-- Back Button -->
     <a href="{{ route('book.show', $book->slug) }}"
-        class="inline-flex items-center gap-2 mb-8 text-sm font-medium text-text/50 hover:text-primary transition-colors group">
+        class="inline-flex items-center gap-2 mb-6 sm:mb-8 text-sm font-medium text-text/50 hover:text-primary transition-colors group">
         <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
         </svg>
@@ -15,19 +15,19 @@
     </a>
 
     <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-2xl font-bold font-heading text-text">Jadwalkan Peminjaman</h1>
+    <div class="mb-6 sm:mb-8">
+        <h1 class="text-xl sm:text-2xl font-bold font-heading text-text">Jadwalkan Peminjaman</h1>
         <p class="text-sm text-text/50 mt-1">Pilih tanggal kamu akan mengambil buku di perpustakaan.</p>
     </div>
 
     <!-- Book Info Card -->
-    <div class="bg-background border border-text/10 rounded-2xl p-5 mb-6 flex items-center gap-5">
-        <div class="shrink-0 w-16 h-22">
+    <div class="bg-background border border-text/10 rounded-2xl p-4 sm:p-5 mb-5 sm:mb-6 flex items-center gap-4 sm:gap-5">
+        <div class="shrink-0">
             @if ($book->gambar)
                 <img src="{{ $book->cover_url }}" alt="{{ $book->judul }}"
-                    class="w-16 h-22 object-cover rounded-lg shadow-md">
+                    class="w-14 sm:w-16 h-20 sm:h-[88px] object-cover rounded-lg shadow-md">
             @else
-                <div class="w-16 h-22 bg-text/5 rounded-lg flex items-center justify-center">
+                <div class="w-14 sm:w-16 h-20 sm:h-[88px] bg-text/5 rounded-lg flex items-center justify-center">
                     <svg class="w-6 h-6 text-text/20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
                     </svg>
@@ -36,8 +36,8 @@
         </div>
         <div class="min-w-0">
             <p class="text-[11px] font-bold uppercase tracking-widest text-text/30 mb-1">{{ $book->category->name ?? 'Buku' }}</p>
-            <h2 class="font-bold text-text text-base leading-snug line-clamp-2">{{ $book->judul }}</h2>
-            <p class="text-sm text-text/50 mt-1">{{ $book->penulis }}</p>
+            <h2 class="font-bold text-text text-sm sm:text-base leading-snug line-clamp-2">{{ $book->judul }}</h2>
+            <p class="text-xs sm:text-sm text-text/50 mt-1">{{ $book->penulis }}</p>
         </div>
     </div>
 
@@ -45,10 +45,10 @@
     <form action="{{ route('pinjam.buku', $book->id) }}" method="POST" id="jadwalForm">
         @csrf
 
-        <div class="bg-background border border-text/10 rounded-2xl overflow-hidden mb-5">
+        <div class="bg-background border border-text/10 rounded-2xl overflow-hidden mb-4 sm:mb-5">
 
             <!-- Pilih Tanggal Ambil -->
-            <div class="p-6 border-b border-text/10">
+            <div class="p-5 sm:p-6 border-b border-text/10">
                 <label class="block text-sm font-bold text-text mb-1">
                     Tanggal Pengambilan
                 </label>
@@ -71,7 +71,7 @@
             </div>
 
             <!-- Info Periode Peminjaman -->
-            <div class="p-6 bg-background">
+            <div class="p-5 sm:p-6 bg-background">
                 <h3 class="text-xs font-bold text-text/40 uppercase tracking-widest mb-4">Ringkasan Peminjaman</h3>
 
                 <div class="space-y-3">
@@ -111,7 +111,7 @@
         </div>
 
         <!-- Catatan -->
-        <div class="bg-cta border border-text/10 rounded-xl px-5 py-4 mb-6 flex items-start gap-3">
+        <div class="bg-cta border border-text/10 rounded-xl px-4 sm:px-5 py-4 mb-5 sm:mb-6 flex items-start gap-3">
             <svg class="w-5 h-5 shrink-0 text-text/40 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zm-9-3.75h.008v.008H12V8.25z"/>
             </svg>
@@ -126,7 +126,7 @@
 
         <!-- Submit -->
         <button type="submit"
-            class="w-full bg-primary hover:bg-secondary text-background font-bold text-base py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2">
+            class="w-full bg-primary hover:bg-secondary text-background font-bold text-base py-3.5 sm:py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
             </svg>

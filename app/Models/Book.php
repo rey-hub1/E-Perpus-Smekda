@@ -34,10 +34,7 @@ class Book extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function favoritedBy()
-    {
-        return $this->belongsToMany(User::class, 'book_user')->withTimestamps();
-    }
+
 
     public function reviews(): HasMany
     {

@@ -50,7 +50,7 @@ class StudentController extends Controller
             $query->where('category_id', $request->category);
         }
 
-        $books = $query->get();
+        $books = $query->paginate(30)->withQueryString();
 
         return view('student.katalog', compact('books', 'categories'));
     }

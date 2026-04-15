@@ -212,12 +212,7 @@ class BookController extends Controller
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus dari perpustakaan.');
     }
 
-    public function favorite(Book $book)
-    {
-        auth()->user()->favoriteBooks()->toggle($book->id);
 
-        return redirect()->back()->with('success', 'Daftar favorit berhasil diperbarui!');
-    }
 
     // ADMIN
     public function featured(Book $book)
