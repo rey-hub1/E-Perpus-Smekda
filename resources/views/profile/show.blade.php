@@ -5,16 +5,16 @@
 @section('content')
     <div class="max-w-3xl mx-auto space-y-6">
 
-        {{-- Header --}}
+        
         <div>
             <h1 class="text-2xl font-bold text-text">Profil Saya</h1>
             <p class="text-sm text-text/50 mt-1">Kelola informasi akunmu.</p>
         </div>
 
-        {{-- Avatar + Stats card --}}
+        
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
 
-            {{-- Avatar --}}
+            
             <div class="relative shrink-0">
                 <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-100 border-2 border-gray-200 shadow-sm">
                     @if ($user->avatar)
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            {{-- Info --}}
+            
             <div class="flex-1 text-center sm:text-left">
                 <h2 class="text-xl font-bold text-text">{{ $user->name }}</h2>
                 <p class="text-sm text-text/50 mt-0.5">{{ $user->email }}</p>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            {{-- Stats --}}
+            
             <div class="flex sm:flex-col gap-3 sm:gap-2 text-center shrink-0">
                 <div class="bg-primary/5 border border-primary/10 rounded-xl px-4 py-2 min-w-[80px]">
                     <div class="text-xl font-black text-primary">{{ $dipinjam }}</div>
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        {{-- Flash messages --}}
+        
         @if (session('success'))
             <div class="bg-accent/10 border border-accent/20 text-accent px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2 mb-4">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@
             </div>
         @endif
 
-        {{-- Edit Info Form --}}
+        
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-100">
                 <h3 class="font-bold text-text">Informasi Pribadi</h3>
@@ -91,7 +91,7 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Avatar upload --}}
+                
                 <div>
                     <label class="block text-sm font-semibold text-text/70 mb-2">Foto Profil</label>
                     <div class="flex items-center gap-4">
@@ -116,7 +116,7 @@
                     @error('avatar') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Name --}}
+                
                 <div>
                     <label class="block text-sm font-semibold text-text/70 mb-1.5">Nama Lengkap</label>
                     <input type="text" name="name" value="{{ old('name', $user->name) }}"
@@ -124,7 +124,7 @@
                     @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Email --}}
+                
                 <div>
                     <label class="block text-sm font-semibold text-text/70 mb-1.5">Email</label>
                     <input type="email" name="email" value="{{ old('email', $user->email) }}"
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {{-- NISN --}}
+                    
                     <div>
                         <label class="block text-sm font-semibold text-text/70 mb-1.5">NISN</label>
                         <input type="text" name="nisn" value="{{ old('nisn', $user->nisn) }}"
@@ -142,7 +142,7 @@
                         @error('nisn') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    {{-- Kelas --}}
+                    
                     <div>
                         <label class="block text-sm font-semibold text-text/70 mb-1.5">Kelas</label>
                         <input type="text" name="kelas" value="{{ old('kelas', $user->kelas) }}"
@@ -150,7 +150,7 @@
                                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition @error('kelas') border-red-400 @enderror">
                     </div>
 
-                    {{-- Phone --}}
+                    
                     <div>
                         <label class="block text-sm font-semibold text-text/70 mb-1.5">No. HP</label>
                         <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
@@ -168,7 +168,7 @@
             </form>
         </div>
 
-        {{-- Ganti Password --}}
+        
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" id="password">
 
             <div class="px-6 py-4 border-b border-gray-100">

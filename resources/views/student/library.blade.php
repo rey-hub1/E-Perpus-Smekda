@@ -5,14 +5,14 @@
 @section('content')
     <div class="space-y-5 sm:space-y-6">
 
-        {{-- Header --}}
+        
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
                 <h1 class="text-xl sm:text-2xl font-bold font-heading text-text">Library Saya</h1>
                 <p class="text-sm text-text/50 mt-1">Koleksi buku yang kamu tandai secara pribadi.</p>
             </div>
 
-            {{-- Stats --}}
+            
             <div class="flex flex-wrap gap-2 sm:gap-3">
                 <div class="bg-background border border-text/10 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-center min-w-16">
                     <p class="text-lg sm:text-xl font-black text-text">{{ $library->count() }}</p>
@@ -21,50 +21,48 @@
             </div>
         </div>
 
-        {{-- Flash --}}
+        
         @if (session('success'))
             <div class="bg-accent/10 border border-accent/20 text-accent px-4 py-3 rounded-xl text-sm font-medium">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Tab Filter --}}
+        
 
-
-        {{-- Book List --}}
+        
         <div class="space-y-3" id="bookList">
             @forelse ($library as $entry)
                 <div class="lib-item bg-background rounded-xl border border-text/5 hover:border-text/10 hover:shadow-sm transition-all duration-200 overflow-hidden"
                      data-status="{{ $entry->status }}">
                     <div class="flex flex-col sm:flex-row">
 
-                        {{-- 3D Book Cover --}}
+                        
                         <a href="{{ route('book.show', $entry->book->slug) }}"
                             class="shrink-0 flex items-center justify-center bg-text/2 px-4 sm:px-5 py-4 sm:py-5 group sm:min-w-[100px]">
-                            <div class="hist-book-perspective">
-                                <div class="hist-book-3d">
-                                    <div class="hist-book-back"></div>
-                                    <div class="hist-book-pages"></div>
-                                    <div class="hist-book-front">
+                            <div class="[perspective:700px]">
+                                <div class="relative w-[60px] h-[84px] sm:w-[68px] sm:h-[96px] [transform-style:preserve-3d] [-webkit-transform:rotateY(-16deg)_rotateX(2deg)] transition-transform duration-400 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] group-hover:[-webkit-transform:rotateY(-22deg)_rotateX(3deg)_scale(1.05)]">
+                                    <div class="absolute inset-0 bg-white rounded-l-[1px] rounded-r-[6px] [transform:translateZ(-8px)_translateX(8px)] shadow-[3px_5px_12px_rgba(0,0,0,0.18)] z-1"></div>
+                                    <div class="absolute top-[3px] right-0 bottom-[3px] left-[1px] bg-[#f5f5f0] border border-text/10 rounded-l-[1px] rounded-r-[5px] [transform:translateZ(-4px)_translateX(5px)] z-5
+                                        before:content-[''] before:absolute before:inset-0 before:bg-[repeating-linear-gradient(to_right,transparent,transparent_1px,rgba(0,0,0,0.03)_1.5px,transparent_2.5px)]"></div>
+                                    <div class="absolute inset-0 rounded-l-[1px] rounded-r-[6px] overflow-hidden bg-background shadow-[0_4px_12px_rgba(0,0,0,0.15)] z-10">
                                         @if ($entry->book->cover_url)
-                                            <img src="{{ $entry->book->cover_url }}" alt="{{ $entry->book->judul }}"
-                                                class="w-full h-full object-cover">
+                                            <img src="{{ $entry->book->cover_url }}" alt="{{ $entry->book->judul }}" class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center p-2 bg-linear-to-br from-text/40 to-text/60">
+                                            <div class="w-full h-full flex items-center justify-center p-2 bg-gradient-to-br from-gray-600 to-gray-800">
                                                 <p class="text-white/90 text-center font-bold text-[9px] leading-tight">{{ $entry->book->judul }}</p>
                                             </div>
                                         @endif
-                                        <div class="absolute inset-y-0 left-0 w-2.5 bg-linear-to-r from-black/30 to-transparent pointer-events-none"></div>
-                                        <div class="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-white/10 pointer-events-none"></div>
+                                        <div class="absolute inset-y-0 left-0 w-2.5 bg-gradient-to-r from-black/30 to-transparent pointer-events-none"></div>
                                     </div>
                                 </div>
                             </div>
                         </a>
 
-                        {{-- Content --}}
+                        
                         <div class="flex-1 px-4 sm:px-5 py-3 sm:py-4 flex flex-col gap-3 sm:gap-4 min-w-0">
 
-                            {{-- Info --}}
+                            
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-start sm:items-center gap-2 mb-1 flex-wrap">
                                     <a href="{{ route('book.show', $entry->book->slug) }}"
@@ -96,12 +94,11 @@
                                 </div>
                             </div>
 
-                            {{-- Actions --}}
+                            
                             <div class="flex items-center gap-2 pt-1 sm:pt-0 border-t border-text/5 sm:border-t-0">
-                                {{-- Update status --}}
+                                
 
-
-                                {{-- Hapus --}}
+                                
                                 <form action="{{ route('library.destroy', $entry->book) }}" method="POST"
                                       onsubmit="return confirm('Hapus buku ini dari library?')">
                                     @csrf
@@ -142,50 +139,6 @@
         </div>
 
     </div>
-
-    <style>
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .hist-book-perspective { perspective: 700px; }
-        .hist-book-3d {
-            width: 60px; height: 84px;
-            position: relative;
-            transform-style: preserve-3d;
-            transform: rotateY(-16deg) rotateX(2deg);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        @media (min-width: 640px) {
-            .hist-book-3d { width: 68px; height: 96px; }
-        }
-        .group:hover .hist-book-3d { transform: rotateY(-22deg) rotateX(3deg) scale(1.05); }
-        .hist-book-front {
-            position: absolute; inset: 0;
-            border-radius: 1px 6px 6px 1px;
-            overflow: hidden; z-index: 10;
-            background: var(--color-background);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .hist-book-pages {
-            position: absolute; top: 3px; right: 0; bottom: 3px; left: 1px;
-            background: #f5f5f0;
-            border: 1px solid var(--color-text);
-            border-color: color-mix(in srgb, var(--color-text) 10%, transparent);
-            border-radius: 1px 5px 5px 1px;
-            transform: translateZ(-4px) translateX(5px); z-index: 5;
-        }
-        .hist-book-pages::before {
-            content: ''; position: absolute; inset: 0;
-            background: repeating-linear-gradient(to right, transparent, transparent 1px, rgba(0,0,0,0.03) 1.5px, transparent 2.5px);
-        }
-        .hist-book-back {
-            position: absolute; inset: 0;
-            background: #ffffff;
-            border-radius: 1px 6px 6px 1px;
-            transform: translateZ(-8px) translateX(8px);
-            box-shadow: 3px 5px 12px rgba(0,0,0,0.18); z-index: 1;
-        }
-    </style>
 
 
 @endsection

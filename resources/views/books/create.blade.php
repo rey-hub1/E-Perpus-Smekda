@@ -7,7 +7,7 @@
 @section('content')
 <div class="max-w-2xl">
 
-    <!-- Back -->
+    
     <a href="{{ route('admin.books.index') }}"
         class="inline-flex items-center gap-2 text-sm text-text/40 hover:text-text mb-6 transition-colors font-medium">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -72,12 +72,6 @@
                         <input type="number" name="stok" value="{{ old('stok') }}"
                             class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-text/70 mb-1.5">Jumlah Halaman</label>
-                        <input type="number" name="jumlah_halaman" value="{{ old('jumlah_halaman') }}" min="1"
-                            placeholder="Opsional"
-                            class="w-full border border-text/10 rounded-lg px-3.5 py-2.5 text-sm bg-background text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
-                    </div>
                 </div>
 
                 <div>
@@ -101,7 +95,7 @@
             </div>
         </div>
 
-        <!-- Cover Upload -->
+        
         <div class="bg-background rounded-xl border @error('gambar') border-primary @else border-text/10 @enderror overflow-hidden mb-4">
             <div class="px-6 py-4 border-b border-text/5">
                 <p class="text-xs font-semibold text-text/40 uppercase tracking-wider">Cover Buku</p>
@@ -133,7 +127,7 @@
             </div>
         </div>
 
-        <!-- Actions -->
+        
         <div class="flex items-center gap-3 justify-end">
             <a href="{{ route('admin.books.index') }}"
                 class="px-5 py-2.5 text-sm font-medium text-text/50 hover:text-text transition-colors">

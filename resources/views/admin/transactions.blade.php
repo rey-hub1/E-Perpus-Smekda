@@ -29,10 +29,10 @@
         </div>
     @endif
 
-    <!-- Konfirmasi via Kode -->
+    
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <!-- Konfirmasi Pengambilan via Kode -->
+        
         <div class="bg-background border border-text/10 rounded-xl p-5">
             <div class="flex items-start gap-4">
                 <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-blue-500">
@@ -50,7 +50,6 @@
                             value="{{ old('pickup_code') }}"
                             maxlength="10"
                             class="uppercase tracking-widest font-mono text-sm border border-text/10 rounded-lg px-4 py-2 w-44 focus:outline-none focus:border-blue-500 bg-white text-text placeholder:text-text/30 placeholder:normal-case placeholder:tracking-normal"
-                            style="font-family: monospace;"
                             oninput="this.value = this.value.toUpperCase()">
                         <button type="submit"
                             class="bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
@@ -64,10 +63,10 @@
             </div>
         </div>
 
-        <!-- Konfirmasi Pengembalian via Kode -->
+        
         <div class="bg-background border border-text/10 rounded-xl p-5">
             <div class="flex items-start gap-4">
-                <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style="background: #DC2626;">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-primary">
                     <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5z"/>
                     </svg>
@@ -82,7 +81,6 @@
                             value="{{ old('return_code') }}"
                             maxlength="10"
                             class="uppercase tracking-widest font-mono text-sm border border-text/10 rounded-lg px-4 py-2 w-44 focus:outline-none focus:border-primary bg-white text-text placeholder:text-text/30 placeholder:normal-case placeholder:tracking-normal"
-                            style="font-family: monospace;"
                             oninput="this.value = this.value.toUpperCase()">
                         <button type="submit"
                             class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-secondary transition-colors">
@@ -98,7 +96,7 @@
 
     </div>
 
-    <!-- Table -->
+    
     <div class="bg-background rounded-xl border border-text/10 overflow-hidden">
 
         <div class="px-6 py-4 border-b border-text/5 flex items-center justify-between">

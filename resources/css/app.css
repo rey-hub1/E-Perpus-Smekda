@@ -37,3 +37,11 @@
     @apply  max-w-[1800px] px-[4vw] sm:px-[6vw] md:px-[7vw] lg:px-[8vh] 2xl:px-[9vh]
 }
 
+@utility scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+

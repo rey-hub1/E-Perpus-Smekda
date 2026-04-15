@@ -59,12 +59,7 @@
                         <tr class="hover:bg-text/2 transition-colors">
 
                             <td class="px-5 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center shrink-0">
-                                        <x-category-icon :name="$category->icon ?? 'book-open'" class="w-4 h-4 text-primary" />
-                                    </div>
-                                    <span class="font-semibold text-text">{{ $category->name }}</span>
-                                </div>
+                                <span class="font-semibold text-text">{{ $category->name }}</span>
                             </td>
 
                             <td class="px-5 py-4 text-center">

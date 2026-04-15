@@ -6,23 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('icons', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();  // slug: 'sun', 'moon', dll
-            $table->string('label');           // nama tampilan: 'Matahari'
-            $table->text('path');              // isi SVG path HTML
+            $table->string('name')->unique();  
+            $table->string('label');           
+            $table->text('path');              
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('icons');

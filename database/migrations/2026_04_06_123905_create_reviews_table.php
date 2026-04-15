@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {
@@ -16,17 +14,15 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('book_id')->constrained()->cascadeOnDelete();
             $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
-            $table->tinyInteger('rating'); // 1-5
+            $table->tinyInteger('rating'); 
             $table->text('komentar')->nullable();
             $table->timestamps();
 
-            $table->unique('transaction_id'); // 1 review per transaksi
+            $table->unique('transaction_id'); 
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('reviews');

@@ -17,7 +17,6 @@ class Book extends Model
         'penerbit',
         'tahun_terbit',
         'stok',
-        'jumlah_halaman',
         'deskripsi',
         'gambar',
         'favorite',
@@ -33,8 +32,6 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
-
 
     public function reviews(): HasMany
     {

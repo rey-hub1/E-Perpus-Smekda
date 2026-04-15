@@ -7,7 +7,7 @@
 @section('content')
 <div class="space-y-6">
 
-    <!-- Stat Cards -->
+    
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
         <div class="bg-background rounded-xl border border-text/10 p-5">
@@ -64,10 +64,10 @@
 
     </div>
 
-    <!-- Row 2: Quick Actions + Recent Activity -->
+    
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <!-- Quick Actions -->
+        
         <div class="bg-background rounded-xl border border-text/10 p-6">
             <h3 class="text-sm font-semibold text-text mb-4">Aksi Cepat</h3>
             <div class="space-y-2">
@@ -102,7 +102,7 @@
             </div>
         </div>
 
-        <!-- Recent Transactions -->
+        
         <div class="lg:col-span-2 bg-background rounded-xl border border-text/10">
             <div class="px-6 py-4 border-b border-text/5 flex items-center justify-between">
                 <h3 class="text-sm font-semibold text-text">Aktivitas Terbaru</h3>

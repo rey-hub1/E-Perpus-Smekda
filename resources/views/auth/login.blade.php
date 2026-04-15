@@ -8,15 +8,15 @@
 </head>
 <body class="bg-white min-h-screen flex">
 
-    <!-- Left Panel: Branding -->
+    
     <div class="hidden lg:flex lg:w-[45%] bg-primary flex-col justify-between p-12 relative overflow-hidden">
 
-        <!-- Decorative circles -->
+        
         <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-white/5"></div>
         <div class="absolute top-1/2 -right-32 w-72 h-72 rounded-full bg-white/5"></div>
         <div class="absolute -bottom-20 left-1/3 w-56 h-56 rounded-full bg-white/5"></div>
 
-        <!-- Logo -->
+        
         <div class="relative z-10">
             <a href="/" class="flex items-center gap-3">
                 <img src="{{ asset('images/global/logo.png') }}" alt="Logo" class="h-16 w-auto object-contain brightness-0 invert">
@@ -24,10 +24,10 @@
             </a>
         </div>
 
-        <!-- Center Content -->
+        
         <div class="relative z-10 space-y-8">
 
-            <!-- Ilustrasi buku-buku -->
+            
             <div class="flex gap-3 items-end">
                 <div class="w-14 h-20 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg"></div>
                 <div class="w-14 h-24 rounded-lg bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg"></div>
@@ -45,7 +45,7 @@
                 </p>
             </div>
 
-            <!-- Stats -->
+            
             <div class="flex gap-8">
                 <div>
                     <p class="text-2xl font-bold text-white">500+</p>
@@ -59,16 +59,16 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        
         <div class="relative z-10">
             <p class="text-white/30 text-xs">© {{ date('Y') }} GoRead — SMEKDA Library</p>
         </div>
     </div>
 
-    <!-- Right Panel: Form -->
+    
     <div class="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24">
 
-        <!-- Mobile logo -->
+        
         <div class="lg:hidden mb-10">
             <a href="/" class="flex items-center gap-2.5">
                 <img src="{{ asset('images/global/logo.png') }}" alt="Logo" class="h-12 w-auto object-contain">
@@ -78,13 +78,13 @@
 
         <div class="w-full max-w-sm mx-auto">
 
-            <!-- Header -->
+            
             <div class="mb-8">
                 <h1 class="text-2xl font-bold font-heading text-text">Masuk ke akun kamu</h1>
                 <p class="text-sm text-text/40 mt-1.5">Gunakan email dan password yang sudah terdaftar.</p>
             </div>
 
-            <!-- Error -->
+            
             @if ($errors->any())
                 <div class="bg-red-50 border border-red-100 rounded-xl px-4 py-3.5 mb-6 flex items-center gap-3">
                     <svg class="w-4 h-4 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@
                 </div>
             @endif
 
-            <!-- Form -->
+            
             <form action="{{ route('login.process') }}" method="POST" class="space-y-4">
                 @csrf
 
@@ -130,20 +130,20 @@
                 </button>
             </form>
 
-            <!-- Divider -->
+            
             <div class="flex items-center gap-4 my-6">
                 <div class="flex-1 h-px bg-gray-100"></div>
                 <span class="text-xs text-gray-400">atau</span>
                 <div class="flex-1 h-px bg-gray-100"></div>
             </div>
 
-            <!-- Register link -->
+            
             <p class="text-center text-sm text-text/40">
                 Belum punya akun?
                 <a href="{{ route('register') }}" class="text-primary font-semibold hover:underline ml-1">Daftar sekarang</a>
             </p>
 
-            <!-- Back to home -->
+            
             <div class="mt-6 text-center">
                 <a href="{{ route('landing') }}" class="inline-flex items-center gap-1.5 text-xs text-gray-300 hover:text-gray-500 transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

@@ -11,7 +11,7 @@
 
 <body class="bg-background">
 
-    {{-- ===== Mobile Top Bar (< lg) ===== --}}
+    
     <header class="lg:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-white border-b border-gray-100 flex items-center px-4 gap-3 shadow-sm">
         <button id="drawerToggle" class="p-1.5 rounded-lg hover:bg-gray-50 text-text/60 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -21,7 +21,7 @@
 
         <a href="{{ route('landing') }}" class="flex items-center gap-2">
             <img src="{{ asset('images/global/logo.png') }}" alt="Logo" class="h-8 w-auto object-contain shrink-0">
-            <span class="text-sm font-bold text-text" style="font-family: var(--font-heading);">GoRead</span>
+            <span class="text-sm font-bold text-text font-heading">GoRead</span>
         </a>
 
         <div class="ml-auto">
@@ -30,7 +30,7 @@
                     <img src="{{ Storage::url(auth()->user()->avatar) }}"
                          class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" alt="avatar">
                 @else
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: #DC2626;">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center bg-primary">
                         <span class="text-xs font-bold text-white leading-none">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                     </div>
                 @endif
@@ -38,22 +38,22 @@
         </div>
     </header>
 
-    {{-- ===== Mobile Drawer Overlay ===== --}}
-    <div id="drawerOverlay" class="lg:hidden fixed inset-0 bg-black/40 z-30 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <div id="drawerOverlay" class="lg:hidden fixed inset-0 bg-black/40 z-30 opacity-0 pointer-events-none"></div>
 
-    {{-- ===== Sidebar Navigation ===== --}}
-    <nav id="sidebar" class="fixed top-0 left-0 h-full z-40 w-64 flex flex-col bg-white border-r border-gray-100 shadow-sm -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    
+    <nav id="sidebar" class="fixed top-0 left-0 h-full z-40 w-64 flex flex-col bg-white border-r border-gray-100 shadow-sm -translate-x-full lg:translate-x-0">
 
-        {{-- Logo Section --}}
+        
         <a href="{{ route('landing') }}" class="px-5 py-5 flex items-center gap-3 border-b border-gray-100 shrink-0">
             <img src="{{ asset('images/global/logo.png') }}" alt="Logo" class="h-12 w-auto object-contain shrink-0">
             <div>
-                <h1 class="text-sm font-bold text-text leading-none" style="font-family: var(--font-heading);">GoRead</h1>
+                <h1 class="text-sm font-bold text-text leading-none font-heading">GoRead</h1>
                 <p class="text-[10px] text-text/40 mt-0.5">Perpustakaan Digital</p>
             </div>
         </a>
 
-        {{-- Navigation Links --}}
+        
         <div class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
 
             <a href="{{ route('student.home') }}"
@@ -98,7 +98,7 @@
 
         </div>
 
-        {{-- User Profile + Logout --}}
+        
         <div class="px-3 py-3 border-t border-gray-100 space-y-1 shrink-0">
 
             <a href="{{ route('profile') }}"
@@ -108,7 +108,7 @@
                     <img src="{{ Storage::url(auth()->user()->avatar) }}"
                          class="w-7 h-7 rounded-full object-cover shrink-0 ring-2 ring-primary/20" alt="avatar">
                 @else
-                    <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style="background: #DC2626;">
+                    <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-primary">
                         <span class="text-xs font-bold text-white leading-none">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                     </div>
                 @endif
@@ -131,7 +131,7 @@
         </div>
     </nav>
 
-    {{-- ===== Main Content Area ===== --}}
+    
     <main class="lg:ml-64 min-h-screen">
         <div class="pt-14 lg:pt-0 pb-20 lg:pb-0">
             <div class="py-6 @yield('content-padding', 'px-4 sm:px-6 lg:px-8')">
@@ -140,7 +140,7 @@
         </div>
     </main>
 
-    {{-- ===== Mobile Bottom Navigation (< lg) ===== --}}
+    
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-[0_-1px_3px_rgba(0,0,0,0.05)] flex">
 
         <a href="{{ route('student.home') }}"

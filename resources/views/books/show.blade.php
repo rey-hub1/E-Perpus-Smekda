@@ -5,37 +5,32 @@
 @section('content')
     <div class="max-w-5xl mx-auto">
 
-        <!-- Back Button -->
+        
         <a href="{{ url()->previous() }}"
-            class="inline-flex items-center gap-2 mb-8 text-sm font-medium text-text/50 hover:text-primary transition-colors group">
-            <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            class="inline-flex items-center gap-2 mb-8 text-sm font-medium text-text/50 hover:text-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
             </svg>
             Kembali
         </a>
 
-        <!-- Main Content -->
+        
         <div class="grid md:grid-cols-12 gap-10">
 
-            <!-- Left: Book Display -->
+            
             <div class="md:col-span-4">
                 <div class="sticky top-8">
 
-                    <!-- Book Display Area -->
-                    <div class="show-book-area rounded-2xl flex flex-col justify-center items-center py-6 px-2 bg-gray-100" id="bookCoverArea">
-
-                        <!-- Book with pages + back cover always visible -->
-                        <div class="show-book-scene">
-                            <div class="show-book-wrap">
-                                <!-- Back Cover -->
-                                <div class="show-back-cover" id="bookBackCover"></div>
-                                <!-- Pages -->
-                                <div class="show-pages"></div>
-                                <!-- Front Cover -->
-                                <div class="show-front-cover">
+                    
+                    <div class="rounded-2xl flex flex-col justify-center items-center py-6 px-2 bg-gray-100">
+                        <div class="[perspective:1000px]">
+                            <div class="group relative w-[270px] h-[385px] [transform-style:preserve-3d] transition-transform duration-500 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] hover:[-webkit-transform:rotateY(-18deg)_rotateX(3deg)_scale(1.03)_translateY(-4px)]">
+                                <div class="absolute inset-0 bg-white border border-gray-200 rounded-l-[2px] rounded-r-[10px] [transform:translateZ(-8px)_translateX(4px)] z-1 transition-transform duration-550 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] group-hover:[transform:translateZ(-8px)_translateX(9px)]"></div>
+                                <div class="absolute inset-[4px_2px_4px_0] bg-gray-100 border border-gray-200 rounded-l-[2px] rounded-r-[8px] [transform:translateZ(-5px)_translateX(2px)] z-5 transition-transform duration-550 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] group-hover:[transform:translateZ(-5px)_translateX(5px)]
+                                    before:content-[''] before:absolute before:inset-[0_2px_0_0] before:bg-[repeating-linear-gradient(to_right,transparent,transparent_1px,rgba(0,0,0,0.04)_2px,transparent_3px)]"></div>
+                                <div class="absolute inset-0 rounded-l-[2px] rounded-r-[8px] overflow-hidden bg-[#c8c8c8] shadow-[6px_10px_28px_rgba(0,0,0,0.15)] z-10">
                                     @if ($book->gambar)
-                                        <img src="{{ $book->cover_url }}" alt="{{ $book->judul }}"
-                                            class="w-full h-full object-cover book-cover-img" crossorigin="anonymous">
+                                        <img src="{{ $book->cover_url }}" alt="{{ $book->judul }}" class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full flex flex-col items-center justify-center p-5 bg-gradient-to-br from-gray-700 to-gray-900 gap-3">
                                             <svg class="w-8 h-8 text-white/30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -44,29 +39,23 @@
                                             <p class="text-white text-center font-bold text-sm leading-snug">{{ $book->judul }}</p>
                                         </div>
                                     @endif
-                                    <!-- Spine shadow -->
                                     <div class="absolute inset-y-0 left-0 w-5 bg-gradient-to-r from-black/30 to-transparent pointer-events-none rounded-l-sm"></div>
                                     <div class="absolute inset-y-0 left-0 w-[2px] bg-white/15 pointer-events-none"></div>
                                     <div class="absolute inset-y-0 left-[5px] w-[1px] bg-black/10 pointer-events-none"></div>
-                                    <!-- Gloss -->
                                     <div class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none"></div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
 
-
-
-                    <!-- Error -->
+                    
                     @if (session('error'))
                         <div class="mt-4 bg-primary/10 border border-primary/20 text-secondary text-sm font-medium px-4 py-3 rounded-xl text-center">
                             {{ session('error') }}
                         </div>
                     @endif
 
-                    <!-- Pinjam Button -->
+                    
                     <div class="mt-4">
                         @if($book->stok > 0)
                             <a href="{{ route('pinjam.jadwal', $book->id) }}"
@@ -87,7 +76,7 @@
                         @endif
                     </div>
 
-                    <!-- Stok Info -->
+                    
                     <div class="mt-2.5 text-center">
                         @if($book->stok > 0)
                             <span class="text-xs text-text/40">Stok tersedia: <span class="font-semibold text-accent">{{ $book->stok }}</span> buku</span>
@@ -127,25 +116,25 @@
                 </div>
             </div>
 
-            <!-- Right: Book Details -->
+            
             <div class="md:col-span-8 pt-1">
 
-                <!-- Category badge -->
+                
                 @if ($book->category)
                     <span class="inline-block text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
                         {{ $book->category->name }}
                     </span>
                 @endif
 
-                <!-- Title -->
+                
                 <h1 class="text-3xl md:text-4xl font-bold font-heading text-text leading-tight mb-2">
                     {{ $book->judul }}
                 </h1>
 
-                <!-- Author -->
+                
                 <p class="text-base text-text/50 mb-7">oleh <span class="text-text/70 font-semibold">{{ $book->penulis }}</span></p>
 
-                <!-- Quick Stats Row -->
+                
                 <div class="flex flex-wrap gap-3 mb-8">
                     <div class="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5">
                         <svg class="w-4 h-4 text-text/30 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -176,10 +165,10 @@
                     </div>
                 </div>
 
-                <!-- Divider -->
+                
                 <div class="h-px bg-gray-200 mb-7"></div>
 
-                <!-- Description -->
+                
                 <div class="mb-8">
                     <h2 class="text-sm font-bold text-text/40 uppercase tracking-widest mb-3">Deskripsi</h2>
                     <div class="text-text/65 leading-relaxed text-[0.95rem]">
@@ -197,7 +186,7 @@
                     </div>
                 </div>
 
-                <!-- Detail Buku -->
+                
                 <div class="rounded-2xl border border-gray-100 overflow-hidden">
                     <div class="bg-gray-50 px-5 py-3.5 border-b border-gray-100">
                         <h3 class="text-xs font-bold text-text/40 uppercase tracking-widest">Detail Buku</h3>
@@ -219,12 +208,6 @@
                             <span class="text-sm text-text/45">Kategori</span>
                             <span class="text-sm text-text font-medium">{{ $book->category->name ?? '—' }}</span>
                         </div>
-                        @if($book->jumlah_halaman)
-                        <div class="flex justify-between items-center px-5 py-3">
-                            <span class="text-sm text-text/45">Jumlah Halaman</span>
-                            <span class="text-sm text-text font-medium">{{ number_format($book->jumlah_halaman) }} halaman</span>
-                        </div>
-                        @endif
                         <div class="flex justify-between items-center px-5 py-3">
                             <span class="text-sm text-text/45">Stok</span>
                             <span class="text-sm font-semibold {{ $book->stok > 0 ? 'text-accent' : 'text-red-500' }}">
@@ -242,7 +225,7 @@
         </div>
     </div>
 
-    <!-- Description Modal -->
+    
     <div id="descriptionModal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleModal('descriptionModal')"></div>
         <div class="flex min-h-full items-center justify-center p-4">
@@ -271,86 +254,6 @@
         </div>
     </div>
 
-    <style>
-        /* ── Book Display ── */
-        .show-book-area {
-            min-height: 450px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Scene with perspective */
-        .show-book-scene {
-            perspective: 1000px;
-        }
-
-        /* Book wrapper – flat by default, tilts on hover */
-        .show-book-wrap {
-            width: 270px;
-            height: 385px;
-            position: relative;
-            transform-style: preserve-3d;
-            transform: rotateY(0deg) rotateX(0deg);
-            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
-        }
-        .show-book-wrap:hover {
-            transform: rotateY(-18deg) rotateX(3deg) scale(1.03) translateY(-4px);
-            filter: drop-shadow(0 16px 20px rgba(0,0,0,0.15));
-        }
-
-        /* ── Front Cover ── */
-        .show-front-cover {
-            position: absolute;
-            inset: 0;
-            border-radius: 2px 8px 8px 2px;
-            overflow: hidden;
-            background: #c8c8c8;
-            box-shadow: 6px 10px 28px rgba(0,0,0,0.15), 2px 2px 6px rgba(0,0,0,0.1);
-            z-index: 10;
-        }
-
-        /* ── Pages ── */
-        .show-pages {
-            position: absolute;
-            inset: 4px 2px 4px 0;
-            border-radius: 2px 8px 8px 2px;
-            background-color: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            transform: translateZ(-5px) translateX(2px);
-            z-index: 5;
-            overflow: hidden;
-            box-shadow: inset 4px 0 10px rgba(0,0,0,0.05);
-            transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        /* Individual page lines */
-        .show-pages::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 2px; bottom: 0; left: 0;
-            background: repeating-linear-gradient(to right, transparent, transparent 1px, rgba(0,0,0,0.04) 2px, transparent 3px);
-        }
-
-        /* ── Back Cover ── */
-        .show-back-cover {
-            position: absolute;
-            inset: 0;
-            border-radius: 2px 10px 10px 2px;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            transform: translateZ(-8px) translateX(4px);
-            z-index: 1;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-            transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.55s;
-        }
-
-        .show-book-wrap:hover .show-pages {
-            transform: translateZ(-5px) translateX(5px);
-        }
-        .show-book-wrap:hover .show-back-cover {
-            transform: translateZ(-8px) translateX(9px);
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
-        }
-    </style>
 
     <script>
         function toggleModal(modalId) {

@@ -5,22 +5,22 @@
 @section('content')
     <div class="space-y-5">
 
-        {{-- Flash Messages --}}
+        
         @if (session('success'))
-            <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow animate-fade-in-up">
+            <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow ">
                 <p class="font-bold">Berhasil!</p>
                 <p>{{ session('success') }}</p>
             </div>
         @endif
 
         @if (session('error'))
-            <div class="bg-primary/10 border-l-4 border-primary text-secondary px-4 py-4 rounded shadow animate-fade-in-up">
+            <div class="bg-primary/10 border-l-4 border-primary text-secondary px-4 py-4 rounded shadow ">
                 <p class="font-bold">Gagal!</p>
                 <p>{{ session('error') }}</p>
             </div>
         @endif
 
-        {{-- Search Bar (Mobile: full width, Desktop: inline with filter) --}}
+        
         <form action="{{ route('student.katalog') }}" method="GET">
             @if (request('category'))
                 <input type="hidden" name="category" value="{{ request('category') }}">
@@ -36,7 +36,7 @@
             </div>
         </form>
 
-        {{-- Filter Kategori --}}
+        
         <div class="flex gap-2 overflow-x-auto scrollbar-hide flex-nowrap py-0.5 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
             <a href="{{ route('student.katalog', array_filter(['search' => request('search')])) }}"
                 class="shrink-0 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition whitespace-nowrap
@@ -52,7 +52,7 @@
             @endforeach
         </div>
 
-        {{-- Info pencarian/filter aktif --}}
+        
         @if (request('search') || request('category'))
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                 <p class="text-gray-500 text-sm">
@@ -74,7 +74,7 @@
             </div>
         @endif
 
-        {{-- Grid Buku --}}
+        
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             @forelse ($books as $book)
                 <x-book-card :book="$book" />
@@ -95,7 +95,7 @@
             @endforelse
         </div>
 
-        {{-- Pagination --}}
+        
         @if ($books->hasPages())
             <div class="bg-white border border-gray-200 rounded-xl px-5 py-4">
                 {{ $books->links() }}
@@ -104,13 +104,4 @@
 
     </div>
 
-    <style>
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
 @endsection

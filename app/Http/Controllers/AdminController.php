@@ -11,13 +11,13 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // Hitung-hitungan Data
+        
         $totalBuku = Book::count();
         $totalSiswa = User::where('role', 'siswa')->count();
         $sedangDipinjam = Transaction::where('status', 'dipinjam')->count();
         $totalTransaksi = Transaction::count();
 
-        // Ambil 5 Transaksi Terakhir (Buat cuplikan tabel)
+        
         $latestTransactions = Transaction::with(['user', 'book'])
                                 ->orderBy('created_at', 'desc')
                                 ->take(5)

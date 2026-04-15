@@ -8,26 +8,26 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // 1. Tampilkan Form Login
+    
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // 2. Proses Login & Cek Role
+    
     public function login(Request $request)
     {
-        // Validasi input
+        
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Coba Login
+        
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // LOGIKA PEMISAHAN DASHBOARD DI SINI
+            
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } else {
@@ -35,13 +35,13 @@ class AuthController extends Controller
             }
         }
 
-        // Kalau gagal
+        
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->onlyInput('email');
     }
 
-    // 3. Logout
+    
     public function logout(Request $request)
     {
         Auth::logout();
@@ -57,25 +57,25 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // Validasi Input
+        
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email', // Email gak boleh kembar
-            'password' => 'required|min:6|confirmed', // Password harus diketik 2x (konfirmasi)
+            'email' => 'required|email|unique:users,email', 
+            'password' => 'required|min:6|confirmed', 
         ]);
 
-        // Buat User Baru (Otomatis jadi SISWA)
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => 'siswa', // Default role siswa
+            'role' => 'siswa', 
         ]);
 
-        // Langsung Login otomatis setelah daftar
+        
         Auth::login($user);
 
-        // Arahkan ke dashboard siswa
+        
         return redirect()->route('student.home')->with('success', 'Selamat bergabung! Akun berhasil dibuat.');
     }
 }

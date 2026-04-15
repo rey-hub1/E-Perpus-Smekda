@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title', 'Beranda')
-@section('content-padding', '') {{-- Kelola padding manual per-section --}}
+@section('content-padding', '') 
 
 @section('content')
     <div class="space-y-6 sm:space-y-8">
 
-        {{-- Search Bar --}}
+        
         <div class="px-4 sm:px-6 lg:px-8">
             <form action="{{ route('student.katalog') }}" method="GET">
                 <div class="flex rounded-lg overflow-hidden border border-text/10 shadow-sm focus-within:ring-2 focus-within:ring-primary/40">
@@ -21,7 +21,7 @@
             </form>
         </div>
 
-        {{-- Rekomendasi (Featured) --}}
+        
         <div>
             <div class="flex items-center gap-2 mb-4 px-4 sm:px-6 lg:px-8">
                 <h2 class="text-lg sm:text-xl font-bold text-text">Rekomendasi</h2>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        {{-- Kategori --}}
+        
         @if ($categories->isNotEmpty())
         @php
             $catPalette = [
@@ -71,20 +71,16 @@
                 @foreach ($categories as $cat)
                     @php $p = $catPalette[$loop->index % count($catPalette)]; @endphp
                     <a href="{{ route('student.katalog', ['category' => $cat->id]) }}"
-                        class="cat-card shrink-0 snap-start flex flex-col justify-between rounded-2xl px-3 sm:px-4 py-3 sm:py-4 w-32 sm:w-40 min-h-24 sm:min-h-28 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-                        style="background: {{ $p['bg'] }};">
-                        <div class="flex items-start justify-between">
-                            <div class="w-8 sm:w-9 h-8 sm:h-9 rounded-xl flex items-center justify-center" style="background: {{ $p['accent'] }}20;">
-                                <x-category-icon :name="$cat->icon ?? 'book-open'" class="w-4 sm:w-5 h-4 sm:h-5" style="color: {{ $p['accent'] }};" />
-                            </div>
-                            <svg class="w-3 sm:w-3.5 h-3 sm:h-3.5 opacity-30 mt-1" style="color: {{ $p['accent'] }};" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        class="shrink-0 snap-start flex flex-col justify-between rounded-2xl px-3 sm:px-4 py-3 sm:py-4 w-32 sm:w-40 min-h-24 sm:min-h-28 bg-[{{ $p['bg'] }}]">
+                        <div class="flex items-start justify-end">
+                            <svg class="w-3 sm:w-3.5 h-3 sm:h-3.5 opacity-30 mt-1 text-[{{ $p['accent'] }}]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
                             </svg>
                         </div>
 
                         <div class="mt-2 sm:mt-3">
-                            <p class="font-bold text-xs sm:text-sm leading-tight" style="color: {{ $p['accent'] }}; font-family: var(--font-heading);">{{ $cat->name }}</p>
-                            <p class="text-[10px] sm:text-xs mt-0.5 font-medium" style="color: {{ $p['accent'] }}; opacity: 0.6;">{{ $cat->books_count }} buku</p>
+                            <p class="font-bold text-xs sm:text-sm leading-tight text-[{{ $p['accent'] }}] font-heading">{{ $cat->name }}</p>
+                            <p class="text-[10px] sm:text-xs mt-0.5 font-medium text-[{{ $p['accent'] }}]/60">{{ $cat->books_count }} buku</p>
                         </div>
                     </a>
                 @endforeach
@@ -92,17 +88,17 @@
         </div>
         @endif
 
-        {{-- Koleksi --}}
+        
         <div class="px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
             @if (session('success'))
-                <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow animate-fade-in-up">
+                <div class="bg-accent/10 border-l-4 border-accent text-accent px-4 py-4 rounded shadow">
                     <p class="font-bold">Berhasil!</p>
                     <p>{{ session('success') }}</p>
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="bg-primary/10 border-l-4 border-primary text-secondary px-4 py-4 rounded shadow animate-fade-in-up">
+                <div class="bg-primary/10 border-l-4 border-primary text-secondary px-4 py-4 rounded shadow">
                     <p class="font-bold">Gagal!</p>
                     <p>{{ session('error') }}</p>
                 </div>
@@ -122,9 +118,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
                     </svg>
                 </div>
-                <a href="{{ route('student.katalog') }}" class="text-xs font-semibold text-text/40 hover:text-primary transition-colors flex items-center gap-1 group/all">
+                <a href="{{ route('student.katalog') }}" class="text-xs font-semibold text-text/40 hover:text-primary flex items-center gap-1">
                     Lihat Semua
-                    <svg class="w-4 h-4 transition-transform group-hover/all:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
                     </svg>
                 </a>
@@ -152,14 +148,4 @@
         </div>
     </div>
 
-    <style>
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
-    </style>
 @endsection

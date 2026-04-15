@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-2xl mx-auto">
 
-    <!-- Back Button -->
+    
     <a href="{{ route('book.show', $book->slug) }}"
         class="inline-flex items-center gap-2 mb-6 sm:mb-8 text-sm font-medium text-text/50 hover:text-primary transition-colors group">
         <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -14,13 +14,13 @@
         Kembali ke Detail Buku
     </a>
 
-    <!-- Header -->
+    
     <div class="mb-6 sm:mb-8">
         <h1 class="text-xl sm:text-2xl font-bold font-heading text-text">Jadwalkan Peminjaman</h1>
         <p class="text-sm text-text/50 mt-1">Pilih tanggal kamu akan mengambil buku di perpustakaan.</p>
     </div>
 
-    <!-- Book Info Card -->
+    
     <div class="bg-background border border-text/10 rounded-2xl p-4 sm:p-5 mb-5 sm:mb-6 flex items-center gap-4 sm:gap-5">
         <div class="shrink-0">
             @if ($book->gambar)
@@ -41,13 +41,13 @@
         </div>
     </div>
 
-    <!-- Form Jadwal -->
+    
     <form action="{{ route('pinjam.buku', $book->id) }}" method="POST" id="jadwalForm">
         @csrf
 
         <div class="bg-background border border-text/10 rounded-2xl overflow-hidden mb-4 sm:mb-5">
 
-            <!-- Pilih Tanggal Ambil -->
+            
             <div class="p-5 sm:p-6 border-b border-text/10">
                 <label class="block text-sm font-bold text-text mb-1">
                     Tanggal Pengambilan
@@ -70,7 +70,7 @@
                 @enderror
             </div>
 
-            <!-- Info Periode Peminjaman -->
+            
             <div class="p-5 sm:p-6 bg-background">
                 <h3 class="text-xs font-bold text-text/40 uppercase tracking-widest mb-4">Ringkasan Peminjaman</h3>
 
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <!-- Catatan -->
+        
         <div class="bg-cta border border-text/10 rounded-xl px-4 sm:px-5 py-4 mb-5 sm:mb-6 flex items-start gap-3">
             <svg class="w-5 h-5 shrink-0 text-text/40 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zm-9-3.75h.008v.008H12V8.25z"/>
@@ -124,7 +124,7 @@
             </div>
         </div>
 
-        <!-- Submit -->
+        
         <button type="submit"
             class="w-full bg-primary hover:bg-secondary text-background font-bold text-base py-3.5 sm:py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

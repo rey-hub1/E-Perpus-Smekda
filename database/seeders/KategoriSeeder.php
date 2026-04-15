@@ -10,7 +10,7 @@ class KategoriSeeder extends Seeder
 {
     public function run(): void
     {
-        // Daftar Kategori "Zaman Now"
+        
         $kategori = [
             ['name' => 'Fiksi'],
             ['name' => 'Non-Fiksi'],
@@ -18,10 +18,10 @@ class KategoriSeeder extends Seeder
             ['name' => 'Teknologi & Coding'],
             ['name' => 'Horor & Misteri'],
             ['name' => 'Hobi & Skill'],
-            ['name' => 'Bisnis & Keuangan'], // Bonus biar lengkap
+            ['name' => 'Bisnis & Keuangan'], 
         ];
 
-        // Masukkan data sekaligus dengan timestamps otomatis
+        
         foreach ($kategori as $data) {
             DB::table('categories')->insert([
                 'name' => $data['name'],

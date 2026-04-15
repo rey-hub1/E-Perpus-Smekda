@@ -18,17 +18,17 @@ class StudentController extends Controller
 
         $query = Book::query()->with('category');
 
-        // 2. Cek apakah ada pencarian?
+        
         if ($request->has('search')) {
             $keyword = $request->search;
-            // Cari berdasarkan Judul ATAU Penulis
+            
             $query->where('judul', 'LIKE', '%' . $keyword . '%')
                 ->orWhere('penulis', 'LIKE', '%' . $keyword . '%');
         }
 
         $categories = Category::withCount('books')->orderBy('name')->get();
 
-        // 3. Ambil datanya (Get)
+        
         $books = $query->paginate(10);
 
         return view('student.home', compact('books', 'popularBooks', 'categories'));
